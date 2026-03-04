@@ -18,11 +18,6 @@ const Expense = () => {
         <p>Others</p>
         <p>100.00</p>
       </div>
-      <div className="flex justify-center">
-        <button className="bg-blue-600 rounded-xl text-white font-semibold px-2 py-1">
-          Add new Expense
-        </button>
-      </div>
       
     </div>
   )
