@@ -10,7 +10,7 @@ import { Routes, Route } from "react-router-dom";
 function App() {
   
     return (
-      <div className="bg-linear-to-b from-blue-200 to-blue-100">
+      <div className="bg-linear-to-b from-blue-200 to-blue-100 p-3">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/expense" element={<Expense />} />

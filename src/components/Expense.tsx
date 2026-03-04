@@ -1,22 +1,26 @@
 import React from 'react'
 
-const Income = () => {
+const Expense = () => {
   
   return (
     <div className="w-full bg-white rounded-xl p-3 flex flex-col gap-2">
-      <p className="text-xl font-bold text-center">INCOME</p>
-      <p className="text-2xl text-green-600 font-bold text-center">10,000.00 ETB</p>
+      <p className="text-xl font-bold text-center">EXPENSE</p>
+      <p className="text-2xl text-red-600 font-bold text-center">3,200.00 ETB</p>
       <div className="flex justify-between">
-        <p>Gift</p>
-        <p>1,000.00</p>
+        <p>Kolo</p>
+        <p>2,500.00</p>
       </div>
       <div className="flex justify-between">
-        <p>Salary</p>
-        <p>9,000.00</p>
+        <p>Coke</p>
+        <p>600.00</p>
+      </div>
+      <div className="flex justify-between">
+        <p>Others</p>
+        <p>100.00</p>
       </div>
       <div className="flex justify-center">
         <button className="bg-blue-600 rounded-xl text-white font-semibold px-2 py-1">
-          Add new Income
+          Add new Expense
         </button>
       </div>
       
@@ -24,4 +28,4 @@ const Income = () => {
   )
 }
 
-export default Income
+export default Expense
