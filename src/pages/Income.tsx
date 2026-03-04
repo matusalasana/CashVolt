@@ -1,8 +1,11 @@
 import React from 'react'
+import IncomeTable from "../components/IncomeTable"
 
 const Income = () => {
   return (
-    <div>Income</div>
+    <div>
+      <IncomeTable />
+    </div>
   )
 }
 
