@@ -4,6 +4,7 @@ import Expense from "../components/Expense"
 import Balance from "../components/Balance"
 import Savings from "../components/Savings"
 import MonthlySummary from "../components/MonthlySummary"
+import GetStartedBtn from "../components/GetStartedBtn"
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       </div>
       <div className="pt-3">
       <MonthlySummary />
+      <GetStartedBtn />
       </div>
     </div>
   )
