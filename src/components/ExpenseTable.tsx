@@ -1,165 +1,95 @@
-const ExpenseTable = () => {
+import React from 'react';
+import { 
+  Utensils, 
+  Zap, 
+  ShoppingBag, 
+  Stethoscope, 
+  Bus, 
+  Dumbbell, 
+  Film, 
+  ChevronRight 
+} from 'lucide-react';
+
+const ExpenseTable: React.FC = () => {
+  // Data structure for easier management
+  const categories = [
+    { title: "Food", icon: <Utensils size={18} />, color: "bg-emerald-500", items: [
+      { name: "Dabo kolo", price: 400 },
+      { name: "Mother bet", price: 200 }
+    ]},
+    { title: "Fixed Expenses", icon: <Zap size={18} />, color: "bg-amber-500", items: [
+      { name: "Water", price: 800 },
+      { name: "Electric", price: 1000 }
+    ]},
+    { title: "Shopping", icon: <ShoppingBag size={18} />, color: "bg-rose-500", items: [
+      { name: "Jacket", price: 2400 },
+      { name: "T-shirt", price: 900 }
+    ]},
+    { title: "Medical", icon: <Stethoscope size={18} />, color: "bg-blue-500", items: [
+      { name: "Teeth", price: 4000 },
+      { name: "Insurance", price: 2000 }
+    ]},
+    { title: "Transportation", icon: <Bus size={18} />, color: "bg-pink-500", items: [
+      { name: "Piasa", price: 40 },
+      { name: "Addisu Gebeya", price: 20 }
+    ]},
+    { title: "Fitness", icon: <Dumbbell size={18} />, color: "bg-cyan-500", items: [
+      { name: "Gym membership", price: 600 }
+    ]},
+    { title: "Entertainment", icon: <Film size={18} />, color: "bg-indigo-500", items: [
+      { name: "Chips", price: 40 },
+      { name: "Dabo kolo", price: 150 }
+    ]}
+  ];
+
   return (
-    <div className="grid grid-cols-1 gap-3">
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-green-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Food</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Dabo kolo</td>
-            <td className="border border-gray-300 px-4 py-2">400.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Mother bet</td>
-            <td className="border border-gray-300 px-4 py-2">200.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">700.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-yellow-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Fixed Expenses</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Water</td>
-            <td className="border border-gray-300 px-4 py-2">800.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Electric</td>
-            <td className="border border-gray-300 px-4 py-2">1000.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">1,300.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-red-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Shopping</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Jacket</td>
-            <td className="border border-gray-300 px-4 py-2">2,400.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">T-shirt</td>
-            <td className="border border-gray-300 px-4 py-2">900.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">3,200.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-blue-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Medical</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Teeth</td>
-            <td className="border border-gray-300 px-4 py-2">4,000.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Insurance</td>
-            <td className="border border-gray-300 px-4 py-2">2,000.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">7,000.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-pink-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Transportation</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Piasa</td>
-            <td className="border border-gray-300 px-4 py-2">40.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Addisu Gebeya</td>
-            <td className="border border-gray-300 px-4 py-2">20.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">100.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-cyan-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Fitness</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Gym membership</td>
-            <td className="border border-gray-300 px-4 py-2">600.00</td>
-          </tr>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {categories.map((cat, idx) => {
+        const total = cat.items.reduce((sum, item) => sum + item.price, 0);
+        
+        return (
+          <div key={idx} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            {/* Category Header */}
+            <div className={`p-4 ${cat.color} text-white flex justify-between items-center`}>
+              <div className="flex items-center gap-2">
+                {cat.icon}
+                <h3 className="font-bold tracking-wide uppercase text-sm">{cat.title}</h3>
+              </div>
+              <span className="text-xs bg-white/20 px-2 py-1 rounded-lg backdrop-blur-sm">
+                {cat.items.length} Items
+              </span>
+            </div>
 
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">700.00</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <table className="min-w-full border-collapse border border-gray-300 bg-white">
-        <thead>
-          <tr className="bg-indigo-400">
-            <th className="border border-gray-300 px-4 py-2 text-left">Entertainment</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Amount (ETB)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Chips</td>
-            <td className="border border-gray-300 px-4 py-2">40.00</td>
-          </tr>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">Dabo kolo</td>
-            <td className="border border-gray-300 px-4 py-2">150.00</td>
-          </tr>
-          <tr className="font-bold bg-gray-200">
-            <td className="border border-gray-300 px-4 py-2">Total</td>
-            <td className="border border-gray-300 px-4 py-2">700.00</td>
-          </tr>
-        </tbody>
-      </table>
+            {/* Items List */}
+            <div className="p-2">
+              <table className="w-full text-sm text-left">
+                <tbody>
+                  {cat.items.map((item, i) => (
+                    <tr key={i} className="border-b border-slate-50 last:border-0 group">
+                      <td className="py-3 px-4 text-slate-600 group-hover:text-slate-900 transition-colors">
+                        {item.name}
+                      </td>
+                      <td className="py-3 px-4 text-right font-medium text-slate-700">
+                        {item.price.toLocaleString()} <span className="text-[10px] text-slate-400">ETB</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Total Footer */}
+            <div className="bg-slate-50 p-4 flex justify-between items-center border-t border-slate-100">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Category Total</span>
+              <span className="font-bold text-slate-900">
+                {total.toLocaleString()} <span className="text-xs">ETB</span>
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
-  )
-}
+  );
+};
 
-export default ExpenseTable
+export default ExpenseTable;
