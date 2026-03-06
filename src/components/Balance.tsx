@@ -1,78 +1,91 @@
 import React from 'react';
-import { Landmark, ArrowUpRight, Percent } from 'lucide-react';
+import { Landmark, TrendingUp, Shield, Sparkles } from 'lucide-react';
+import useExpenseStore from "../stores/expenseStore";
+import useIncomeStore from "../stores/incomeStore";
 
 const Balance: React.FC = () => {
-  const balanceAmount = 6800;
-  const percentage = 68;
+  const totalIncome = useIncomeStore((state) => state.totalIncome);
+  const totalExpense = useExpenseStore((state) => state.totalExpense);
+  const balanceAmount = totalIncome - totalExpense;
+  const savingsRate = totalIncome > 0 ? ((balanceAmount) / totalIncome) * 100 : 0;
+  
+  const getBalanceStatus = () => {
+    if (balanceAmount > totalIncome * 0.5) return { text: 'Excellent', color: 'text-emerald-600', bg: 'bg-emerald-100' };
+    if (balanceAmount > totalIncome * 0.2) return { text: 'Good', color: 'text-blue-600', bg: 'bg-blue-100' };
+    if (balanceAmount > 0) return { text: 'Fair', color: 'text-amber-600', bg: 'bg-amber-100' };
+    return { text: 'Critical', color: 'text-rose-600', bg: 'bg-rose-100' };
+  };
 
-  // SVG Circle calculations
-  const radius = 36;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference;
+  const status = getBalanceStatus();
 
   return (
-    <div className="w-full bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col items-center relative overflow-hidden group">
-      {/* Background Decorative Element */}
-      <div className="absolute -top-6 -right-6 w-24 h-24 bg-indigo-50 rounded-full transition-transform group-hover:scale-110" />
+    <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-white shadow-2xl group">
+      {/* Animated Background Patterns */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-500 rounded-full filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+      
+      {/* Decorative Elements */}
+      <div className="absolute top-10 left-10 w-20 h-20 border border-white/10 rounded-full"></div>
+      <div className="absolute bottom-10 right-10 w-32 h-32 border border-white/5 rounded-full"></div>
 
-      <div className="flex items-center gap-2 mb-4 self-start">
-        <div className="p-2 bg-indigo-600 rounded-lg text-white">
-          <Landmark size={20} />
-        </div>
-        <h3 className="font-semibold text-slate-700">Available Balance</h3>
-      </div>
-
-      <div className="flex flex-col items-center justify-center py-2">
-        {/* Radial Progress Gauge */}
-        <div className="relative flex items-center justify-center mb-4">
-          <svg className="w-32 h-32 transform -rotate-90">
-            <circle
-              cx="64"
-              cy="64"
-              r={radius}
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              className="text-slate-100"
-            />
-            <circle
-              cx="64"
-              cy="64"
-              r={radius}
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="transparent"
-              strokeDasharray={circumference}
-              style={{ strokeDashoffset: offset }}
-              strokeLinecap="round"
-              className="text-indigo-600 transition-all duration-1000 ease-out"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-xl font-bold text-slate-800">{percentage}%</span>
-            <span className="text-[10px] uppercase text-slate-400 font-bold">Left</span>
+      <div className="relative z-10">
+        {/* Header with Status */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-sm group-hover:scale-110 transition-transform">
+              <Landmark size={28} className="text-indigo-300" />
+            </div>
+            <div>
+              <h3 className="text-sm font-medium text-indigo-200">Total Balance</h3>
+              <p className="text-xs text-indigo-300">Across all accounts</p>
+            </div>
+          </div>
+          <div className={`px-4 py-2 rounded-full ${status.bg} bg-opacity-20 backdrop-blur-sm`}>
+            <span className={`text-sm font-bold ${status.color}`}>{status.text}</span>
           </div>
         </div>
 
-        {/* Currency Display */}
-        <div className="text-center">
-          <p className="text-3xl font-black bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-            {balanceAmount.toLocaleString()} <span className="text-sm font-medium">ETB</span>
-          </p>
-          <div className="flex items-center justify-center gap-1 mt-1 text-emerald-500 font-medium text-sm">
-            <ArrowUpRight size={14} />
-            <span>+2.4% from last week</span>
+        {/* Main Balance Display */}
+        <div className="mb-8">
+          <div className="flex items-baseline gap-3">
+            <span className="text-6xl font-black tracking-tight">
+              {balanceAmount.toLocaleString()}
+            </span>
+            <span className="text-xl font-medium text-indigo-300">ETB</span>
+          </div>
+          <div className="flex items-center gap-3 mt-3">
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-500/20 rounded-full text-emerald-300 text-sm">
+              <TrendingUp size={16} />
+              <span>+{(savingsRate).toFixed(1)}% savings rate</span>
+            </div>
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-white/5 rounded-full text-white/60 text-sm">
+              <Shield size={16} />
+              <span>Secure</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Footer Info */}
-      <div className="w-full mt-6 pt-4 border-t border-slate-50 flex justify-between text-xs font-semibold text-slate-500">
-        <div className="flex items-center gap-1 uppercase tracking-wider">
-          <Percent size={12} />
-          Usage Ratio
+        {/* Breakdown */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 bg-white/5 rounded-2xl backdrop-blur-sm">
+            <p className="text-sm text-emerald-300 mb-1">Total Income</p>
+            <p className="text-2xl font-bold text-emerald-400">
+              +{totalIncome.toLocaleString()}
+            </p>
+          </div>
+          <div className="p-4 bg-white/5 rounded-2xl backdrop-blur-sm">
+            <p className="text-sm text-rose-300 mb-1">Total Expenses</p>
+            <p className="text-2xl font-bold text-rose-400">
+              -{totalExpense.toLocaleString()}
+            </p>
+          </div>
         </div>
-        <span className="text-slate-800">Normal</span>
+
+        {/* Motivational Message */}
+        <div className="mt-6 flex items-center gap-2 text-indigo-300 text-sm">
+          <Sparkles size={16} />
+          <span>You're doing great! Keep up the financial discipline.</span>
+        </div>
       </div>
     </div>
   );

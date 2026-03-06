@@ -1,67 +1,135 @@
 import React from 'react';
-import { PiggyBank, Target, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-react';
 
 const Savings: React.FC = () => {
-  const currentSavings = 2000;
-  const targetGoal = 5000; // Example target
-  const percentage = (currentSavings / targetGoal) * 100;
+  const savings = {
+    current: 24500,
+    goal: 50000,
+    monthly: 5000,
+    emergency: 10000,
+    invested: 5000
+  };
+
+  const progress = (savings.current / savings.goal) * 100;
+  const monthsToGoal = Math.ceil((savings.goal - savings.current) / savings.monthly);
 
   return (
-    <div className="w-full bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col group">
+    <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-700">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-blue-50 rounded-lg text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-            <PiggyBank size={20} />
-          </div>
-          <h3 className="font-semibold text-slate-700">Total Savings</h3>
-        </div>
-        <div className="flex items-center gap-1 text-blue-600 bg-blue-50 px-2 py-1 rounded-md text-xs font-bold">
-          <Target size={14} />
-          <span>Goal: 5k</span>
-        </div>
-      </div>
-
-      {/* Main Amount */}
-      <div className="mb-4">
-        <div className="flex items-baseline gap-1">
-          <p className="text-3xl font-black text-slate-900">{currentSavings.toLocaleString()}</p>
-          <span className="text-sm font-bold text-slate-400">ETB</span>
-        </div>
-        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-          <ArrowUpRight size={12} className="text-emerald-500" />
-          Saved 400 ETB more than last month
-        </p>
-      </div>
-
-      {/* Progress Section */}
-      <div className="space-y-3">
-        <div className="flex justify-between items-end">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Progress</span>
-          <span className="text-sm font-black text-blue-600">{percentage}%</span>
-        </div>
-        
-        {/* Modern Stepped Progress Bar */}
-        <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-          <div 
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            style={{ width: `${percentage}%` }}
-          />
-          {/* Subtle Grid Lines on the bar */}
-          <div className="absolute inset-0 flex justify-between px-2">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="w-px h-full bg-white/20" />
-            ))}
+      <div className="flex items-center gap-4 mb-8">
+        <div className="relative">
+          <div className="absolute inset-0 bg-indigo-500 rounded-xl blur-md opacity-50"></div>
+          <div className="relative p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl text-white">
+            <PiggyBank size={24} />
           </div>
         </div>
+        <div>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">Savings Goals</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Build your wealth</p>
+        </div>
       </div>
 
-      {/* Trust Badge / Footer */}
-      <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2">
-        <ShieldCheck size={14} className="text-emerald-500" />
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          Emergency Fund Secured
-        </span>
+      {/* Main Savings Display */}
+      <div className="text-center mb-8">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">Total Savings</p>
+        <div className="flex items-baseline justify-center gap-2">
+          <span className="text-5xl font-black text-slate-800 dark:text-white">
+            {savings.current.toLocaleString()}
+          </span>
+          <span className="text-lg font-medium text-slate-400">ETB</span>
+        </div>
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <Target size={16} className="text-indigo-500" />
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            Goal: {savings.goal.toLocaleString()} ETB
+          </span>
+        </div>
+      </div>
+
+      {/* Progress Circle */}
+      <div className="flex justify-center mb-8">
+        <div className="relative w-40 h-40">
+          <svg className="w-full h-full transform -rotate-90">
+            <circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="#e2e8f0"
+              strokeWidth="12"
+              className="dark:stroke-slate-700"
+            />
+            <circle
+              cx="80"
+              cy="80"
+              r="70"
+              fill="none"
+              stroke="url(#gradient)"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeDasharray={2 * Math.PI * 70}
+              strokeDashoffset={2 * Math.PI * 70 * (1 - progress / 100)}
+              className="transition-all duration-1000"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#6366f1" />
+                <stop offset="100%" stopColor="#a855f7" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
+              {Math.round(progress)}%
+            </span>
+            <span className="text-xs text-slate-400">Complete</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <Clock size={16} className="text-amber-500" />
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Time to goal</span>
+          </div>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{monthsToGoal} months</p>
+        </div>
+
+        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <TrendingUp size={16} className="text-emerald-500" />
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Monthly</span>
+          </div>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.monthly.toLocaleString()} ETB</p>
+        </div>
+
+        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <Shield size={16} className="text-blue-500" />
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Emergency</span>
+          </div>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.emergency.toLocaleString()} ETB</p>
+        </div>
+
+        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <Award size={16} className="text-purple-500" />
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Invested</span>
+          </div>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.invested.toLocaleString()} ETB</p>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="grid grid-cols-2 gap-3">
+        <button className="py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
+          Add Savings
+        </button>
+        <button className="py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+          Adjust Goal
+        </button>
       </div>
     </div>
   );

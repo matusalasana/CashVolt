@@ -1,7 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Toaster } from 'react-hot-toast';
 
-// Components & Pages imports (keep your existing imports here)
+// Components & Pages imports
 import Home from "./pages/Home";
 import Expense from "./pages/Expense";
 import Income from "./pages/Income";
@@ -10,27 +11,61 @@ import Login from "./pages/Login";
 import Goal from "./pages/Goal";
 import DaysTracker from "./pages/DaysTracker";
 import TransactionHistory from "./pages/TransactionHistory";
-import Terms from "./pages/Terms"
-import Footer from "./components/Footer";
+import Terms from "./pages/Terms";
 import AboutUs from "./pages/AboutUs";
-import ExcelActions from "./components/ExcelActions";
+import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 
 function App() {
   const { pathname } = useLocation();
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // Automatically scroll to top when changing routes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return (
-    <div className="flex flex-col min-h-screen font-sans antialiased text-slate-900">
-      {/* Navigation Bar */}
-      <Nav />
+  useEffect(() => {
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }
+  }, []);
 
-      {/* Main Content Area */}
-      <main className="flex-grow bg-linear-to-b from-blue-50 to-white">
+  return (
+    <div className={`flex flex-col min-h-screen font-sans antialiased ${
+      theme === 'dark' ? 'dark bg-slate-900' : 'bg-gradient-to-br from-slate-50 to-white'
+    }`}>
+      {/* Toast Notifications */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: theme === 'dark' ? '#1e293b' : '#ffffff',
+            color: theme === 'dark' ? '#ffffff' : '#1e293b',
+            borderRadius: '1rem',
+            padding: '1rem',
+          },
+          success: {
+            icon: '🎉',
+            style: {
+              border: '1px solid #10b981',
+            },
+          },
+          error: {
+            icon: '❌',
+            style: {
+              border: '1px solid #ef4444',
+            },
+          },
+        }}
+      />
+
+      <Nav />
+      
+      <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -42,13 +77,11 @@ function App() {
             <Route path="/tracker" element={<DaysTracker />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/excel-actions" element={<ExcelActions />} />
             <Route path="/goals" element={<Goal />} />
           </Routes>
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

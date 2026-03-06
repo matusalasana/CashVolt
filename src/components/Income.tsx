@@ -1,72 +1,139 @@
 import React from 'react';
-import { TrendingUp, Gift, Briefcase, PlusCircle, ArrowUpRight } from 'lucide-react';
+import { TrendingUp, Gift, Briefcase, Plus, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
+import useIncomeStore from "../stores/incomeStore";
 
 const Income: React.FC = () => {
-  // Mock data structure
-  const incomeSources = [
-    { id: 1, source: 'Salary', amount: 9000, icon: <Briefcase size={16} />, color: 'bg-emerald-100 text-emerald-600' },
-    { id: 2, source: 'Gift', amount: 1000, icon: <Gift size={16} />, color: 'bg-purple-100 text-purple-600' },
-  ];
+  const incomeSources = useIncomeStore((state) => state.items);
+  const totalIncome = useIncomeStore((state) => state.totalIncome);
 
-  const totalIncome = 10000;
+  // Group income by source for better visualization
+  const groupedIncome = incomeSources.reduce((acc, item) => {
+    if (!acc[item.source]) {
+      acc[item.source] = { total: 0, count: 0, items: [] };
+    }
+    acc[item.source].total += item.amount;
+    acc[item.source].count += 1;
+    acc[item.source].items.push(item);
+    return acc;
+  }, {} as Record<string, { total: number; count: number; items: typeof incomeSources }>);
+
+  const topSource = Object.entries(groupedIncome).sort((a, b) => b[1].total - a[1].total)[0];
 
   return (
-    <div className="w-full bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative overflow-hidden">
-      {/* Decorative accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50/50 rounded-full -mr-16 -mt-16 blur-3xl" />
-
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
-            <TrendingUp size={20} />
+    <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-700">
+      {/* Header with gradient accent */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-emerald-500 rounded-xl blur-md opacity-50"></div>
+            <div className="relative p-3 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl text-white">
+              <TrendingUp size={24} />
+            </div>
           </div>
-          <h3 className="font-semibold text-slate-700">Total Income</h3>
+          <div>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white">Income Overview</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Track your earnings</p>
+          </div>
         </div>
-        <button className="text-slate-400 hover:text-emerald-600 transition-colors">
-          <PlusCircle size={20} />
+        <button className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors">
+          <Plus size={20} />
         </button>
       </div>
 
-      {/* Main Display */}
-      <div className="mb-8">
-        <div className="flex items-baseline gap-2">
-          <p className="text-3xl font-black text-slate-900">
+      {/* Main Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl">
+          <p className="text-sm text-emerald-600 dark:text-emerald-400 mb-1">Total Income</p>
+          <p className="text-3xl font-bold text-slate-800 dark:text-white">
             {totalIncome.toLocaleString()}
           </p>
-          <span className="text-sm font-bold text-slate-400">ETB</span>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">ETB</p>
         </div>
-        <div className="flex items-center gap-1 mt-1 text-emerald-600 text-xs font-bold">
-          <ArrowUpRight size={14} />
-          <span>+5% vs last month</span>
+
+        <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl">
+          <p className="text-sm text-blue-600 dark:text-blue-400 mb-1">Income Sources</p>
+          <p className="text-3xl font-bold text-slate-800 dark:text-white">
+            {Object.keys(groupedIncome).length}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Active sources</p>
+        </div>
+
+        <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl">
+          <p className="text-sm text-purple-600 dark:text-purple-400 mb-1">Average</p>
+          <p className="text-3xl font-bold text-slate-800 dark:text-white">
+            {incomeSources.length > 0 
+              ? Math.round(totalIncome / incomeSources.length).toLocaleString()
+              : 0}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Per transaction</p>
         </div>
       </div>
 
-      {/* Breakdown */}
-      <div className="space-y-3">
+      {/* Income Sources Breakdown */}
+      {topSource && (
+        <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles size={16} className="text-amber-500" />
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Top Source</span>
+            </div>
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <ArrowUpRight size={12} />
+              {Math.round((topSource[1].total / totalIncome) * 100)}% of total
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-bold text-slate-800 dark:text-white">{topSource[0]}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{topSource[1].count} transactions</p>
+            </div>
+            <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+              {topSource[1].total.toLocaleString()} ETB
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Income List */}
+      <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
         {incomeSources.map((item) => (
           <div 
             key={item.id} 
-            className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer group"
+            className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg ${item.color} group-hover:scale-110 transition-transform`}>
-                {item.icon}
+              <div className="p-2 bg-white dark:bg-slate-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform">
+                {item.source === 'Salary' ? <Briefcase size={18} className="text-blue-500" /> :
+                 item.source === 'Gift' ? <Gift size={18} className="text-rose-500" /> :
+                 <TrendingUp size={18} className="text-emerald-500" />}
               </div>
-              <span className="text-sm font-medium text-slate-600">{item.source}</span>
+              <div>
+                <p className="font-semibold text-slate-800 dark:text-white">{item.source}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
+              </div>
             </div>
-            <span className="text-sm font-bold text-slate-800">
-              {item.amount.toLocaleString()}
-            </span>
+            <div className="text-right">
+              <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                +{item.amount.toLocaleString()}
+              </p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">
+                {new Date(item.date).toLocaleDateString()}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Summary Footer */}
-      <div className="mt-6 pt-4 border-t border-dashed border-slate-200">
-        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-400">
-          <span>Income Reliability</span>
-          <span className="text-emerald-500">Stable</span>
+      {/* Footer Stats */}
+      <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <Calendar size={14} />
+            This Month
+          </span>
+          <span className="font-bold text-emerald-600 dark:text-emerald-400">
+            +{totalIncome.toLocaleString()} ETB
+          </span>
         </div>
       </div>
     </div>
