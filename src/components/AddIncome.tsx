@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { Download, Upload, Plus } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";
 
-const ExcelActions = () => {
+const AddIncome = () => {
   // 1. Pull everything from Zustand
   const incomeItems = useIncomeStore((state) => state.items);
   const totalIncome = useIncomeStore((state) => state.totalIncome);
@@ -128,4 +128,4 @@ const ExcelActions = () => {
   );
 };
 
-export default ExcelActions;
+export default AddIncome;

@@ -4,6 +4,7 @@ import Balance from "../components/Balance";
 import Income from "../components/Income";
 import Expense from "../components/Expense";
 import Savings from "../components/Savings";
+import AddIncomePopover from "../components/AddIncomePopover"
 import MonthlySummary from "../components/MonthlySummary";
 import CallForExpenseBtn from "../components/CallForExpenseBtn";
 
@@ -42,6 +43,7 @@ const Home: React.FC = () => {
 
       {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <AddIncomePopover />
         <div className="space-y-6">
           <Balance />
           <Income />

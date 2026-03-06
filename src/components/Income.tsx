@@ -1,8 +1,12 @@
 import React from 'react';
 import { TrendingUp, Gift, Briefcase, Plus, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";
+import AddIncomePopover from "./AddIncomePopover"
+
+import {useState} from "react"
 
 const Income: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const incomeSources = useIncomeStore((state) => state.items);
   const totalIncome = useIncomeStore((state) => state.totalIncome);
 
@@ -35,10 +39,11 @@ const Income: React.FC = () => {
             <p className="text-sm text-slate-500 dark:text-slate-400">Track your earnings</p>
           </div>
         </div>
-        <button className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors">
+        <button onClick={()=>setIsOpen(true)} className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors">
           <Plus size={20} />
         </button>
       </div>
+      <AddIncomePopover status={isOpen}/>
 
       {/* Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

@@ -1,11 +1,11 @@
 import React from 'react'
 import IncomeTable from "../components/IncomeTable"
-import ExcelActions from "../components/ExcelActions"
+import AddIncome from "../components/AddIncome"
 
 const Income = () => {
   return (
     <div>
-      <ExcelActions />
+      <AddIncome />
       <IncomeTable />
     </div>
   )
