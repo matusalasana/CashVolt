@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Utensils,
   Zap,
@@ -8,7 +7,6 @@ import {
   Film,
   ChevronRight,
   PlusCircle,
-  ArrowDownRight,
   Trash2
 } from "lucide-react";
 import useExpenseStore from "../stores/expenseStore";
@@ -104,7 +102,7 @@ const ExpenseTable: React.FC = () => {
 
                   <div>
                     <p className="font-bold text-slate-800">
-                      {expense.description}
+                      {expense.title}
                     </p>
 
                     <p className="text-xs text-slate-400">

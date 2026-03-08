@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { TrendingUp, Trash, Gift, Briefcase, Plus } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";
 

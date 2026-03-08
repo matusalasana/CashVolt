@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import useExpenseStore from '../stores/expenseStore';
-import { X, ChevronRight, Sparkles, Wallet, ShoppingBag } from 'lucide-react';
+import { X, ChevronRight, Sparkles, Wallet } from 'lucide-react';
 import { toast } from "react-hot-toast";
 
 interface Props {
@@ -89,6 +89,7 @@ const AddExpensePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Amount (ETB)</label>
             <input 
               type="number" 
+              step="0.01"
               {...register('amount')}
               className="w-full text-4xl font-black bg-transparent border-none focus:ring-0 outline-none dark:text-white"
               placeholder="0.00"

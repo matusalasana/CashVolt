@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { PieChart, ArrowLeftRight, BarChart3, Info } from 'lucide-react';
 
 const MonthlySummary: React.FC = () => {

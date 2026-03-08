@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import   { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { Download, Trash, Upload, Plus } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";

@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-react';
 import useDerivedStats from "../stores/derivedStats"
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import   { useState, useEffect } from 'react';
 import { CheckCircle2, Circle, CalendarDays, Info, Trophy, Lock } from 'lucide-react';
 
 const Tracker: React.FC = () => {

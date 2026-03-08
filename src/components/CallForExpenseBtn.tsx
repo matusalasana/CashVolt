@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import   { useState } from 'react';
 import { Plus, MinusCircle, TrendingUp, X } from 'lucide-react';
 
-interface Props {
+interface Props { 
   onIncomeClick: () => void;
   onExpenseClick: () => void;
 }

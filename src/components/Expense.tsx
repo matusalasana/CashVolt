@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { ArrowDownCircle, Trash, TrendingDown, Plus } from 'lucide-react';
 import useExpenseStore from "../stores/expenseStore";
 import { Link } from "react-router-dom";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import   { useState } from "react";
 import { Sparkles } from "lucide-react";
 import Balance from "../components/Balance";
 import Income from "../components/Income";

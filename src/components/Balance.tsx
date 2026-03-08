@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { Landmark, TrendingUp, Shield, Sparkles } from 'lucide-react';
 
 import useDerivedStats from "../stores/derivedStats";

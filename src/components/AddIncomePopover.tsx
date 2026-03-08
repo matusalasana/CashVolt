@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -93,6 +93,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Amount (ETB)</label>
             <input 
               type="number" 
+              step="0.01"
               {...register('amount')}
               className="w-full text-4xl font-black bg-transparent border-none focus:ring-0 outline-none dark:text-white"
               placeholder="0.00"
@@ -105,7 +106,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
               <button
                 key={val}
                 type="button"
-                onClick={() => setValue('amount', (currentAmount || 0) + val)}
+                onClick={() => setValue('amount', (Number(currentAmount) || 0) + val)}
                 className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs font-bold text-slate-500 hover:bg-emerald-500 hover:text-white transition-all"
               >
                 +{val.toLocaleString()}
