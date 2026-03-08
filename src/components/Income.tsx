@@ -5,7 +5,11 @@ import AddIncomePopover from "./AddIncomePopover"
 
 import {useState} from "react"
 
-const Income: React.FC = () => {
+interface Props{
+  onClickPlus: (val: boolean) =>void
+}
+
+const Income: React.FC = ({onClickPlus}:Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const incomeSources = useIncomeStore((state) => state.items);
   const totalIncome = useIncomeStore((state) => state.totalIncome);
@@ -41,7 +45,7 @@ const Income: React.FC = () => {
           </div>
         </div>
         <button onClick={()=>setIsOpen(true)} className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors">
-          <Plus size={20} />
+          <Plus onClick={() => onClickPlus(true)} size={20} />
         </button>
       </div>
       <AddIncomePopover status={isOpen}/>
@@ -52,8 +56,8 @@ const Income: React.FC = () => {
           <p className="text-sm text-emerald-600 dark:text-emerald-400 mb-1">Total Income</p>
           <p className="text-3xl font-bold text-slate-800 dark:text-white">
             {totalIncome.toLocaleString()}
+          <span className="text-xs text-slate-500 dark:text-slate-400 mt-1"> ETB</span>
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">ETB</p>
         </div>
 
         <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl">
@@ -63,21 +67,11 @@ const Income: React.FC = () => {
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Active sources</p>
         </div>
-
-        <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl">
-          <p className="text-sm text-purple-600 dark:text-purple-400 mb-1">Average</p>
-          <p className="text-3xl font-bold text-slate-800 dark:text-white">
-            {incomeSources.length > 0 
-              ? Math.round(totalIncome / incomeSources.length).toLocaleString()
-              : 0}
-          </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Per transaction</p>
-        </div>
       </div>
 
       {/* Income Sources Breakdown */}
       {topSource && (
-        <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl">
+        <div className="mb-6 p-4 bg-slate-100 dark:bg-slate-700/50 rounded-2xl">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-amber-500" />
@@ -105,9 +99,9 @@ const Income: React.FC = () => {
         {incomeSources.map((item) => (
           <div 
             key={item.id} 
-            className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
+            className="group flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-700/30 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
           >
-          <Trash onClick={() => removeIncome(item.id)} />
+          
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white dark:bg-slate-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform">
                 {item.source === 'Salary' ? <Briefcase size={18} className="text-blue-500" /> :
@@ -127,6 +121,7 @@ const Income: React.FC = () => {
                 {new Date(item.date).toLocaleDateString()}
               </p>
             </div>
+            <Trash className="text-red-600" onClick={() => removeIncome(item.id)} />
           </div>
         ))}
       </div>

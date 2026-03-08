@@ -4,16 +4,21 @@ import useExpenseStore from "./expenseStore";
 
 const useDerivedStats = () => {
   
-  const saving = 1000
+  const saving = 0
+  const goal = 5000
+  const progressPercentage = (saving/goal)*100
   const totalIncome = useIncomeStore((state) => state.totalIncome);
   const totalExpense = useExpenseStore((state) => state.totalExpense);
 
   
   // Calculate savings percentage or other metrics here if needed
+  const progress = Math.round(progressPercentage)
   const availableBalance = totalIncome - totalExpense
   const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
 
   return {
+    progress,
+    goal,
     saving,
     totalIncome,
     totalExpense,

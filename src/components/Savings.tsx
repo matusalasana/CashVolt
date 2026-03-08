@@ -3,16 +3,13 @@ import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-reac
 import useDerivedStats from "../stores/derivedStats"
 
 const Savings: React.FC = () => {
-  const {saving} = useDerivedStats()
+  const {saving, progress, goal} = useDerivedStats()
   const savings = {
     current: saving,
-    goal: 50000,
-    monthly: 5000,
-    emergency: 10000,
-    invested: 5000
+    goal: goal,
+    monthly: saving,
   };
 
-  const progress = (savings.current / savings.goal) * 100;
   const monthsToGoal = Math.ceil((savings.goal - savings.current) / savings.monthly);
 
   return (
@@ -82,7 +79,7 @@ const Savings: React.FC = () => {
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-              {Math.round(progress)}%
+              {progress}%
             </span>
             <span className="text-xs text-slate-400">Complete</span>
           </div>
@@ -96,7 +93,7 @@ const Savings: React.FC = () => {
             <Clock size={16} className="text-amber-500" />
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Time to goal</span>
           </div>
-          <p className="text-lg font-bold text-slate-800 dark:text-white">{monthsToGoal} months</p>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{monthsToGoal == "Infinity" ? "Some" : monthsToGoal} months</p>
         </div>
 
         <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
@@ -106,22 +103,7 @@ const Savings: React.FC = () => {
           </div>
           <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.monthly.toLocaleString()} ETB</p>
         </div>
-
-        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-          <div className="flex items-center gap-2 mb-2">
-            <Shield size={16} className="text-blue-500" />
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Emergency</span>
-          </div>
-          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.emergency.toLocaleString()} ETB</p>
-        </div>
-
-        <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-          <div className="flex items-center gap-2 mb-2">
-            <Award size={16} className="text-purple-500" />
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Invested</span>
-          </div>
-          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.invested.toLocaleString()} ETB</p>
-        </div>
+        
       </div>
 
       {/* Action Buttons */}

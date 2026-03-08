@@ -4,41 +4,24 @@ import {
   Plus, 
   Car, 
   Home, 
-  Smartphone, 
   Palmtree, 
   TrendingUp, 
   Clock 
 } from 'lucide-react';
+import useDerivedStats from "../stores/derivedStats"
 
 const Goal: React.FC = () => {
+  const {saving, progress, goal} = useDerivedStats()
   const goals = [
     {
       id: 1,
-      title: "New MacBook Pro",
-      target: 120000,
-      saved: 45000,
+      title: "Buy HP laptop",
+      target: goal,
+      saved: saving,
       deadline: "2024-12-01",
-      icon: <Smartphone className="text-blue-600" />,
+      icon: '💻',
       color: "bg-blue-100",
     },
-    {
-      id: 2,
-      title: "Toyota Vitz Fund",
-      target: 1500000,
-      saved: 300000,
-      deadline: "2026-06-01",
-      icon: <Car className="text-emerald-600" />,
-      color: "bg-emerald-100",
-    },
-    {
-      id: 3,
-      title: "Vacation to Zanzibar",
-      target: 80000,
-      saved: 65000,
-      deadline: "2024-08-15",
-      icon: <Palmtree className="text-amber-600" />,
-      color: "bg-amber-100",
-    }
   ];
 
   return (
@@ -60,22 +43,22 @@ const Goal: React.FC = () => {
         <div className="flex-1 space-y-2">
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Savings Progress</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-black text-slate-900">410,000</span>
+            <span className="text-4xl font-black text-slate-900">{saving}</span>
             <span className="text-lg font-bold text-slate-400">ETB</span>
           </div>
           <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
             <div className="bg-indigo-600 h-full w-[28%] rounded-full" />
           </div>
-          <p className="text-sm text-slate-500">You are 28% towards your combined goals.</p>
+          <p className="text-sm text-slate-500">You are {progress}% towards your combined goals.</p>
         </div>
         <div className="h-20 w-px bg-slate-100 hidden md:block" />
         <div className="flex gap-8">
           <div className="text-center">
-            <p className="text-2xl font-bold text-indigo-600">3</p>
+            <p className="text-2xl font-bold text-indigo-600">{goals.length}</p>
             <p className="text-xs font-bold text-slate-400 uppercase">Active</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-emerald-500">12</p>
+            <p className="text-2xl font-bold text-emerald-500">0</p>
             <p className="text-xs font-bold text-slate-400 uppercase">Completed</p>
           </div>
         </div>
@@ -84,12 +67,13 @@ const Goal: React.FC = () => {
       {/* Goals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {goals.map((goal) => {
-          const progress = (goal.saved / goal.target) * 100;
           return (
             <div key={goal.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group">
               <div className="flex justify-between items-start mb-6">
                 <div className={`p-4 rounded-2xl ${goal.color} group-hover:scale-110 transition-transform`}>
-                  {goal.icon}
+                  <p className="text-2xl">
+                    {goal.icon}
+                  </p>
                 </div>
                 <div className="text-right">
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Remaining</span>
@@ -110,7 +94,7 @@ const Goal: React.FC = () => {
                     <p className="text-[10px] font-bold text-slate-400 uppercase">Saved So Far</p>
                     <p className="text-lg font-black text-indigo-600">{goal.saved.toLocaleString()} ETB</p>
                   </div>
-                  <span className="text-2xl font-black text-slate-200">{Math.round(progress)}%</span>
+                  <span className="text-2xl font-black text-blue-600">{Math.round(progress)}%</span>
                 </div>
                 
                 <div className="w-full bg-slate-100 h-4 rounded-full p-1">

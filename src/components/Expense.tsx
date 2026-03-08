@@ -75,7 +75,7 @@ const Expense: React.FC = () => {
               {Math.round((topCategory[1] / totalExpense) * 100)}% of total
             </span>
           </div>
-          <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl">
+          <div className="p-4 bg-red-50 dark:bg-red-700/50 rounded-2xl">
             <div className="flex items-center justify-between mb-2">
               <span className="font-semibold text-slate-800 dark:text-white">{topCategory[0]}</span>
               <span className="font-bold text-rose-600 dark:text-rose-400">{topCategory[1].toLocaleString()} ETB</span>
@@ -95,8 +95,8 @@ const Expense: React.FC = () => {
         {expenses.slice(0, 5).map((expense) => (
           <div 
             key={expense.id} 
-            className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all"
-          ><Trash onClick={() => removeExpense(expense.id)} />
+            className="group flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all"
+          >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white dark:bg-slate-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform">
                 <TrendingDown size={18} className="text-rose-500" />
@@ -114,6 +114,7 @@ const Expense: React.FC = () => {
                 {new Date(expense.date).toLocaleDateString()}
               </p>
             </div>
+            <Trash className="text-red-600" onClick={() => removeExpense(expense.id)} />
           </div>
         ))}
       </div>

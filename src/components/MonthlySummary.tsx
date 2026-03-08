@@ -9,11 +9,6 @@ const MonthlySummary: React.FC = () => {
     { label: "Other", amount: 100, percent: 2, color: "bg-slate-400" },
   ];
 
-  const transferData = [
-    { label: "To Cash", amount: 2200, percent: 77 },
-    { label: "To a Person", amount: 1000, percent: 23 },
-  ];
-
   return (
     <div className="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-8">
       
@@ -58,37 +53,8 @@ const MonthlySummary: React.FC = () => {
           </div>
         </section>
 
-        {/* Transfers Section */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 mb-4 text-slate-400">
-            <ArrowLeftRight size={16} />
-            <h3 className="text-xs font-bold uppercase tracking-widest">Transfers</h3>
-          </div>
-          
-          <div className="bg-slate-50 rounded-2xl p-4 space-y-4">
-            {transferData.map((item, i) => (
-              <div key={i} className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-semibold text-slate-700">{item.label}</p>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">{item.percent}% of total flow</p>
-                </div>
-                <p className={`font-bold ${i === 0 ? 'text-red-500' : 'text-amber-500'}`}>
-                  {item.amount.toLocaleString()} <span className="text-[10px] font-normal">ETB</span>
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
+      
       </div>
-
-      {/* Bottom Final Stats Bar */}
-      <div className="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl overflow-hidden mt-4">
-        <SummaryBlock label="Income" value="10,000" color="text-emerald-600" />
-        <SummaryBlock label="Balance" value="3,200" color="text-blue-600" />
-        <SummaryBlock label="Savings" value="1,000" color="text-indigo-600" />
-      </div>
-
     </div>
   );
 };
