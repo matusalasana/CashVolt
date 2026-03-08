@@ -5,8 +5,10 @@ import AddExpense from "../components/AddExpense"
 const Expense = () => {
   return (
     <div>
-      <ExpenseTable />
+    
       <AddExpense />
+      <ExpenseTable />
+      
     </div>
   )
 }

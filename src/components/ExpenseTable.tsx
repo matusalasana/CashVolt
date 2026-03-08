@@ -14,7 +14,9 @@ interface CategoryStyle {
 
 const categoryMap: Record<string, CategoryStyle> = {
   food: { icon: Utensils, color: 'text-orange-500', bg: 'bg-orange-50' },
-  utilities: { icon: Zap, color: 'text-blue-500', bg: 'bg-blue-50' },
+  food: { icon: Utensils, color: 'text-orange-500', bg: 'bg-orange-50' },
+  food: { icon: Utensils, color: 'text-orange-500', bg: 'bg-orange-50' },
+  drink: { icon: Zap, color: 'text-blue-500', bg: 'bg-blue-50' },
   shopping: { icon: ShoppingBag, color: 'text-purple-500', bg: 'bg-purple-50' },
   healthcare: { icon: Stethoscope, color: 'text-red-500', bg: 'bg-red-50' },
   transportation: { icon: Bus, color: 'text-indigo-500', bg: 'bg-indigo-50' },

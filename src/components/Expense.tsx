@@ -1,11 +1,12 @@
 import React from 'react';
-import { ArrowDownCircle, TrendingDown, Calendar, AlertCircle, PieChart } from 'lucide-react';
+import { ArrowDownCircle, Trash, TrendingDown, Calendar, AlertCircle, PieChart } from 'lucide-react';
 import useExpenseStore from "../stores/expenseStore";
 import { Link } from "react-router-dom";
 
 const Expense: React.FC = () => {
   const expenses = useExpenseStore((state) => state.items);
   const totalExpense = useExpenseStore((state) => state.totalExpense);
+  const removeExpense = useExpenseStore((state) => state.removeExpense)
 
   // Calculate category breakdown
   const categoryTotals = expenses.reduce((acc, expense) => {
@@ -95,7 +96,7 @@ const Expense: React.FC = () => {
           <div 
             key={expense.id} 
             className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all"
-          >
+          ><Trash onClick={() => removeExpense(expense.id)} />
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white dark:bg-slate-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform">
                 <TrendingDown size={18} className="text-rose-500" />

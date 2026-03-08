@@ -41,10 +41,15 @@ const AddExpense: React.FC = () => {
 
   const categories = [
     { name: 'Food', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '🍔' },
+    { name: 'Drink', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '💧' },
+    { name: 'Gift', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '🍔' },
+    { name: 'Food', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '🍔' },
+    { name: 'Food', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '🍔' },
     { name: 'Transport', icon: <Bus size={24} />, color: 'from-blue-400 to-blue-600', emoji: '🚗' },
     { name: 'Shopping', icon: <ShoppingBag size={24} />, color: 'from-rose-400 to-rose-600', emoji: '🛍️' },
-    { name: 'Bills', icon: <Zap size={24} />, color: 'from-amber-400 to-amber-600', emoji: '⚡' },
-    { name: 'Fun', icon: <Film size={24} />, color: 'from-indigo-400 to-indigo-600', emoji: '🎮' },
+    { name: 'Class', icon: <Zap size={24} />, color: 'from-amber-400 to-amber-600', emoji: '📝'},
+    { name: 'Fun', icon: <Film size={24} />, color: 'from-indigo-400 to-indigo-600', emoji: '🎬' },
+    { name: 'Other', icon: <Utensils size={24} />, color: 'from-emerald-400 to-emerald-600', emoji: '🤐' },
   ];
 
   const quickAmounts = [50, 100, 200, 500];
@@ -125,7 +130,7 @@ const AddExpense: React.FC = () => {
         {/* Categories */}
         <div className="px-6 pb-6">
           <p className="text-xs font-medium text-slate-400 mb-3">Category</p>
-          <div className="grid grid-cols-5 gap-2">
+          <div className="overflow-x-scroll flex gap-5 p-3">
             {categories.map((cat) => (
               <button
                 key={cat.name}
@@ -138,10 +143,13 @@ const AddExpense: React.FC = () => {
                     ? `bg-gradient-to-r ${cat.color} text-white shadow-lg scale-110` 
                     : 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 group-hover:scale-105'
                 }`}>
-                  {cat.icon}
+                  <div className="flex gap-1 justify-center items-center">
+                    <p>{cat.emoji}</p>
+                    <p className="text-[12px]">{cat.name}</p>
+                  </div>
                 </div>
                 <span className="absolute -top-2 -right-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                  {cat.emoji}
+                  
                 </span>
               </button>
             ))}

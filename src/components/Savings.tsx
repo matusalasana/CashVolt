@@ -1,9 +1,11 @@
 import React from 'react';
 import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-react';
+import useDerivedStats from "../stores/derivedStats"
 
 const Savings: React.FC = () => {
+  const {saving} = useDerivedStats()
   const savings = {
-    current: 24500,
+    current: saving,
     goal: 50000,
     monthly: 5000,
     emergency: 10000,

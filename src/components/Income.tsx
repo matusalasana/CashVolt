@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Gift, Briefcase, Plus, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
+import { TrendingUp, Trash, Gift, Briefcase, Plus, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";
 import AddIncomePopover from "./AddIncomePopover"
 
@@ -9,6 +9,7 @@ const Income: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const incomeSources = useIncomeStore((state) => state.items);
   const totalIncome = useIncomeStore((state) => state.totalIncome);
+  const removeIncome = useIncomeStore((state) => state.removeIncome)
 
   // Group income by source for better visualization
   const groupedIncome = incomeSources.reduce((acc, item) => {
@@ -106,6 +107,7 @@ const Income: React.FC = () => {
             key={item.id} 
             className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
           >
+          <Trash onClick={() => removeIncome(item.id)} />
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white dark:bg-slate-600 rounded-lg shadow-sm group-hover:scale-110 transition-transform">
                 {item.source === 'Salary' ? <Briefcase size={18} className="text-blue-500" /> :

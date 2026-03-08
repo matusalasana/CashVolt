@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { Download, Upload, Plus } from 'lucide-react';
+import { Download, Trash, Upload, Plus } from 'lucide-react';
 import useIncomeStore from "../stores/incomeStore";
 
 const AddIncome = () => {
@@ -8,6 +8,7 @@ const AddIncome = () => {
   const incomeItems = useIncomeStore((state) => state.items);
   const totalIncome = useIncomeStore((state) => state.totalIncome);
   const addIncome = useIncomeStore((state) => state.addIncome);
+  const removeIncome = useIncomeStore((state) => state.removeIncome)
 
   const [form, setForm] = useState({ source: '', desc: '', amount: '' });
 
@@ -117,6 +118,9 @@ const AddIncome = () => {
                 <td className="p-4 font-semibold text-slate-700">{item.source}</td>
                 <td className="p-4 text-slate-500 italic">{item.description}</td>
                 <td className="p-4 text-right font-bold text-indigo-600">{item.amount.toLocaleString()} ETB</td>
+                <td>
+                  <Trash onClick={() => removeIncome(item.id)} />
+                </td>
               </tr>
             )) : (
               <tr><td colSpan={3} className="p-10 text-center text-slate-400">No data found in store.</td></tr>

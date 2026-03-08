@@ -1,16 +1,12 @@
 import React from 'react';
 import { Landmark, TrendingUp, Shield, Sparkles } from 'lucide-react';
-// Assuming useDerivedStats is your custom hook from the previous step
+
 import useDerivedStats from "../stores/derivedStats";
 
 const Balance: React.FC = () => {
-  // 1. Correctly destructure the values from your custom hook
-  const { totalIncome, totalExpense, availableBalance } = useDerivedStats();
+  const { totalIncome, savingsRate, totalExpense, availableBalance } = useDerivedStats();
   
-  // 2. Calculate savings rate (Income - Expenses) / Income
-  const savingsRate = totalIncome > 0 ? (availableBalance / totalIncome) * 100 : 0;
   
-  // 3. Logic for status badge
   const getBalanceStatus = () => {
     if (availableBalance > totalIncome * 0.5) return { text: 'Excellent', color: 'text-emerald-400', bg: 'bg-emerald-500/20' };
     if (availableBalance > totalIncome * 0.2) return { text: 'Good', color: 'text-blue-400', bg: 'bg-blue-500/20' };

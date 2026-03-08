@@ -4,6 +4,7 @@ import useExpenseStore from "./expenseStore";
 
 const useDerivedStats = () => {
   
+  const saving = 1000
   const totalIncome = useIncomeStore((state) => state.totalIncome);
   const totalExpense = useExpenseStore((state) => state.totalExpense);
 
@@ -13,6 +14,7 @@ const useDerivedStats = () => {
   const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
 
   return {
+    saving,
     totalIncome,
     totalExpense,
     availableBalance,
