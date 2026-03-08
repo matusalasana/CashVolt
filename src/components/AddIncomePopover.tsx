@@ -55,7 +55,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
           <Sparkles className="text-emerald-500" size={20} />
           <div>
             <p className="font-bold">Income Added!</p>
-            <p className="text-xs opacity-90">{data.amount} ETB</p>
+            <p className="text-xs opacity-90">{data.amount} ETB via {data.source}</p>
           </div>
         </div>
       );
@@ -97,6 +97,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
               className="w-full text-4xl font-black bg-transparent border-none focus:ring-0 outline-none dark:text-white"
               placeholder="0.00"
             />
+            {errors.amount && <p className="text-rose-500 text-xs mt-1">{errors.amount.message}</p>}
           </div>
 
           <div className="flex gap-2">
@@ -112,16 +113,31 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
             ))}
           </div>
 
-          <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Source</label>
-            <div className="relative flex items-center">
-              <Briefcase size={18} className="absolute left-4 text-slate-400" />
-              <input 
-                type="text" 
-                {...register('source')}
-                placeholder="Salary, Freelance..."
-                className="w-full pl-12 pr-5 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border-none outline-none dark:text-white text-sm"
-              />
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Source</label>
+              <div className="relative flex items-center">
+                <Briefcase size={18} className="absolute left-4 text-slate-400" />
+                <input 
+                  type="text" 
+                  {...register('source')}
+                  placeholder="Salary, Freelance..."
+                  className="w-full pl-12 pr-5 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border-none outline-none dark:text-white text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Details</label>
+              <div className="relative flex items-center">
+                <Coins size={18} className="absolute left-4 text-slate-400" />
+                <input 
+                  type="text" 
+                  {...register('description')}
+                  placeholder="Monthly payment..."
+                  className="w-full pl-12 pr-5 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border-none outline-none dark:text-white text-sm"
+                />
+              </div>
             </div>
           </div>
 
@@ -130,7 +146,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
             disabled={isSubmitting}
             className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl hover:bg-emerald-700 transition-all"
           >
-            {isSubmitting ? "Saving..." : <>{'Add Income'} <ChevronRight size={18} /></>}
+            {isSubmitting ? "Saving..." : <><ChevronRight size={18} /> Add Income</>}
           </button>
         </div>
       </form>

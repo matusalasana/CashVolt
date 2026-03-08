@@ -1,47 +1,50 @@
 import React, { useState } from 'react';
-import { Plus, MinusCircle, TrendingUp } from 'lucide-react';
+import { Plus, MinusCircle, TrendingUp, X } from 'lucide-react';
 
-const CallForExpenseBtn: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+interface Props {
+  onIncomeClick: () => void;
+  onExpenseClick: () => void;
+}
+
+const CallForExpenseBtn: React.FC<Props> = ({ onIncomeClick, onExpenseClick }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex fixed bottom-8 right-8 items-center justify-center min-h-[200px] p-8">
-      {/* Container flows from right to left */}
-      <div className="flex animate-bounce flex-row-reverse items-center gap-4">
-        
-        {/* Main Trigger Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`z-20 p-4 rounded-full shadow-lg transition-all duration-300 active:scale-95 ${
-            isOpen ? 'bg-gray-800 rotate-45' : 'bg-blue-600 hover:bg-blue-700'
-          }`}
-        >
-          <Plus className="w-6 h-6 text-white" />
-        </button>
+    <div className="fixed bottom-8 right-8 z-[60] flex flex-col items-end gap-4">
+      {/* Menu Items */}
+      {isOpen && (
+        <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <button 
+            onClick={() => { onIncomeClick(); setIsOpen(false); }}
+            className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 border border-emerald-100 dark:border-emerald-900 rounded-2xl shadow-xl hover:scale-105 transition-transform"
+          >
+            <span className="text-sm font-bold text-emerald-600">Add Income</span>
+            <div className="p-2 bg-emerald-500 rounded-lg text-white">
+              <TrendingUp size={18} />
+            </div>
+          </button>
 
-        {/* Action Items (Appear on the left) */}
-        {isOpen && (
-          <div className="flex flex-row-reverse gap-4 animate-in fade-in slide-in-from-right-8 duration-300">
-            
-            {/* Add Income Button */}
-            <button className="group flex items-center gap-2 px-4 py-2 bg-white border border-green-200 rounded-lg shadow-sm hover:bg-green-50 transition-colors">
-              <span className="text-sm font-medium text-green-700">Add Income</span>
-              <div className="p-1 bg-green-100 rounded text-green-600">
-                <Plus className="w-4 h-4" />
-              </div>
-            </button>
+          <button 
+            onClick={() => { onExpenseClick(); setIsOpen(false); }}
+            className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900 rounded-2xl shadow-xl hover:scale-105 transition-transform"
+          >
+            <span className="text-sm font-bold text-rose-600">Add Expense</span>
+            <div className="p-2 bg-rose-500 rounded-lg text-white">
+              <MinusCircle size={18} />
+            </div>
+          </button>
+        </div>
+      )}
 
-            {/* Add Expense Button */}
-            <button className="group flex items-center gap-2 px-4 py-2 bg-white border border-red-200 rounded-lg shadow-sm hover:bg-red-50 transition-colors">
-              <span className="text-sm font-medium text-red-700">Add Expense</span>
-              <div className="p-1 bg-red-100 rounded text-red-600">
-                <Plus className="w-4 h-4" />
-              </div>
-            </button>
-
-          </div>
-        )}
-      </div>
+      {/* Main Trigger Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`p-4 rounded-[1.5rem] shadow-2xl transition-all duration-300 active:scale-90 ${
+          isOpen ? 'bg-slate-800 rotate-45' : 'bg-indigo-600 hover:bg-indigo-700'
+        }`}
+      >
+        {isOpen ? <X className="w-6 h-6 text-white" /> : <Plus className="w-6 h-6 text-white" />}
+      </button>
     </div>
   );
 };
