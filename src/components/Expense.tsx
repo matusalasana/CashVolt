@@ -44,12 +44,15 @@ const Expense: React.FC<Props> = ({ onAddClick }) => {
                 <p className="text-[10px] text-slate-500 uppercase font-bold">{expense.category}</p>
               </div>
             </div>
+            
             <div className="flex items-center gap-4">
               <p className="font-bold text-rose-600">-{expense.amount.toLocaleString()}</p>
-              <button onClick={() => removeExpense(expense.id)} className="text-slate-300 hover:text-rose-500">
-                <Trash size={16} />
-              </button>
             </div>
+            
+              <button onClick={() => removeExpense(expense.id)} className="text-slate-500 hover:text-rose-700">
+                <Trash size={18} />
+              </button>
+            
           </div>
         ))}
       </div>
