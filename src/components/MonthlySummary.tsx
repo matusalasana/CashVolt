@@ -1,5 +1,4 @@
- 
-import { PieChart, ArrowLeftRight, BarChart3, Info } from 'lucide-react';
+import { PieChart, Info } from 'lucide-react'; // Removed ArrowLeftRight and BarChart3
 
 const MonthlySummary: React.FC = () => {
   const expenseData = [
@@ -28,7 +27,6 @@ const MonthlySummary: React.FC = () => {
         {/* Expenses Section */}
         <section className="space-y-4">
           <div className="flex items-center gap-2 mb-4 text-slate-400">
-            <BarChart3 size={16} />
             <h3 className="text-xs font-bold uppercase tracking-widest">Expense Distribution</h3>
           </div>
           
@@ -59,13 +57,13 @@ const MonthlySummary: React.FC = () => {
   );
 };
 
-// Internal sub-component for the bottom blocks
-const SummaryBlock = ({ label, value, color }: { label: string, value: string, color: string }) => (
-  <div className="bg-white p-4 text-center rounded-xl">
-    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">{label}</p>
-    <p className={`text-lg font-black ${color}`}>{value}</p>
-    <span className="text-[8px] font-bold text-slate-300">ETB</span>
-  </div>
-);
+// Keep this commented out if not used, or remove it completely
+// const SummaryBlock = ({ label, value, color }: { label: string, value: string, color: string }) => (
+//   <div className="bg-white p-4 text-center rounded-xl">
+//     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">{label}</p>
+//     <p className={`text-lg font-black ${color}`}>{value}</p>
+//     <span className="text-[8px] font-bold text-slate-300">ETB</span>
+//   </div>
+// );
 
 export default MonthlySummary;

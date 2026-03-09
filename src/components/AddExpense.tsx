@@ -23,6 +23,7 @@ const expenseSchema = z.object({
   title: z.string().min(3, "Note must be at least 3 characters")
 });
 
+// Use z.infer to get the type from the schema
 type ExpenseFormData = z.infer<typeof expenseSchema>;
 
 const categories = [
@@ -49,7 +50,8 @@ const AddExpense: React.FC = () => {
     formState: { errors, isSubmitting },
     reset
   } = useForm<ExpenseFormData>({
-    resolver: zodResolver(expenseSchema),
+    // Cast the resolver to the expected type
+    resolver: zodResolver(expenseSchema) as any,
     defaultValues: {
       category: "Food",
       amount: 0,

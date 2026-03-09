@@ -5,14 +5,15 @@ import { Toaster } from 'react-hot-toast';
 // Components & Pages imports
 import Home from "./pages/Home";
 import Expense from "./pages/Expense";
-import Income from "./pages/Income";
+import IncomePage from "./pages/Income";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Goal from "./pages/Goal";
 import DaysTracker from "./pages/DaysTracker";
 import TransactionHistory from "./pages/TransactionHistory";
 import Terms from "./pages/Terms";
 import AboutUs from "./pages/AboutUs";
+import Savings from "./pages/Savings"; // Added Savings import
+import HelpCenter from "./pages/HelpCenter"; // Added HelpCenter import
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 
@@ -73,11 +74,12 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/transaction-history" element={<TransactionHistory />} />
             <Route path="/expenses" element={<Expense />} />
-            <Route path="/income" element={<Income />} />
+            <Route path="/income" element={<IncomePage />} />
             <Route path="/tracker" element={<DaysTracker />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/goals" element={<Goal />} />
+            <Route path="/savings" element={<Savings />} /> {/* Added Savings route */}
+            <Route path="/help" element={<HelpCenter />} /> {/* Added HelpCenter route */}
           </Routes>
         </div>
       </main>

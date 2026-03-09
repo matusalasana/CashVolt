@@ -39,7 +39,8 @@ const AddExpensePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
     formState: { errors, isSubmitting },
     reset
   } = useForm<ExpenseFormData>({
-    resolver: zodResolver(expenseSchema),
+    // Cast the resolver to the expected type
+    resolver: zodResolver(expenseSchema) as any,
     defaultValues: { amount: 0, title: '', category: 'Food' }
   });
 
@@ -57,7 +58,7 @@ const AddExpensePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       );
       setIsOpen(false);
       reset();
-    } catch (error) {
+    } catch {
       toast.error("Failed to add expense");
     }
   };

@@ -1,5 +1,4 @@
- 
-import { TrendingUp, Trash, Gift, Briefcase, Plus } from 'lucide-react';
+import { TrendingUp, Trash, Briefcase, Plus } from 'lucide-react'; // Removed Gift
 import useIncomeStore from "../stores/incomeStore";
 
 interface Props {

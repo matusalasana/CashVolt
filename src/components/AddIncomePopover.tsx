@@ -41,7 +41,8 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
     formState: { errors, isSubmitting },
     reset
   } = useForm<IncomeFormData>({
-    resolver: zodResolver(incomeSchema),
+    // Cast the resolver to the expected type
+    resolver: zodResolver(incomeSchema) as any,
     defaultValues: { amount: 0, source: '', description: '' }
   });
 
@@ -61,7 +62,7 @@ const AddIncomePopover: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       );
       setIsOpen(false);
       reset();
-    } catch (error) {
+    } catch {
       toast.error("Failed to add income");
     }
   };

@@ -25,11 +25,12 @@ const Nav = () => {
     { label: 'Expenses', to: '/expenses', icon: '💸' },
     { label: 'Income', to: '/income', icon: '💰' },
     { label: 'Tracker', to: '/tracker', icon: '📈' },
-    { label: 'Goals', to: '/goals', icon: '🎯' },
+    { label: 'Savings', to: '/savings', icon: '💵' },
     { label: 'About', to: '/about-us', icon: '👥' },
   ];
 
-  const getLinkStyles = ({ isActive }) => 
+  // Fixed: Added type for isActive parameter
+  const getLinkStyles = ({ isActive }: { isActive: boolean }) => 
     `relative px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
       isActive 
       ? 'text-white bg-gradient-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30' 
