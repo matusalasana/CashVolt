@@ -1,38 +1,32 @@
 import useIncomeStore from "./incomeStore";
 import useExpenseStore from "./expenseStore";
-import {useState} from "react"
-
+import useSavingsStore from "./savingsStore";
 
 const useDerivedStats = () => {
-  
-  const [savings, setSavings] = useState<number>(0)
-  const [goalAmount, setGoalAmount] = useState<number>(0)
-  
-  const saving = savings
-  
-  const handleAddSaving = (val: number) => {
-    setSavings(val)
-  }
-  const handleAddGoal = (val: number) => {
-    setGoalAmount(val)
-  }
-  const goal = goalAmount
-  const progressPercentage = (saving/goal)*100
+  // Pull persistent values from the new Savings Store
+  const savings = useSavingsStore((state) => state.savings);
+  const goal = useSavingsStore((state) => state.goal);
+  const setSavings = useSavingsStore((state) => state.setSavings);
+  const setGoal = useSavingsStore((state) => state.setGoal);
+
+  // Pull from existing stores
   const totalIncome = useIncomeStore((state) => state.totalIncome);
   const totalExpense = useExpenseStore((state) => state.totalExpense);
 
-  
-  // Calculate savings percentage or other metrics here if needed
-  const progress = Math.round(progressPercentage)
-  const availableBalance = totalIncome - totalExpense
-  const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
+  // Derived Calculations
+  const progressPercentage = goal > 0 ? (savings / goal) * 100 : 0;
+  const availableBalance = totalIncome - totalExpense;
+  const savingsRate = totalIncome > 0 ? (availableBalance / totalIncome) * 100 : 0;
 
   return {
-    handleAddGoal,
-    handleAddSaving,
-    progress,
-    goal,
-    saving,
+    // Actions
+    handleAddGoal: setGoal,
+    handleAddSaving: setSavings,
+    
+    // Values
+    saving: savings,
+    goal: goal,
+    progress: Math.round(progressPercentage),
     totalIncome,
     totalExpense,
     availableBalance,

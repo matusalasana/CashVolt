@@ -1,23 +1,20 @@
- 
-import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-react';
-import useDerivedStats from "../stores/derivedStats"
-import {useRef, useEffect, useState} from "react"
-import Title from "./Title"
+import { PiggyBank, Target, TrendingUp, Clock } from 'lucide-react';
+import useDerivedStats from "../stores/derivedStats";
+import { useRef, useEffect, useState } from "react";
+import Title from "./Title";
 
 const Savings: React.FC = () => {
-  const {saving, handleAddSaving, handleAddGoal, progress, goal} = useDerivedStats()
-  const savings = {
-    current: saving,
-    goal: goal,
-    monthly: saving,
-  };
-
-  const monthsToGoal = Math.ceil((goal - saving) / saving);
-  const savingRef = useRef<HTMLInputElement>(null)
-  const goalRef = useRef<HTMLInputElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const menuRef = useRef<HTMLFormElement>(null);
+  const { saving, handleAddSaving, handleAddGoal, progress, goal } = useDerivedStats();
+  const [isOpen, setIsOpen] = useState(false);
   
+  const savingRef = useRef<HTMLInputElement>(null);
+  const goalRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLFormElement>(null);
+
+  // Logic: Avoid division by zero or NaN
+  const remaining = goal - saving;
+  const monthsToGoal = saving > 0 && remaining > 0 ? Math.ceil(remaining / saving) : 0;
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -26,7 +23,18 @@ const Savings: React.FC = () => {
     };
     if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, setIsOpen]);
+  }, [isOpen]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newSaving = parseFloat(savingRef.current?.value || "0");
+    const newGoal = parseFloat(goalRef.current?.value || "0");
+
+    if (newSaving > 0) handleAddSaving(newSaving);
+    if (newGoal > 0) handleAddGoal(newGoal);
+    
+    setIsOpen(false);
+  };
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-700">
@@ -49,14 +57,14 @@ const Savings: React.FC = () => {
         <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">Total Savings</p>
         <div className="flex items-baseline justify-center gap-2">
           <span className="text-5xl font-black text-slate-800 dark:text-white">
-            {savings.current.toLocaleString()}
+            {saving.toLocaleString()}
           </span>
           <span className="text-lg font-medium text-slate-400">ETB</span>
         </div>
         <div className="flex items-center justify-center gap-2 mt-2">
           <Target size={16} className="text-indigo-500" />
           <span className="text-sm text-slate-500 dark:text-slate-400">
-            Goal: {savings.goal.toLocaleString()} ETB
+            Goal: {goal.toLocaleString()} ETB
           </span>
         </div>
       </div>
@@ -65,84 +73,47 @@ const Savings: React.FC = () => {
       <div className="flex justify-center mb-8">
         <div className="relative w-40 h-40">
           <svg className="w-full h-full transform -rotate-90">
+            <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" strokeWidth="12" className="text-slate-100 dark:text-slate-700" />
             <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="#e2e8f0"
-              strokeWidth="12"
-              className="dark:stroke-slate-700"
-            />
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="url(#gradient)"
-              strokeWidth="12"
-              strokeLinecap="round"
-              strokeDasharray={2 * Math.PI * 70}
-              strokeDashoffset={2 * Math.PI * 70 * (1 - progress / 100)}
-              className="transition-all duration-1000"
+              cx="80" cy="80" r="70" fill="none" stroke="url(#savings-gradient)" strokeWidth="12" strokeLinecap="round"
+              strokeDasharray={440} // 2 * PI * 70 approx
+              strokeDashoffset={440 * (1 - Math.min(progress, 100) / 100)}
+              className="transition-all duration-1000 ease-out"
             />
             <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id="savings-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#6366f1" />
                 <stop offset="100%" stopColor="#a855f7" />
               </linearGradient>
             </defs>
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-              {progress}%
-            </span>
+            <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{progress}%</span>
             <span className="text-xs text-slate-400">Complete</span>
           </div>
         </div>
       </div>
       
-      {/* Goal & Savings popover */}
-      {isOpen &&
-        <div className="fixed flex flex-col justify-center items-center bg-black/90 inset-0 z-[100]">
-          <form 
-            ref={menuRef}
-            className="flex relative bg-white rounded-2xl flex-col gap-5 items-center justify-center p-10"
-          >
+      {/* Popover Form */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+          <form ref={menuRef} onSubmit={handleSubmit} className="relative w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl flex flex-col gap-5">
             <Title txt1="YOUR" txt2="SAVING GOAL" />
-            <button 
-            onClick={() => setIsOpen(false)}
-            className="absolute border-1 border-slate-200 bg-white px-3 py-0.5 rounded-lg font-semibold text-2xl text-red-600 top-1 right-1"
-          >
-            x
-          </button>
-            <input 
-              className="border-2 px-2 py-1 w-full rounded-lg outline-none border-slate-100" 
-              type="number" 
-              ref={savingRef} 
-              placeholder="saving amount (ETB)"
-            />
-            <input 
-              className="border-2 px-2 py-1 w-full rounded-lg outline-none border-slate-100" 
-              type="number" 
-              ref={goalRef} 
-              placeholder="goal amount (ETB)"
-            />
-            <button 
-              type="button"
-              onClick={() =>{
-                      if (savingRef.current.value>0 || goalRef.current.value>0) {
-                          handleAddSaving(savingRef.current.value)
-                          handleAddGoal(goalRef.current.value)
-                          setIsOpen(false)
-                    }}}
-              className="py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all"
-            >
+            <button type="button" onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
+              ✕
+            </button>
+            <div className="space-y-4">
+               <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Monthly Contribution</label>
+               <input className="w-full border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 p-3 rounded-xl outline-none focus:border-indigo-500" type="number" ref={savingRef} placeholder="e.g. 5000" />
+               <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Target Goal</label>
+               <input className="w-full border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 p-3 rounded-xl outline-none focus:border-indigo-500" type="number" ref={goalRef} placeholder="e.g. 50000" />
+            </div>
+            <button type="submit" className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-indigo-200 dark:shadow-none">
               Save Changes
             </button>
           </form>
         </div>
-      }
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -152,12 +123,8 @@ const Savings: React.FC = () => {
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Time to goal</span>
           </div>
           <p className="text-lg font-bold text-slate-800 dark:text-white">
-          {
-            monthsToGoal == "Infinity" 
-              ? "Some months" : monthsToGoal == "NaN"
-              ? "nonono" : "Not set"
-            
-          }</p>
+            {monthsToGoal > 0 ? `${monthsToGoal} months` : "Goal Reached!"}
+          </p>
         </div>
 
         <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
@@ -165,20 +132,13 @@ const Savings: React.FC = () => {
             <TrendingUp size={16} className="text-emerald-500" />
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Monthly</span>
           </div>
-          <p className="text-lg font-bold text-slate-800 dark:text-white">{savings.monthly.toLocaleString()} ETB</p>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">{saving.toLocaleString()} ETB</p>
         </div>
-        
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col justify-center items-center">
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all"
-        >
-          Adjust
-        </button>
-      </div>
+      <button onClick={() => setIsOpen(true)} className="w-full py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+        Adjust Goals
+      </button>
     </div>
   );
 };
