@@ -6,7 +6,6 @@ const Expense = () => {
   return (
     <div>
     
-      <AddExpense />
       <ExpenseTable />
       
     </div>

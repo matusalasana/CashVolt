@@ -10,7 +10,7 @@ const Title: React.FC<Props> = ({ txt1, txt2 }) => {
     <div className="flex flex-col items-center justify-center my-8 gap-1">
       <div className="flex gap-2 items-center">
         {/* First word: Lighter weight, uppercase for a "category" feel */}
-        <span className="text-3xl font-extralight text-slate-500 tracking-tight uppercase">
+        <span className="text-3xl font-black text-slate-700 tracking-tighter drop-shadow-sm">
           {txt1}
         </span>
         

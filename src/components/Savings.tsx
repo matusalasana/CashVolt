@@ -1,16 +1,32 @@
  
 import { PiggyBank, Target, TrendingUp, Shield, Award, Clock } from 'lucide-react';
 import useDerivedStats from "../stores/derivedStats"
+import {useRef, useEffect, useState} from "react"
+import Title from "./Title"
 
 const Savings: React.FC = () => {
-  const {saving, progress, goal} = useDerivedStats()
+  const {saving, handleAddSaving, handleAddGoal, progress, goal} = useDerivedStats()
   const savings = {
     current: saving,
     goal: goal,
     monthly: saving,
   };
 
-  const monthsToGoal = Math.ceil((savings.goal - savings.current) / savings.monthly);
+  const monthsToGoal = Math.ceil((goal - saving) / saving);
+  const savingRef = useRef<HTMLInputElement>(null)
+  const goalRef = useRef<HTMLInputElement>(null)
+  const [isOpen, setIsOpen] = useState(false)
+  const menuRef = useRef<HTMLFormElement>(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, setIsOpen]);
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-700">
@@ -85,6 +101,48 @@ const Savings: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Goal & Savings popover */}
+      {isOpen &&
+        <div className="fixed flex flex-col justify-center items-center bg-black/90 inset-0 z-[100]">
+          <form 
+            ref={menuRef}
+            className="flex relative bg-white rounded-2xl flex-col gap-5 items-center justify-center p-10"
+          >
+            <Title txt1="YOUR" txt2="SAVING GOAL" />
+            <button 
+            onClick={() => setIsOpen(false)}
+            className="absolute border-1 border-slate-200 bg-white px-3 py-0.5 rounded-lg font-semibold text-2xl text-red-600 top-1 right-1"
+          >
+            x
+          </button>
+            <input 
+              className="border-2 px-2 py-1 w-full rounded-lg outline-none border-slate-100" 
+              type="number" 
+              ref={savingRef} 
+              placeholder="saving amount (ETB)"
+            />
+            <input 
+              className="border-2 px-2 py-1 w-full rounded-lg outline-none border-slate-100" 
+              type="number" 
+              ref={goalRef} 
+              placeholder="goal amount (ETB)"
+            />
+            <button 
+              type="button"
+              onClick={() =>{
+                      if (savingRef.current.value>0 || goalRef.current.value>0) {
+                          handleAddSaving(savingRef.current.value)
+                          handleAddGoal(goalRef.current.value)
+                          setIsOpen(false)
+                    }}}
+              className="py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all"
+            >
+              Save Changes
+            </button>
+          </form>
+        </div>
+      }
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -93,7 +151,13 @@ const Savings: React.FC = () => {
             <Clock size={16} className="text-amber-500" />
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Time to goal</span>
           </div>
-          <p className="text-lg font-bold text-slate-800 dark:text-white">{monthsToGoal == "Infinity" ? "Some" : monthsToGoal} months</p>
+          <p className="text-lg font-bold text-slate-800 dark:text-white">
+          {
+            monthsToGoal == "Infinity" 
+              ? "Some months" : monthsToGoal == "NaN"
+              ? "nonono" : "Not set"
+            
+          }</p>
         </div>
 
         <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
@@ -107,12 +171,12 @@ const Savings: React.FC = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-2 gap-3">
-        <button className="py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
-          Add Savings
-        </button>
-        <button className="py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
-          Adjust Goal
+      <div className="flex flex-col justify-center items-center">
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all"
+        >
+          Adjust
         </button>
       </div>
     </div>

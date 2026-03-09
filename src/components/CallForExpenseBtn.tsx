@@ -10,7 +10,7 @@ const CallForExpenseBtn: React.FC<Props> = ({ onIncomeClick, onExpenseClick }) =
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-8 right-8 z-[60] flex flex-col items-end gap-4">
+    <div className="fixed bottom-8 right-8 z-[50] flex flex-col items-end gap-4">
       {/* Menu Items */}
       {isOpen && (
         <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
