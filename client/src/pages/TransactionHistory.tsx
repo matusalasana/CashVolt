@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Search, Filter, Download, Calendar } from 'lucide-react';
 import { useTransactions } from "../hooks/useTransactions";
 import { TransactionCard } from "../components/TransactionCard";
+import { AddTransactionForm } from "../components/AddTransactionForm"
 
 const TransactionHistory: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'income' | 'expense'>('all');
@@ -42,6 +43,8 @@ const TransactionHistory: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
+        
+        <AddTransactionForm />
 
         {/* Filter Toggle (daisyUI style) */}
         <div className="tabs tabs-boxed bg-base-100 p-1 rounded-2xl flex">

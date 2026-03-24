@@ -25,8 +25,19 @@ export const useTransactions = (type?: string) => {
     mutationFn: (id: string) => transactionService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["accounts"] }); 
     },
   });
+  
+const updateMutation = useMutation({
+  mutationFn: ({ id, data }: { id: string; data: Partial<Transaction> }) => 
+    transactionService.update(id, data),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    queryClient.invalidateQueries({ queryKey: ["accounts"] });
+  },
+});
+
 
   return {
     transactions: query.data,
@@ -35,5 +46,7 @@ export const useTransactions = (type?: string) => {
     addTransaction: addMutation.mutate,
     isAdding: addMutation.isPending,
     deleteTransaction: deleteMutation.mutate,
+    updateTransaction: updateMutation.mutate,
   };
 };
+
