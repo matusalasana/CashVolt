@@ -5,7 +5,7 @@ export const transactionService = {
   // Get all transactions (income and expenses )
   getAll: async (type?: string) => {
     const response = await api.get("/transactions", { 
-      params: { type } // This allows /transactions?type=expense
+      params: { type } // This allows filter /transactions?type=expense
     });
     return response.data;
   },
