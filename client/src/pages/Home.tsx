@@ -1,45 +1,84 @@
-import   { useState } from "react";
-import { Sparkles } from "lucide-react";
-import Balance from "../components/Balance";
-import Income from "../components/Income";
-import Expense from "../components/Expense";
-import Savings from "../components/Savings";
-import AddIncomePopover from "../components/AddIncomePopover";
-import AddExpensePopover from "../components/AddExpensePopover";
-import CallForExpenseBtn from "../components/CallForExpenseBtn";
+import { useTransactions } from "../hooks/useTransactions";
+import { HiArrowTrendingDown, HiArrowTrendingUp, HiTrash } from "react-icons/hi2";
 
-const Home: React.FC = () => {
-  const [isIncomeOpen, setIsIncomeOpen] = useState(false);
-  const [isExpenseOpen, setIsExpenseOpen] = useState(false);
+const Home = () => {
+  // 1. Ask the "Brain" for the data
+  const { transactions, isLoading, isError, deleteTransaction } = useTransactions();
+
+  // 2. Handle Loading State
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
+  // 3. Handle Error State
+  if (isError) {
+    return (
+      <div className="alert alert-error max-w-md mx-auto mt-10">
+        <span>Error connecting to the server. Check your backend!</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="relative min-h-screen p-6 md:p-10 space-y-10">
-      {/* Popovers Layer */}
-      <AddIncomePopover isOpen={isIncomeOpen} setIsOpen={setIsIncomeOpen} />
-      <AddExpensePopover isOpen={isExpenseOpen} setIsOpen={setIsExpenseOpen} />
+    <div className="p-6 max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Recent Transactions</h1>
+        <button className="btn btn-primary btn-sm">+ Add New</button>
+      </div>
 
-      {/* Floating Quick Action Button */}
-      <CallForExpenseBtn 
-        onIncomeClick={() => setIsIncomeOpen(true)} 
-        onExpenseClick={() => setIsExpenseOpen(true)} 
-      />
-
-      <header className="flex flex-col md:row md:items-center md:justify-between gap-6">
-        <div>
-          <h1 className="text-3xl font-black text-slate-800 dark:text-white flex items-center gap-2">
-            Welcome, Sana <Sparkles className="text-indigo-500" size={28} />
-          </h1>
-          <p className="text-slate-500 text-sm">Manage your wealth efficiently</p>
-        </div>
-      </header>
-
-      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <Balance />
-        {/* Cards can also trigger the modals */}
-        <Income onAddClick={() => setIsIncomeOpen(true)} />
-        <Expense onAddClick={() => setIsExpenseOpen(true)} />
-        <Savings />
-      </section>
+      <div className="overflow-x-auto bg-base-100 rounded-box shadow-xl">
+        <table className="table">
+          {/* Table Head */}
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          
+          {/* Table Body */}
+          <tbody>
+            {transactions?.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-10 opacity-50">
+                  No transactions found. Add your first one!
+                </td>
+              </tr>
+            ) : (
+              transactions?.map((tx) => (
+                <tr key={tx.id} className="hover">
+                  <td>{new Date(tx.transaction_date).toLocaleDateString()}</td>
+                  <td className="font-medium">{tx.source}</td>
+                  <td>
+                    <div className="badge badge-ghost">{tx.category_name || "General"}</div>
+                  </td>
+                  <td className={tx.type === 'expense' ? 'text-error font-bold' : 'text-success font-bold'}>
+                    <div className="flex items-center gap-1">
+                      {tx.type === 'expense' ? <HiArrowTrendingDown /> : <HiArrowTrendingUp />}
+                      {tx.type === 'expense' ? '-' : '+'}${Number(tx.amount).toFixed(2)}
+                    </div>
+                  </td>
+                  <td>
+                    <button 
+                      onClick={() => { if(confirm('Delete?')) deleteTransaction(tx.id!) }}
+                      className="btn btn-ghost btn-xs text-error"
+                    >
+                      <HiTrash size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

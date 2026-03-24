@@ -1,5 +1,5 @@
 import api from "./api";
-import { Transaction } from "../types/transaction";
+import { type Transaction } from "../types/transaction";
 
 export const transactionService = {
   // Get all transactions (income and expenses )
