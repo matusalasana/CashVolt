@@ -42,7 +42,7 @@ const AboutUs = () => {
               Mastering your <span className="text-emerald-600">money</span> shouldn't be a chore.
             </h1>
             <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-              Birres was born from a simple idea: financial freedom starts with 
+              CashVolt was born from a simple idea: financial freedom starts with 
               clarity. We build tools that help you track, save, and grow your 
               wealth without the headache.
             </p>
@@ -60,7 +60,7 @@ const AboutUs = () => {
       {/* Feature Grid */}
       <section className="py-20 container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Why Choose Birres?</h2>
+          <h2 className="text-3xl font-bold mb-4">Why Choose CashVolt?</h2>
           <p className="text-slate-500 max-w-xl mx-auto">Everything you need to manage your personal finances in one sleek dashboard.</p>
         </div>
         
@@ -87,7 +87,7 @@ const AboutUs = () => {
                 <Users className="text-white" />
               </div>
               <div>
-                <p className="font-bold text-lg">The Birres Team</p>
+                <p className="font-bold text-lg">The CashVolt Team</p>
                 <p className="text-slate-400">Based in Addis Ababa</p>
               </div>
             </div>
@@ -109,7 +109,7 @@ const AboutUs = () => {
       <section className="py-20 text-center">
         <h2 className="text-3xl font-bold mb-6">Ready to take control?</h2>
         <button className="bg-slate-900 text-white px-10 py-4 rounded-xl font-bold hover:scale-105 transition-transform">
-          Join Birres Today
+          Join CashVolt Today
         </button>
       </section>
     </div>

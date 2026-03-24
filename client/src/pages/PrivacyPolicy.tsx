@@ -28,7 +28,7 @@ const policySections = [
     id: "security",
     title: "Security Measures",
     icon: <Lock className="w-5 h-5" />,
-    content: "Birres employs AES-256 encryption for data at rest and TLS for data in transit. We use multi-factor authentication (MFA) options to ensure only you can access your financial vault."
+    content: "CashVolt employs AES-256 encryption for data at rest and TLS for data in transit. We use multi-factor authentication (MFA) options to ensure only you can access your financial vault."
   },
   {
     id: "sharing",
@@ -78,7 +78,7 @@ const PrivacyPolicy: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-slate-500 max-w-2xl leading-relaxed"
           >
-            At <span className="text-emerald-600 font-semibold">Birres</span>, we believe your financial data is your own. This policy outlines exactly how we protect it and your rights over that information.
+            At <span className="text-emerald-600 font-semibold">CashVolt</span>, we believe your financial data is your own. This policy outlines exactly how we protect it and your rights over that information.
           </motion.p>
         </div>
       </div>

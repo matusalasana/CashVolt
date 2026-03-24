@@ -13,38 +13,38 @@ import { motion } from "framer-motion";
 const sections = [
   {
     id: "introduction",
-    title: "1. Welcome to Birres",
+    title: "1. Welcome to CashVolt",
     icon: <Wallet className="w-5 h-5" />,
     content:
-      "Birres provides a digital platform designed to help you track expenses, manage budgets, and gain insights into your financial habits.",
+      "CashVolt provides a digital platform designed to help you track expenses, manage budgets, and gain insights into your financial habits.",
   },
   {
     id: "data-privacy",
     title: "2. Financial Data Privacy",
     icon: <Lock className="w-5 h-5" />,
     content:
-      "Your security is our priority. Birres uses industry-standard encryption to protect your financial data. We never sell your data to advertisers.",
+      "Your security is our priority. CashVolt uses industry-standard encryption to protect your financial data. We never sell your data to advertisers.",
   },
   {
     id: "subscriptions",
     title: "3. Premium Subscriptions",
     icon: <PieChart className="w-5 h-5" />,
     content:
-      "Birres offers both a free plan and a premium 'Birres Pro' subscription that unlocks advanced analytics and automated syncing.",
+      "CashVolt offers both a free plan and a premium 'CashVolt Pro' subscription that unlocks advanced analytics and automated syncing.",
   },
   {
     id: "notifications",
     title: "4. Alerts & Notifications",
     icon: <Bell className="w-5 h-5" />,
     content:
-      "Birres may send alerts regarding budgets, unusual spending activity, and weekly financial summaries.",
+      "CashVolt may send alerts regarding budgets, unusual spending activity, and weekly financial summaries.",
   },
   {
     id: "liability",
     title: "5. Financial Disclaimer",
     icon: <ShieldCheck className="w-5 h-5" />,
     content:
-      "Birres is for informational purposes only and does not provide financial advice.",
+      "CashVolt is for informational purposes only and does not provide financial advice.",
   },
 ];
 
@@ -87,7 +87,7 @@ const Terms = () => {
 
           <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
             Everything you need to know about using{" "}
-            <span className="text-emerald-600 font-semibold">Birres</span>.
+            <span className="text-emerald-600 font-semibold">CashVolt</span>.
           </p>
         </div>
       </header>
@@ -193,7 +193,7 @@ const Terms = () => {
             </div>
 
             <a
-              href="mailto:legal@birres.com"
+              href="mailto:legal@CashVolt.com"
               className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 px-6 py-3 rounded-xl font-bold transition shadow-lg"
             >
               <Mail className="w-5 h-5" />
@@ -203,7 +203,7 @@ const Terms = () => {
 
           {/* FOOTER */}
           <p className="text-center text-slate-400 text-sm pb-16">
-            Last updated: March 2026 • © {new Date().getFullYear()} Birres Inc.
+            Last updated: March 2026 • © {new Date().getFullYear()} CashVolt Inc.
           </p>
         </div>
       </main>

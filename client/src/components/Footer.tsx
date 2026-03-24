@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <div className="p-1.5 bg-indigo-600 rounded-lg text-white">
                 <Wallet size={20} />
               </div>
-              <span className="text-xl font-black tracking-tighter text-slate-900"><span className="text-indigo-600">Birres</span>
+              <span className="text-xl font-black tracking-tighter text-slate-900"><span className="text-indigo-600">CashVolt</span>
               </span>
             </div>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-400 font-medium">
-            © {currentYear} Birres. All rights reserved.
+            © {currentYear} CashVolt. All rights reserved.
           </p>
           <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
             Developed with <Heart size={12} className="text-rose-500 fill-rose-500" /> in Addis Ababa

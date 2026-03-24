@@ -28,7 +28,7 @@ const categories = [
   {
     title: "Payments & Billing",
     icon: CreditCard,
-    articles: ["Birres Pro features", "Subscription management", "Payment methods"],
+    articles: ["CashVolt Pro features", "Subscription management", "Payment methods"],
     color: "bg-emerald-50"
   },
   {
@@ -118,7 +118,7 @@ const HelpCenter: React.FC = () => {
           <h2 className="text-3xl font-black text-slate-900 text-center mb-12">Popular Questions</h2>
           <div className="max-w-3xl mx-auto space-y-4">
             {[
-              "Is Birres safe to use with my bank?",
+              "Is CashVolt safe to use with my bank?",
               "What happens if I cancel my Pro subscription?",
               "How do I export data for tax purposes?",
             ].map((q, i) => (
@@ -154,7 +154,7 @@ const HelpCenter: React.FC = () => {
       </main>
 
       <footer className="py-12 text-center text-slate-400 text-sm">
-        © {new Date().getFullYear()} Birres Support • All systems operational
+        © {new Date().getFullYear()} CashVolt Support • All systems operational
       </footer>
     </div>
   );
