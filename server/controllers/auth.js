@@ -1,32 +1,63 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { sql } from "../config/db.js";
 
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-
+export const register = async (req, res) => {
   try {
-    // 1. Find the user in the database
-    const [user] = await sql`SELECT * FROM users WHERE email = ${email}`;
-    if (!user) return res.status(401).json({ message: "Invalid Email" });
+    const { email, password } = req.body;
 
-    // 2. Check if the password is correct
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) return res.status(401).json({ message: "Invalid Password" });
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 3. Create the "Ticket" (JWT)
-    // We put the user's ID inside the ticket so we know who they are later
-    const token = jwt.sign(
-      { id: user.id }, 
-      process.env.JWT_SECRET, 
-      { expiresIn: "1d" } // Ticket expires in 1 day
-    );
+    const result = await sql`
+      INSERT INTO users (email, password)
+      VALUES (${email}, ${hashedPassword})
+      RETURNING id, email
+    `;
 
-    res.json({ token, user: { username: user.username, email: user.email } });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(201).json(result[0]);
+  } catch (error) {
+    console.error("Register error:", error);
+    res.status(500).json({ message: "Error registering user" });
   }
 };
 
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    const users = await sql`
+      SELECT * FROM users WHERE email = ${email}
+    `;
 
+    const user = users[0];
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // create token
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Error logging in" });
+  }
+};

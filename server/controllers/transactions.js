@@ -1,24 +1,39 @@
-import { sql } from "../config/db.js"
+import { sql } from "../config/db.js";
 
-// Hardcoded for testing until Auth is ready
-const TEST_USER_ID = "550e8400-e29b-41d4-a716-446655440000";
-
-// 1. GET ALL
 export const getTransactions = async (req, res) => {
-  const { type } = req.query;
   try {
-    const transactions = await sql`
-      SELECT t.*, c.name AS category_name, c.icon_name, c.color_code
-      FROM transactions t
-      LEFT JOIN categories c ON t.category_id = c.id
-      WHERE t.user_id = ${TEST_USER_ID}
-      ${type ? sql`AND t.type = ${type}` : sql``}
-      ORDER BY t.transaction_date DESC;
-    `;
+    const { type } = req.query;
+    const { user_id } = req.user.id;
+
+    if (!user_id) {
+      return res.status(400).json({ message: "user_id is required" });
+    }
+
+    let transactions;
+
+    if (type) {
+      transactions = await sql`
+        SELECT t.*, c.name AS category_name
+        FROM transactions t
+        JOIN categories c ON t.category_id = c.id
+        WHERE t.user_id = ${user_id}
+        AND t.type = ${type}
+        ORDER BY t.created_at DESC
+      `;
+    } else {
+      transactions = await sql`
+        SELECT t.*, c.name AS category_name
+        FROM transactions t
+        JOIN categories c ON t.category_id = c.id
+        WHERE t.user_id = ${user_id}
+        ORDER BY t.created_at DESC
+      `;
+    }
+
     res.json(transactions);
-  } catch (err) {
-    console.error("❌ Fetch Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -26,11 +41,10 @@ export const getTransactions = async (req, res) => {
 export const getTransaction = async (req, res) => {
   const { id } = req.params;
   try {
-    const [transaction] = await sql`
-      SELECT t.*, c.name as category_name 
-      FROM transactions t 
-      LEFT JOIN categories c ON t.category_id = c.id
-      WHERE t.id = ${id} AND t.user_id = ${TEST_USER_ID}`;
+    const transaction = await sql`
+      SELECT (*) FROM transactions 
+      WHERE id = ${id}
+    `;
     
     if (!transaction) return res.status(404).json({ error: "Transaction not found" });
     res.json(transaction);
@@ -40,30 +54,33 @@ export const getTransaction = async (req, res) => {
   }
 };
 
-// 3. CREATE
+// CREATE transaction
 export const addTransaction = async (req, res) => {
-  const { account_id, category_id, amount, type, source, description, transaction_date } = req.body;
   try {
-    const [newTx] = await sql`
-      INSERT INTO transactions (user_id, account_id, category_id, amount, type, source, description, transaction_date)
-      VALUES (${TEST_USER_ID}, ${account_id}, ${category_id}, ${amount}, ${type}, ${source}, ${description}, ${transaction_date})
-      RETURNING *`;
-    res.status(201).json(newTx);
-  } catch (err) { 
-    console.error("❌ Add Error:", err);
-    res.status(500).json({ error: "Save failed" }); 
+    const { user_id, category_id, amount, type, description } = req.body;
+
+    const newTransaction = await sql
+      `INSERT INTO transactions (user_id, category_id, amount, type, description)
+       VALUES (${user_id}, ${category_id}, ${amount}, ${type}, ${description})
+       RETURNING *`;
+    
+
+    res.status(201).json(newTransaction);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error creating transaction" });
   }
 };
 
 // 4. UPDATE
 export const updateTransaction = async (req, res) => {
   const { id } = req.params;
-  const { amount, source, description, category_id, type } = req.body;
+  const { user_id, category_id, amount, type, description } = req.body;
   try {
     const [updated] = await sql`
       UPDATE transactions 
-      SET amount = ${amount}, source = ${source}, description = ${description}, category_id = ${category_id}, type = ${type}
-      WHERE id = ${id} AND user_id = ${TEST_USER_ID}
+      SET user_id = ${user_id}, category_id = ${category_id}, amount = ${amount}, type = ${type}, type = ${type}, description = ${description}
+      WHERE id = ${id}
       RETURNING *`;
     
     if (!updated) return res.status(404).json({ error: "Nothing to update" });
@@ -78,12 +95,45 @@ export const updateTransaction = async (req, res) => {
 export const deleteTransaction = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await sql`DELETE FROM transactions WHERE id = ${id} AND user_id = ${TEST_USER_ID} RETURNING id`;
+    const result = await sql`DELETE FROM transactions WHERE id = ${id} RETURNING id`;
     
     if (result.length === 0) return res.status(404).json({ error: "Transaction not found" });
     res.json({ message: "Deleted successfully" });
   } catch (err) { 
     console.error("❌ Delete Error:", err);
     res.status(500).json({ error: "Delete failed" }); 
+  }
+};
+
+export const getSummary = async (req, res) => {
+  try {
+    const { user_id } = req.query;
+
+    if (!user_id) {
+      return res.status(400).json({ message: "user_id is required" });
+    }
+
+    const result = await sql`
+      SELECT
+        COALESCE(SUM(CASE WHEN type = 'income' THEN amount END), 0) AS total_income,
+        COALESCE(SUM(CASE WHEN type = 'expense' THEN amount END), 0) AS total_expense
+      FROM transactions
+      WHERE user_id = ${user_id}
+    `;
+
+    const summary = result[0];
+
+    const total_income = Number(summary.total_income);
+    const total_expense = Number(summary.total_expense);
+    const balance = total_income - total_expense;
+
+    res.json({
+      total_income,
+      total_expense,
+      balance,
+    });
+  } catch (error) {
+    console.error("Error fetching summary:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

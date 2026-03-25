@@ -1,23 +1,21 @@
-// middleware/auth.js
 import jwt from "jsonwebtoken";
 
 export const protect = (req, res, next) => {
-  // Grab the ticket from the "Authorization" header
-  const token = req.headers.authorization?.split(" ")[1]; 
-
-  if (!token) {
-    return res.status(401).json({ message: "No ticket, no entry!" });
-  }
-
   try {
-    // Verify the ticket using your secret key
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Attach the user's ID to the 'req' object so the next function can use it
-    req.userId = decoded.id; 
+    const authHeader = req.headers.authorization;
 
-    next(); // "You're good to go! Pass through."
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = { id: decoded.userId };
+
+    next();
   } catch (error) {
-    res.status(401).json({ message: "Ticket is fake or expired." });
+    return res.status(401).json({ message: "Invalid token" });
   }
 };

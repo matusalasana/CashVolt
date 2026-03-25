@@ -1,4 +1,4 @@
-import { getCategories } from "../controllers/accounts.js"
+import { getCategories } from "../controllers/categories.js"
 import express from "express"
 
 const router = express.Router()
