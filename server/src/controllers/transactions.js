@@ -2,7 +2,8 @@ import { sql } from "../config/db.js";
 
 export const getTransactions = async (req, res) => {
   try {
-    const { type, user_id } = req.query;
+    const { type } = req.query;
+    const user_id = req.user.userId;
 
     if (!user_id) {
       return res.status(400).json({ message: "user_id is required" });

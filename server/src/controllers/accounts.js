@@ -1,70 +1,121 @@
-import { sql } from "../config/db.js"
+import { sql } from "../config/db.js";
 
-export const getAccounts = async ( req, res ) => {
+// GET ALL ACCOUNTS
+export const getAccounts = async (req, res) => {
   try {
-    const  user = await sql`
-      SELECT * FROM accounts JOIN users ON accounts.user_id = users.id
-    `;
-    if (!user){
-      console.log("User with that account not found")
-      res.status(500).json({message: "User with that account not found"})
+    const user_id = req.user.userId;
+    if(!user_id){
+      return res.status(400).json({message: "user_id is required "})
     }
-    
     const accounts = await sql`
-      SELECT * FROM accounts LEFT JOIN users
-      ON accounts.user_id = users.id
+      SELECT * FROM accounts WHERE user_id = ${user_id} ORDER BY name DESC
     `;
-    res.status(200).json(accounts)
-  }
-}
+    if (accounts.length === 0){
+      return res.status(404).json({message: "Account not found "})
+    }
 
-export const getAccount = async ( req, res ) => {
-  try{
+    res.status(200).json(accounts);
+  } catch (err) {
+    console.log("Error fetching accounts:", err);
+    res.status(500).json({ message: "Error fetching accounts" });
+  }
+};
+
+// GET SINGLE ACCOUNT
+export const getAccount = async (req, res) => {
+  try {
     const { id } = req.params;
+    const user_id  = req.user.userId;
+    
+    if(!user_id){
+      return res.status(400).json({message: "user_id is required "})
+    }
     const account = await sql`
-      SELECT * FROM accounts WHERE id = ${id} ORDER BY name DESC
+      SELECT * FROM accounts WHERE id = ${id} AND user_id = ${user_id}
     `;
-    res.status(200).json(account[0])
-  }catch(err){
-    console.log("Error getting an account:",err)
+
+    if (account.length === 0) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+  
+    res.status(200).json(account[0]);
+  } catch (err) {
+    console.log("Error getting account:", err);
+    res.status(500).json({ message: "Error getting account" });
   }
 }
 
-export const addAccount = async ( req, res ) => {
-  try{
-    const { name, user_id } = req.body;
+// CREATE ACCOUNT
+export const addAccount = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const  user_id  = req.user.userId;
+
     const newAccount = await sql`
-      INSERT INTO accounts ( name, user_id)
-      VALUES ( ${name}, ${user_id})
-    `;
-    res.status.json(newAccount[0])
-  } catch (err){
-    console.log("Error adding new account:",err)
-  }
-}
-
-export const updateAccount = async ( req, res ) => {
-  try{
-    const { name, user_id } = req.body;
-    const updatedAccount = await sql`
-      UPDATE accounts 
-      SET name = ${name}, user_id = ${user_id}
+      INSERT INTO accounts (name, user_id)
+      VALUES (${name}, ${user_id})
       RETURNING *
     `;
-    res.status.json(updatedAccount[0])
-  } catch (err){
-    console.log("Error updating the account:",err)
-  }
-}
 
-export const deleteAccount = async ( req, res ) => {
-  try{
-    const { id } = req.params;
-    const deletedAccount = await sql`
-      DELETE FROM accounts WHERE id = ${id} RETURNING id
-    `;
-    res.status(200).json({message: "Account with id",id,"deleted"})
-  } catch (err){
-    console.log("Error deleting the account:",err)
+    res.status(201).json(newAccount[0]);
+  } catch (err) {
+    console.log("Error adding account:", err);
+    res.status(500).json({ message: "Error adding account" });
   }
-}
+};
+
+// UPDATE ACCOUNT
+export const updateAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const user_id  = req.user.userId;
+
+    if(!user_id){
+      return res.status(400).json({message: "user_id is required "})
+    }
+    
+    const updatedAccount = await sql`
+      UPDATE accounts
+      SET name = ${name}
+      WHERE id = ${id} AND user_id = ${user_id}
+      RETURNING *
+    `;
+
+    if (updatedAccount.length === 0) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    res.status(200).json(updatedAccount[0]);
+  } catch (err) {
+    console.log("Error updating account:", err);
+    res.status(500).json({ message: "Error updating account" });
+  }
+};
+
+// DELETE ACCOUNT
+export const deleteAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id  = req.user.userId;
+
+    if(!user_id){
+      return res.status(400).json({message: "user_id is required "})
+    }
+    
+    const deletedAccount = await sql`
+      DELETE FROM accounts
+      WHERE id = ${id} AND user_id = ${user_id}
+      RETURNING id
+    `;
+
+    if (deletedAccount.length === 0) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    res.status(200).json({ message: `Account with id ${id} deleted` });
+  } catch (err) {
+    console.log("Error deleting account:", err);
+    res.status(500).json({ message: "Error deleting account" });
+  }
+};
