@@ -8,10 +8,9 @@ import {
 } from "../controllers/users.js"
 const router = express.Router()
 
-
+router.post("/", addUser)
 router.get("/", getUsers)
 router.get("/:id", getUser)
-router.post("/", addUser)
 router.put("/:id", updateUser)
 router.delete("/:id", deleteUser)
 

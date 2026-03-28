@@ -1,26 +1,29 @@
 import { testDBConnection } from "./config/db.js"
 import express from "express"
 import dotenv from "dotenv"
-// import categoriesRoutes from "./routes/categories.js"
 import cors from "cors"
-import transactionsRoutes from "./routes/transactions.js";
+// Routes
 import usersRoutes from "./routes/users.js"
-
-
+import accountsRoutes from "./routes/accounts.js"
+import categoriesRoutes from "./routes/categories.js"
+import transactionsRoutes from "./routes/transactions.js";
 
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
 const app = express()
 
+// Middlewares 
 app.use(express.json())
-app.use(cors()) // A middleware that is like trust bridge b/n server & client side
+app.use(cors()) 
 
 // Routes
 app.use("/api/users", usersRoutes);
-app.use("/api/transactions", transactionsRoutes);
-// app.use("/api/categories", categoriesRoutes)
+app.use("/api/accounts", accountsRoutes)
+app.use("/api/categories", categoriesRoutes);
+app.use("/api/transactions", transactionsRoutes)
 
+// Server
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
   testDBConnection()

@@ -44,9 +44,33 @@ export const addUser = async ( req, res ) => {
 }
 
 export const updateUser = async ( req, res ) => {
-  
+  try{
+    const { id } = req.params;
+    const { first_name, last_name, email, password } = req.body
+    const updatedUser = await sql`
+      UPDATE users 
+      SET 
+        first_name = ${first_name}, last_name = ${last_name}, email = ${email}, password = ${password}
+      WHERE id = ${id}
+      RETURNING first_name, last_name, email
+        
+    `;
+    res.status(200).json(updatedUser[0])
+  }catch(err){
+    console.log("Error updating the user:",err)
+    res.status(500).json(err)
+  }
 }
 
 export const deleteUser = async ( req, res ) => {
-  
+  try{
+    const { id } = req.params;
+    deletedUser = await sql`
+      DELETE FROM users WHERE id = ${id} RETURNING id
+    `;
+    res.status(200).json({message: "User with the id ",id,"deleted"})
+  } catch (err){
+    console.log("Error deleting the user",err)
+    res.status(500).json({message: "Error deleting the user", err})
+  }
 }

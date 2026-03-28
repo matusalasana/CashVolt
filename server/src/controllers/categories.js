@@ -10,3 +10,19 @@ export const getCategories = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch categories" });
   }
 };
+
+export const getCategory = async ( req, res ) => {
+  
+}
+
+export const addCategory = async ( req, res ) => {
+  
+}
+
+export const updateCategory = async ( req, res ) => {
+  
+}
+
+export const deleteCategory = async ( req, res ) => {
+  
+}

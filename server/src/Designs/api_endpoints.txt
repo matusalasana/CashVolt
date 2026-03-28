@@ -1,0 +1,14 @@
+
+--------------------  TRANSACTIONS  --------------------
+GET ALL
+GET /api/transactions?user_id=1
+GET /api/transactions?user_id=1&type=expense
+
+GET ONE 
+GET /api/transactions/1 
+
+UPDATE
+PUT /api/transactions/1
+
+DELETE 
+DELETE /api/transactions/1

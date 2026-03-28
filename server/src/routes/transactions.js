@@ -8,10 +8,9 @@ import {
 } from "../controllers/transactions.js"
 const router = express.Router()
 
-
+router.post("/", addTransaction)
 router.get("/", getTransactions)
 router.get("/:id", getTransaction)
-router.post("/", addTransaction)
 router.put("/:id", updateTransaction)
 router.delete("/:id", deleteTransaction)
 
