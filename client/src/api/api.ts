@@ -1,23 +1,22 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios from "axios";
 
-const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api',
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+const API = axios.create({
+  baseURL: "http://localhost:3000/api",
 });
 
-// Response interceptor
-api.interceptors.response.use(
-  (response) => response,
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
   (error) => {
-    console.error(
-      'API Error:',
-      error?.response?.data || error.message || error
-    );
     return Promise.reject(error);
   }
 );
 
-export default api;
+export default API;

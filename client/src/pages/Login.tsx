@@ -1,54 +1,80 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useLogin } from '../hooks/useAuth';
+import { useState } from "react";
+import API from "../api/api"
+import { useForm } from "react-hook-form";
+import { type LoginInput } from "../types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../types";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+      resolver: zodResolver(loginSchema),
+    });
+  const [inputData, setInputData] = useState<LoginForm>()
+  
 
-type LoginForm = z.infer<typeof loginSchema>;
+  const onSubmit = async (data: LoginForm) => {
+    try {
+      setInputData(res)
+      const res = await API.post(
+        "/auth/login",
+        data
+      );
 
-function Login () {
-  const { mutate: login, isPending } = useLogin();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-  });
+      // 🟢 SAVE JWT TOKEN
+      localStorage.setItem("token", res.data.token);
+
+      console.log("Login success:", res.data);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-base-200">
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <form className="card-body" onSubmit={handleSubmit((data) => login(data))}>
-          <h2 className="card-title text-2xl font-bold">Login</h2>
-          
-          <div className="form-control">
-            <label className="label"><span className="label-text">Email</span></label>
-            <input 
-              {...register('email')} 
-              className={`input input-bordered ${errors.email ? 'input-error' : ''}`} 
-            />
-            {errors.email && <span className="text-error text-sm mt-1">{errors.email.message}</span>}
-          </div>
+    <div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4"
+      >
+        <legend className="fieldset-legend">Login</legend>
 
-          <div className="form-control">
-            <label className="label"><span className="label-text">Password</span></label>
-            <input 
-              type="password" 
-              {...register('password')} 
-              className="input input-bordered" 
-            />
-          </div>
+        {/* EMAIL */}
+        <label className="label">Email</label>
+        <input
+          type="email"
+          className="input"
+          placeholder="Email"
+          {...register("email")}
+        />
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
 
-          <div className="card-actions justify-end mt-6">
-            <button className={`btn btn-primary w-full ${isPending ? 'loading' : ''}`}>
-              {isPending ? 'Logging in...' : 'Login'}
-            </button>
-          </div>
-        </form>
+        {/* PASSWORD */}
+        <label className="label">Password</label>
+        <input
+          type="password"
+          className="input"
+          placeholder="Password"
+          {...register("password")}
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
+
+        <button type="submit" className="btn btn-neutral mt-4">
+          Login
+        </button>
+      </form>
+      <div>
+        {inputData?.length 
+        }
       </div>
     </div>
   );
 };
 
-export default Login
+export default Login;
