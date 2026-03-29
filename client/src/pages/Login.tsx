@@ -5,6 +5,8 @@ import { type LoginInput } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../types";
 import { toast } from "react-hot-toast"
+import { Navigate } from "react-router-dom";
+
 
 const Login = () => {
   const {
@@ -29,6 +31,11 @@ const Login = () => {
       toast.error("Something went wrong");
     }
   };
+  
+  const token = localStorage.getItem("token");
+  if (token) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div>
