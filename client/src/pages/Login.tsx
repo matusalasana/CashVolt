@@ -1,35 +1,32 @@
-import { useState } from "react";
+
 import API from "../api/api"
 import { useForm } from "react-hook-form";
 import { type LoginInput } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../types";
+import { toast } from "react-hot-toast"
 
 const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginInput>({
       resolver: zodResolver(loginSchema),
     });
-  const [inputData, setInputData] = useState<LoginForm>()
   
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      setInputData(res)
-      const res = await API.post(
-        "/auth/login",
-        data
-      );
+      const res = await API.post("/auth/login", data);
 
       // 🟢 SAVE JWT TOKEN
       localStorage.setItem("token", res.data.token);
-
-      console.log("Login success:", res.data);
+      reset ();
+      toast.success("Login successfully");
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -69,10 +66,6 @@ const Login = () => {
           Login
         </button>
       </form>
-      <div>
-        {inputData?.length 
-        }
-      </div>
     </div>
   );
 };
