@@ -24,11 +24,11 @@ export const categorySchema = z.object({
 
 export const transactionSchema = z.object({
   id: z.number().int().optional(),
-  amount: z.number().positive("Amount must be positive"),
-  description: z.string().optional(),
-  account_id: z.number().int(),
-  category_id: z.number().int().nullable().optional(),
-  transaction_date: z.string(), // or z.coerce.date() if you prefer Date objects
+  amount: z.coerce.number().positive("Amount must be positive"),
+  description: z.string().min(1, "Description is required"),
+  account_id: z.coerce.number().int().min(1, "Account is required"),
+  category_id: z.coerce.number().int().min(1, "Category is required"),
+  transaction_date: z.string().min(1, "Date is required"),
   created_at: z.string().optional(),
 });
 
