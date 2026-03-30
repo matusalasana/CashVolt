@@ -1,8 +1,11 @@
 
 import API from "../api/api";
-import { getTransactions } from "../api/transactions"
+import { 
+  getTransactions, 
+  deleteTransaction,  
+  createTransaction
+} from "../api/transactions"
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { createTransaction } from "../api/transactions";
 import { toast } from "react-hot-toast";
 
 export const useTransactions = () => {
@@ -34,3 +37,25 @@ export const useCreateTransaction = () => {
     },
   });
 };
+
+
+export const useDeleteTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteTransaction,
+
+    onSuccess: () => {
+      toast.success("Transaction deleted");
+
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"],
+      });
+    },
+
+    onError: () => {
+      toast.error("Failed to delete");
+    },
+  });
+};
+

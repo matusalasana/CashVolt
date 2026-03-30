@@ -16,8 +16,8 @@ export const getTransaction = async (id: number) => {
   return res.data;
 };
 
-export const updateTransaction = async (data: TransactionInput, id: number) => {
-  const res = await API.put(`/transactions/${id}`, data);
+export const updateTransaction = async (data: TransactionInput) => {
+  const res = await API.put(`/transactions/${data.id}`, data);
   return res.data;
 };
 

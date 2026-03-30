@@ -36,12 +36,8 @@ const AddTransactionForm = () => {
   });
 
   const onSubmit = async (data: TransactionInput) => {
-    try{
       await createTransaction(data)
       reset()
-    }catch(err){
-      toast.error("Error adding the transaction")
-    }
   };
 
   return (
