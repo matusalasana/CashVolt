@@ -3,7 +3,8 @@ import API from "../api/api";
 import { 
   getTransactions, 
   deleteTransaction,  
-  createTransaction
+  createTransaction,
+  updateTransaction
 } from "../api/transactions"
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
@@ -59,3 +60,23 @@ export const useDeleteTransaction = () => {
   });
 };
 
+
+export const useUpdateTransaction = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: updateTransaction,
+    
+    onSuccess: () => {
+      toast.success("Transaction updated")
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"]
+      });
+    },
+    
+    onError: () => {
+      toast.error("Failed to update")
+    },
+    
+  });
+};

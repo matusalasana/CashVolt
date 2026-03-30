@@ -87,7 +87,9 @@ export const getTransaction = async (req, res) => {
     const user_id = req.user.userId;
 
     const result = await sql`
-      SELECT * FROM WHERE t.id = ${id} AND user_id = ${user_id}
+      SELECT *
+      FROM transactions
+      WHERE id = ${id} AND user_id = ${user_id};
     `;
 
     if (result.length === 0) {
@@ -119,7 +121,6 @@ export const updateTransaction = async (req, res) => {
       SET 
         amount = ${amount},
         description = ${description},
-        userId = ${user_id}
         account_id = ${account_id},
         category_id = ${category_id},
         transaction_date = ${transaction_date}
