@@ -6,13 +6,13 @@ export const getTransactions = async () => {
   return res.data;
 };
 
-export const getTransaction = async (id: number) => {
-  const res = await API.get(`/transactions/${id}`);
+export const createTransaction = async (data: TransactionInput) => {
+  const res = await API.post("/transactions", data);
   return res.data;
 };
 
-export const createTransaction = async (data: TransactionInput) => {
-  const res = await API.post("/transactions", data);
+export const getTransaction = async (id: number) => {
+  const res = await API.get(`/transactions/${id}`);
   return res.data;
 };
 

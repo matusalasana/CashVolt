@@ -11,13 +11,11 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     try {
-      // First, call the logout endpoint
       await API.post("/auth/logout");
       
       // Clear all cached queries to prevent showing old data
       await queryClient.clear();
       
-      // Show success message
       toast.success("Logged out successfully");
       
       // Navigate to login page

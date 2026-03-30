@@ -8,7 +8,7 @@ import App from './App.tsx'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,               // IMPORTANT for auth
+      retry: false,               
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       staleTime: 1000 * 60 * 5,   // 5 min cache
@@ -19,11 +19,9 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      
         <BrowserRouter>
           <App />
         </BrowserRouter>
-
     </QueryClientProvider>
   </StrictMode>,
 )

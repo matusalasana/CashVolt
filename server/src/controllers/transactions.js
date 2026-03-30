@@ -8,34 +8,19 @@ export const getTransactions = async (req, res) => {
     if (!user_id) {
       return res.status(400).json({ message: "user_id is required" });
     }
-
+    
     let transactions;
 
     if (type) {
       transactions = await sql`
-        SELECT 
-          t.id,
-          t.amount,
-          t.description,
-          t.account_id,
-          t.category_id,
-          t.transaction_date,
-          t.created_at
-        FROM transactions t
-        WHERE t.user_id = ${user_id} AND type = ${type};
+        SELECT * FROM transactions 
+        WHERE  user_id = ${user_id} AND type = ${type};
       `;
     } else {
       transactions = await sql`
-        SELECT 
-          t.id,
-          t.amount,
-          t.description,
-          t.account_id,
-          t.category_id,
-          t.transaction_date,
-          t.created_at
-        FROM transactions t
-        WHERE t.user_id = ${user_id};
+        SELECT *
+        FROM transactions 
+        WHERE user_id = ${user_id};
       `;
     }
 

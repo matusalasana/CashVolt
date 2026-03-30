@@ -94,7 +94,6 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  // FIXED: Properly formatted clearCookie with correct syntax
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
@@ -108,11 +107,8 @@ export const logout = (req, res) => {
 };
 
 
-// controllers/auth.js
 export const getMe = async (req, res) => {
   try {
-    // req.user is set by the protect middleware
-    // If protect middleware wasn't used, this will be undefined
     if (!req.user) {
       return res.status(401).json({ message: "Not authenticated" });
     }
