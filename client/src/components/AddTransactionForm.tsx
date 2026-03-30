@@ -4,6 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type TransactionInput, transactionSchema } from "../types"
 import { z } from 'zod';
 import API from "../api/api"
+import { useAccounts } from "../hooks/useAccounts"
+import { useCategories } from "../hooks/useCategories"
+import { useCreateTransaction} from "../hooks/useTransactions"
 import { 
   DollarSign, 
   Calendar, 
@@ -15,6 +18,11 @@ import {
 } from 'lucide-react';
 
 const AddTransactionForm = () => {
+  
+  const { data: accounts } = useAccounts()
+  const { data: categories } = useCategories()
+  const { mutateAsync: createTransaction } = useCreateTransaction()
+  
   const {
     register,
     handleSubmit,
@@ -28,7 +36,12 @@ const AddTransactionForm = () => {
   });
 
   const onSubmit = async (data: TransactionInput) => {
-    await API.post("/transactions", data)
+    try{
+      await createTransaction(data)
+      reset()
+    }catch(err){
+      toast.error("Error adding the transaction")
+    }
   };
 
   return (
@@ -100,9 +113,9 @@ const AddTransactionForm = () => {
                     {...register('account_id')}
                   >
                     <option value="">Select Account</option>
-                    <option value="1">Checking Account</option>
-                    <option value="2">Savings</option>
-                    <option value="3">Credit Card</option>
+                    {accounts?.map((account) => (
+                      <option value={account.id}>{account.name}</option>
+                    ))}
                   </select>
                 </div>
                 {errors.account_id && <span className="text-error text-xs mt-1">{errors.account_id.message}</span>}
@@ -121,10 +134,10 @@ const AddTransactionForm = () => {
                     className="select select-bordered w-full pl-12 focus:select-primary"
                     {...register('category_id')}
                   >
-                    <option value="">None</option>
-                    <option value="1">Food & Drinks</option>
-                    <option value="2">Entertainment</option>
-                    <option value="3">Shopping</option>
+                    <option value="">Select category</option>
+                    { categories?.map((category) => (
+                    <option value={category.id}>{category.name}</option>
+                    ))}
                   </select>
                 </div>
                 {errors.category_id && <span className="text-error text-xs mt-1">{errors.category_id.message}</span>}

@@ -1,12 +1,12 @@
 import API from "../api/api";
-import { getCategories } from "../api/categories"
+import { getAccounts } from "../api/accounts"
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-export const useCategories = () => {
+export const useAccounts = () => {
   return useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
+    queryKey: ["accounts"],
+    queryFn: getAccounts,
     
     retry: false,
     staleTime: 1000 * 60 * 5,

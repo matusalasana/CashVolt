@@ -1,5 +1,7 @@
 import { sql } from "../config/db.js";
 
+
+// get all transactions 
 export const getTransactions = async (req, res) => {
   try {
     const { type } = req.query;
@@ -41,35 +43,12 @@ export const addTransaction = async ( req, res ) => {
       category_id,
       transaction_date
     } = req.body;
+    
+    const user_id = req.user.userId;
 
     // Validation
-    if (!amount || !account_id || !category_id || !transaction_date) {
+    if (!amount || !user_id || !account_id || !category_id || !transaction_date) {
       return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    // Get account
-    const account = await sql`
-      SELECT * FROM accounts WHERE id = ${account_id}
-    `;
-
-    if (account.length === 0) {
-      return res.status(404).json({ message: "Account not found" });
-    }
-
-    // Get category
-    const category = await sql`
-      SELECT * FROM categories WHERE id = ${category_id}
-    `;
-
-    if (category.length === 0) {
-      return res.status(404).json({ message: "Category not found" });
-    }
-
-    // Prevent mismatch 
-    if (account[0].user_id !== category[0].user_id) {
-      return res.status(400).json({
-        message: "Account and category must belong to the same user"
-      });
     }
 
     // Insert transaction
@@ -77,6 +56,7 @@ export const addTransaction = async ( req, res ) => {
       INSERT INTO transactions (
         amount,
         description,
+        user_id,
         account_id,
         category_id,
         transaction_date
@@ -84,6 +64,7 @@ export const addTransaction = async ( req, res ) => {
       VALUES (
         ${amount},
         ${description},
+        ${user_id},
         ${account_id},
         ${category_id},
         ${transaction_date}
@@ -103,24 +84,17 @@ export const addTransaction = async ( req, res ) => {
 export const getTransaction = async (req, res) => {
   try {
     const { id } = req.params;
+    const user_id = req.user.userId;
 
     const result = await sql`
-      SELECT 
-        t.*,
-        a.name AS account_name,
-        c.name AS category_name,
-        c.type
-      FROM transactions t
-      JOIN accounts a ON t.account_id = a.id
-      JOIN categories c ON t.category_id = c.id
-      WHERE t.id = ${id}
+      SELECT * FROM WHERE t.id = ${id} AND user_id = ${user_id}
     `;
 
     if (result.length === 0) {
       return res.status(404).json({ message: "Transaction not found" });
     }
-
     res.json(result[0]);
+    
   } catch (error) {
     console.error("Get One Error:", error);
     res.status(500).json({ message: "Server error" });
@@ -131,6 +105,7 @@ export const getTransaction = async (req, res) => {
 export const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
+    const user_id = req.user.userId;
     const {
       amount,
       description,
@@ -139,36 +114,16 @@ export const updateTransaction = async (req, res) => {
       transaction_date
     } = req.body;
 
-    // Check account
-    const account = await sql`
-      SELECT * FROM accounts WHERE id = ${account_id}
-    `;
-
-    // Check category
-    const category = await sql`
-      SELECT * FROM categories WHERE id = ${category_id}
-    `;
-
-    if (!account.length || !category.length) {
-      return res.status(404).json({ message: "Account or Category not found" });
-    }
-
-    // Prevent mismatch bug
-    if (account[0].user_id !== category[0].user_id) {
-      return res.status(400).json({
-        message: "Account and category must belong to same user"
-      });
-    }
-
     const result = await sql`
       UPDATE transactions
       SET 
         amount = ${amount},
         description = ${description},
+        userId = ${user_id}
         account_id = ${account_id},
         category_id = ${category_id},
         transaction_date = ${transaction_date}
-      WHERE id = ${id}
+      WHERE id = ${id} AND user_id = ${user_id}
       RETURNING *;
     `;
 
@@ -188,10 +143,11 @@ export const updateTransaction = async (req, res) => {
 export const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
+    const user_id = req.user.userId;
 
     const result = await sql`
       DELETE FROM transactions
-      WHERE id = ${id}
+      WHERE id = ${id} AND user_id = ${user_id}
       RETURNING *;
     `;
 

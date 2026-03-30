@@ -16,17 +16,13 @@ export const useTransactions = () => {
   });
 };
 
-// hooks/useCreateTransaction.ts
-
-
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createTransaction,
-
     onSuccess: () => {
-      toast.success("Transaction created");
+      toast.success("Transaction added successfully")
 
       queryClient.invalidateQueries({
         queryKey: ["transactions"],
