@@ -1,145 +1,71 @@
 
---------------------  🔐 JWT ( JSON Web Token )  --------------------
+------------------  🔐 JWT ( JSON Web Token )  --------------------
 
 🧩 What does a JWT look like?
-
-- It’s just a long string like this:
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 - It has 3 parts:
 HEADER.PAYLOAD.SIGNATURE
-You don’t need to memorize just know:
+
 Header → type of token
 Payload → user data (like user_id)
 Signature → security part (prevents cheating)
 
---------------------  📦 What is inside a JWT?  --------------------
 
-Example payload (JSON):
-{
-  "userId": 5,
-  "email": "test@gmail.com",
-  "iat": 1710000000
-}
-👉 This is NOT encrypted (important!) It’s just encoded.
-So, anyone can read it, but no one can change it
+------------------  Server.js ftle  --------------------
 
-------------  🔁 How JWT works (SUPER SIMPLE FLOW)  ------------
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend URL
+  credentials: true
+}));
 
-1. Login
-User sends (email + password) to POST /login
+origin → who can access your API
+credentials: true → allow cookies
+Without this: 👉 Cookies will NEVER be sent ❌
 
-2. Server checks user
-If correct:
-👉 Server creates token, JWT(user data + secret key)
-
-3. Server sends token to frontend. Frontend stores it in localStorage OR httpOnly cookie
-
-4. Every request after login, frontend sends authorization: Bearer TOKEN_HERE
-
-5. Backend verifies it
-Server checks:
-Is token valid?
-Was it made by us?
-Has it been changed?
-If YES → allow access
+rate limiter
+Prevents: 👉 Password guessing attacks
 
 
---------------------  🛡️ Why JWT is useful?  --------------------
+------------------  Login Controller  --------------------
 
-Without JWT:
-You must log in every request ❌
+const token = jwt.sign(...)   →  this line Creates identity proof
+res.cookie("token", token, {...})  →  👉 Stores token in browser automatically in safe way (httpOnly: true, secure: false, sameSite: "lax"), you DON'T manually save it in React
 
-With JWT:
-Login once
-Stay logged in ✔️
-
-
---------------------  🛠️ JWT Setup  --------------------
-
-🟢 STEP 1 — Install required packages
-npm install jsonwebtoken bcrypt
-What these do:
-jsonwebtoken → creates + verifies tokens
-bcrypt → securely hashes passwords
-
-🟢 STEP 2 — Create a simple auth folder structure
-
-/controllers
-  authController.js
-
-/routes
-  authRoutes.js
-
-/middleware
-  authMiddleware.js
-  
-🟢 STEP 3 — Register User (first real auth feature)
-
-inside:
-📄 controllers/authController.js
-- Check if email exists
-- Hash password (so DB never sees real password) ---> bcrypt.hash(password, 10)
-- Save user
-- Return user info
-
-🟢 STEP 4 — Create auth routes
-📄 routes/authRoutes.js
-
-🟢 STEP 5 — Connect routes in server
-In your server.js or index.js:
-
-🧪 TEST NOW (IMPORTANT)
-Use Postman or Thunder Client:
-
-POST http://localhost:PORT/api/auth/register
-Body (JSON):
-
-{
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "john@test.com",
-  "password": "123456"
-}
-
-🚀 What you should see (JSON):
-
-{
-  "message": "User created successfully",
-  "user": {
-    "id": 1,
-    "first_name": "John",
-    "last_name": "Doe",
-    "email": "john@test.com"
-  }
-}
+Your current cookie:
+JavaScript
+secure: false
+sameSite: "lax"
+👉 This is fine for development
+👉 NOT safe for production
+✅ PRODUCTION VERSION
+JavaScript
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,          // ✅ ONLY HTTPS
+  sameSite: "none",      // ✅ allow cross-origin (frontend/backend separate)
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
 
 
-------------  ⚠️ Important concept (don’t skip this)?  ------------
+------------------  Middleware (security guard)  --------------------
 
-👉 await bcrypt.hash(password, 10);
-👉 JWT comes in LOGIN step, not register
+const token = req.cookies.token;  → 👉 Reads token automatically from browser cookie
 
+const decoded = jwt.verify(token, SECRET) →  👉 Checks:
+Is token real?
+Is it expired?
+Was it tampered with?
 
-------------   🔐 LOGIN + JWT CREATION   ------------
+req.user = decoded; → 👉 Now EVERY route can access "req.user.userId"
 
-1. Find user in database
-2. Check password (VERY important) 
-👉 bcrypt.compare() checks:
-plain password (user input)
-hashed password (from DB)
-3. Create JWT token 🔐
-4. Send response to frontend 
-5. 🧾 Add route inside auth.js:
-🧪 TEST LOGIN
-Request: POST /api/auth/login
-
-{
-  "email": "john@test.com",
-  "password": "123456"
-}
+Request → Middleware → Route → Response
 
 
+------------------  Debug all auth layers  --------------------
 
-
-------------   🛡️ AUTH MIDDLEWARE (protect routes)   ------------
-
+check 6 layers:
+Backend login
+Cookie creation
+Axios setup
+CORS config
+/me endpoint
+Frontend auth hook + ProtectedRoutes

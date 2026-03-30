@@ -1,23 +1,12 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
-
+import LogoutButton from "../components/LogoutButton"
 
 const Settings = () => {
-  
-  const navigate = useNavigate();
-  const handleLogout = () => {
-  localStorage.removeItem("token");
-  navigate("/login");
-};
-
   return (
-    <div>
-      <p className="text-2xl">Settings page</p>
-    
-    <button onClick={handleLogout} className="border-1 text-red-700 border-red-200">
-      Logout
-    </button>
-    </div>
+    <>
+    <div>Settings</div>
+    <LogoutButton />
+    </>
   )
 }
 

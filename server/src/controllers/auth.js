@@ -39,43 +39,98 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async ( req, res ) => {
+
+// controllers/auth.js
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const users = await sql`
+
+    // 1. Find user
+    const user = await sql`
       SELECT * FROM users WHERE email = ${email}
     `;
-    const user = users[0]
-    if(!user){
-      return res.status(400).json({message: "user not found"})
+
+    if (user.length === 0) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid){
-      return res.status(400).json({message: "Invalid credentials"})
+
+    const foundUser = user[0];
+
+    // 2. Compare password
+    const isMatch = await bcrypt.compare(password, foundUser.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
-    // Create token 
+
+    // 3. CREATE TOKEN
     const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        role: user.role
-      },
+      { userId: foundUser.id, email: foundUser.email, role: foundUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     );
-    res.status(200).json({
+
+    // 4. SEND TOKEN - FIXED: Added proper object syntax with commas
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/"
+    });
+
+    res.json({
       message: "Login successful",
-      token,
       user: {
-        id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email
+        id: foundUser.id,
+        email: foundUser.email
       }
     });
 
   } catch (error) {
-    console.log("Login error:", error);
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const logout = (req, res) => {
+  // FIXED: Properly formatted clearCookie with correct syntax
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/"
+  });
+
+  res.json({
+    message: "Logged out successfully"
+  });
+};
+
+
+// controllers/auth.js
+export const getMe = async (req, res) => {
+  try {
+    // req.user is set by the protect middleware
+    // If protect middleware wasn't used, this will be undefined
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    // Fetch full user data from database
+    const user = await sql`
+      SELECT id, first_name, last_name, email, role
+      FROM users 
+      WHERE id = ${req.user.userId}
+    `;
+    
+    if (user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.json(user[0]);
+  } catch (error) {
+    console.error("GetMe error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -14,37 +14,28 @@ export const getTransactions = async (req, res) => {
     if (type) {
       transactions = await sql`
         SELECT 
-          u.first_name,
-          u.last_name,
-          a.name AS account_name,
-          c.name AS category_name,
-          c.type,
+          t.id,
           t.amount,
           t.description,
-          t.transaction_date
+          t.account_id,
+          t.category_id,
+          t.transaction_date,
+          t.created_at
         FROM transactions t
-        JOIN accounts a ON t.account_id = a.id
-        JOIN users u ON u.id = a.user_id
-        JOIN categories c ON t.category_id = c.id
-        WHERE u.id = ${user_id}
-        AND c.type = ${type}
+        WHERE t.user_id = ${user_id} AND type = ${type};
       `;
     } else {
       transactions = await sql`
         SELECT 
-          u.first_name,
-          u.last_name,
-          a.name AS account_name,
-          c.name AS category_name,
-          c.type,
+          t.id,
           t.amount,
           t.description,
-          t.transaction_date
+          t.account_id,
+          t.category_id,
+          t.transaction_date,
+          t.created_at
         FROM transactions t
-        JOIN accounts a ON t.account_id = a.id
-        JOIN users u ON u.id = a.user_id
-        JOIN categories c ON t.category_id = c.id
-        WHERE u.id = ${user_id}
+        WHERE t.user_id = ${user_id};
       `;
     }
 

@@ -1,9 +1,19 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoutes = () => {
-  const token = localStorage.getItem("token");
+  const { data: user, isLoading, isError } = useAuth();
 
-  if (!token) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
+
+  // IMPORTANT: treat error as unauthenticated
+  if (isError || !user) {
     return <Navigate to="/login" replace />;
   }
 

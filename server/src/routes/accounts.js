@@ -6,12 +6,14 @@ import {
   deleteAccount,
   addAccount
 } from "../controllers/accounts.js"
+import { protect} from "../middleware/auth.js"
+
 const router = express.Router()
 
-router.post("/", addAccount)
-router.get("/", getAccounts)
-router.get("/:id", getAccount)
-router.put("/:id", updateAccount)
-router.delete("/:id", deleteAccount)
+router.post("/", protect, addAccount)
+router.get("/", protect, getAccounts)
+router.get("/:id", protect,  getAccount)
+router.put("/:id", protect, updateAccount)
+router.delete("/:id", protect, deleteAccount)
 
 export default router 

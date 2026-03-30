@@ -1,20 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
-import api from '../api/api';
-import { useAuthStore } from '../store/useAuthStore';
-import { useNavigate } from 'react-router-dom';
+import { useQuery } from "@tanstack/react-query";
+import API from "../api/api";
 
-export const useLogin = () => {
-  const setAuth = useAuthStore((state) => state.setAuth);
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: async (credentials: any) => {
-      const { data } = await api.post('/auth/login', credentials);
-      return data;
+export const useAuth = () => {
+  return useQuery({
+    queryKey: ["auth"],
+    queryFn: async () => {
+      const res = await API.get("/auth/me"); 
+      return res.data;
     },
-    onSuccess: (data) => {
-      setAuth(data.user, data.token);
-      navigate('/dashboard');
-    },
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
 };
