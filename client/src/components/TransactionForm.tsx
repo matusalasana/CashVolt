@@ -4,10 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type TransactionInput, transactionSchema } from "../types";
 import { useAccounts } from "../hooks/useAccounts";
 import { useCategories } from "../hooks/useCategories";
-import {
-  useCreateTransaction,
-  useUpdateTransaction,
-} from "../hooks/useTransactions";
+import {  useCreateTransaction,
+          useUpdateTransaction } from "../hooks/useTransactions";
 
 type Props = {
   mode: "create" | "update";
@@ -63,7 +61,7 @@ const TransactionForm = ({ mode, transaction, onSuccess }: Props) => {
       {/* Amount */}
       <input
         type="number"
-        className="input input-bordered w-full"
+        className="input input-bordered outline-none w-full"
         {...register("amount", { valueAsNumber: true })}
         placeholder="Amount (ETB)"
       />
@@ -78,7 +76,7 @@ const TransactionForm = ({ mode, transaction, onSuccess }: Props) => {
       {/* Account */}
       <select
         className="select select-bordered w-full"
-        {...register("account_id")}
+        {...register("account_id", { valueAsNumber: true })}
       >
         <option value="">Account</option>
         {accounts?.map((a) => (
@@ -91,7 +89,7 @@ const TransactionForm = ({ mode, transaction, onSuccess }: Props) => {
       {/* Category */}
       <select
         className="select select-bordered w-full"
-        {...register("category_id")}
+        {...register("account_id", { valueAsNumber: true })}
       >
         <option value="">Category</option>
         {categories?.map((c) => (
