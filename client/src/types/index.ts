@@ -12,7 +12,6 @@ export const userSchema = z.object({
 export const accountSchema = z.object({
   id: z.number().int().optional(),
   name: z.string().min(1, "Account name is required"),
-  user_id: z.number().int(),
 });
 
 export const categorySchema = z.object({

@@ -6,7 +6,7 @@ export const getAccounts = async () => {
   return res.data;
 };
 
-export const createAccount = async (data: TransactionInput) => {
+export const createAccount = async (data: AccountInput) => {
   const res = await API.post("/accounts", data);
   return res.data;
 };
@@ -16,7 +16,7 @@ export const getAccount = async (id: number) => {
   return res.data;
 };
 
-export const updateAccount = async (data: TransactionInput, id: number) => {
+export const updateAccount = async (data: AccountInput, id: number) => {
   const res = await API.put(`/accounts/${id}`, data);
   return res.data;
 };
