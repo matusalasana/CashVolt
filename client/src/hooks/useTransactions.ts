@@ -34,7 +34,7 @@ export const useCreateTransaction = () => {
     },
 
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to create");
+      toast.error("Failed to create");
     },
   });
 };

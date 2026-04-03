@@ -8,17 +8,13 @@ dotenv.config()
 export const register = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
-
-    // 1. Check if user already exists
     const existingUser = await sql`
       SELECT * FROM users WHERE email = ${email}
     `;
 
     if (existingUser.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User with that email already exists" });
     }
-
-    // 2. Hash password (VERY important)
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Insert user into DB
@@ -65,12 +61,12 @@ export const login = async (req, res) => {
 
     // 3. CREATE TOKEN
     const token = jwt.sign(
-      { userId: foundUser.id, email: foundUser.email, role: foundUser.role },
+      { userId: foundUser.id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // 4. SEND TOKEN - FIXED: Added proper object syntax with commas
+    // 4. SEND TOKEN
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,

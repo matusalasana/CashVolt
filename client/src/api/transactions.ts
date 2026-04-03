@@ -1,6 +1,11 @@
 import API from "./api";
 import { type TransactionInput } from "../types";
 
+type UpdateTransactionInput = {
+  id: number;
+  data: TransactionInput;
+};
+
 export const getTransactions = async () => {
   const res = await API.get("/transactions");
   return res.data;
@@ -11,13 +16,8 @@ export const createTransaction = async (data: TransactionInput) => {
   return res.data;
 };
 
-export const getTransaction = async (id: number) => {
-  const res = await API.get(`/transactions/${id}`);
-  return res.data;
-};
-
-export const updateTransaction = async (data: TransactionInput) => {
-  const res = await API.put(`/transactions/${data.id}`, data);
+export const updateTransaction = async ({id, data}: UpdateTransactionInput) => {
+  const res = await API.put(`/transactions/${id}`, data);
   return res.data;
 };
 

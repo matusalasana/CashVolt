@@ -5,9 +5,9 @@ import {
   addCategory,
   updateCategory,
   deleteCategory
-} from "../controllers/categories.js"
+} from "../controllers/categories.controller.js"
 // import { authorizeRoles } from "../middleware/roleAuth.js"
-import { protect} from "../middleware/auth.js"
+import { protect} from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 

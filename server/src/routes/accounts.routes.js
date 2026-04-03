@@ -5,8 +5,8 @@ import {
   updateAccount,
   deleteAccount,
   addAccount
-} from "../controllers/accounts.js"
-import { protect} from "../middleware/auth.js"
+} from "../controllers/accounts.controller.js"
+import { protect} from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 

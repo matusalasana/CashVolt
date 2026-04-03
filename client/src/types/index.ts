@@ -17,12 +17,14 @@ export const accountSchema = z.object({
 export const categorySchema = z.object({
   id: z.number().int().optional(),
   name: z.string().min(1, "Category name is required"),
-  type: z.enum(["income", "expense"]),
-  user_id: z.number().int(),
+  type: z.enum(["income", "expense"]).optional(),
 });
 
 export const transactionSchema = z.object({
   id: z.number().int().optional(),
+  account_name: z.string().optional(),
+  category_name: z.string(). optional(),
+  transaction_type: z.enum(["income", "expense"]).optional(),
   amount: z.coerce.number().positive("Amount must be positive"),
   description: z.string().min(1, "Description is required"),
   account_id: z.coerce.number().int().min(1, "Account is required"),
@@ -36,16 +38,12 @@ export const registerSchema = z.object({
   last_name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(6),
+  // add profile image  later
 });
 
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-});
-
-export const authResponseSchema = z.object({
-  token: z.string(),
-  user: userSchema.omit({ password: true }),
 });
 
 

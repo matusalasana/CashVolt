@@ -7,10 +7,10 @@ import cookieParser from "cookie-parser"
 import rateLimit from "express-rate-limit";
 
 // Routes
-import authRoutes from "./routes/auth.js"
-import accountsRoutes from "./routes/accounts.js"
-import categoriesRoutes from "./routes/categories.js"
-import transactionsRoutes from "./routes/transactions.js";
+import authRoutes from "./routes/auth.routes.js"
+import accountsRoutes from "./routes/accounts.routes.js"
+import categoriesRoutes from "./routes/categories.routes.js"
+import transactionsRoutes from "./routes/transactions.routes.js";
 
 dotenv.config()
 

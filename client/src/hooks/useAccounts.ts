@@ -1,5 +1,5 @@
 import API from "../api/api";
-import { getAccounts, createAccount} from "../api/accounts"
+import { getAccounts, createAccount, updateAccount, deleteAccount} from "../api/accounts"
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
@@ -30,17 +30,35 @@ export const useCreateAccount = () => {
 
 export const useUpdateAccount = () => {
   const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: updateAccount,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] })
+      toast.success("Account updated")
+    },
+
+    onError: () => {
+      toast.error("Error updating the account")
+    }
+  })
+}
+
+
+export const useDeleteAccount = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: deleteAccount,
     
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["accounts"]
       })
-      toast.success("Account updated")
+      toast.success("Account deleted")
     },
     onError: () => {
-      toast.error("Error updating the account")
+      toast.error("Error deleting the account")
     }
   });
 };

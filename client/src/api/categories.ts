@@ -6,7 +6,7 @@ export const getCategories = async () => {
   return res.data;
 };
 
-export const createCategory = async (data: TransactionInput) => {
+export const createCategory = async (data: CategoryInput) => {
   const res = await API.post("/categories", data);
   return res.data;
 };
@@ -16,7 +16,7 @@ export const getCategory = async (id: number) => {
   return res.data;
 };
 
-export const updateCategory = async (data: TransactionInput, id: number) => {
+export const updateCategory = async (data: CategoryInput, id: number) => {
   const res = await API.put(`/categories/${id}`, data);
   return res.data;
 };

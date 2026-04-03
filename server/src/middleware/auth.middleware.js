@@ -13,7 +13,7 @@ export const protect = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // 3. Attach user info to request
-    req.user = decoded;
+    req.user = decoded; // (now u can access user info anywhere by typing req.user)
 
     next(); // allow request
 

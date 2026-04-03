@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import API from "../api/api";
+import { getUserInfo } from "../api/users"
 
 export const useAuth = () => {
   return useQuery({
     queryKey: ["auth"],
-    queryFn: async () => {
-      const res = await API.get("/auth/me"); 
-      return res.data;
-    },
+    queryFn: getUserInfo,
     retry: false,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
