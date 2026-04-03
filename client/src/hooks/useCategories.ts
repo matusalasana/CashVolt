@@ -34,8 +34,8 @@ export const useCreateCategory = () => {
         queryKey: ["categories"]
       })
     },
-    onError: () => {
-      toast.error("Error creating category")
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Error creating category")
     }
   })
 }
@@ -50,8 +50,8 @@ export const useUpdateCategory = () => {
         queryKey: ["categories"]
       })
     },
-    onError: () => {
-      toast.error("Error updating category")
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Error updating category")
     }
   })
 }
@@ -67,8 +67,8 @@ export const useDeleteCategory = () => {
         queryKey: ["categories"]
       })
     },
-    onError: () => {
-      toast.error("Error deleting category")
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Error deleting category")
     }
   })
 }

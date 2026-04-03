@@ -17,11 +17,6 @@ export const createAccount = async (data: AccountInput) => {
   return res.data;
 };
 
-export const getAccount = async (id: number) => {
-  const res = await API.get(`/accounts/${id}`);
-  return res.data;
-};
-
 export const updateAccount = async ({ id, data }: UpdateAccountInput) => {
   const res = await API.put(`/accounts/${id}`, data);
   return res.data;

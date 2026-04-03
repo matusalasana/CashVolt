@@ -126,3 +126,18 @@ export const getMe = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const updateUser = async (req, res) => {
+  const { first_name, last_name, email, password } = req.body;
+  const user_id = req.user.userId;
+  
+  const updatedUser = await sql`
+    UPDATE users 
+    SET
+      first_name=${first_name},
+      last_name=${last_name},
+      email=${email},
+      password=${password}
+    WHERE id=${user_id}
+  `
+}

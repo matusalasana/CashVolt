@@ -1,6 +1,11 @@
 import API from "./api";
 import { type CategoryInput } from "../types";
 
+type UpdateCategoryInput = {
+  id: number;
+  data: CategoryInput;
+}
+
 export const getCategories = async () => {
   const res = await API.get("/categories");
   return res.data;
@@ -11,12 +16,7 @@ export const createCategory = async (data: CategoryInput) => {
   return res.data;
 };
 
-export const getCategory = async (id: number) => {
-  const res = await API.get(`/categories/${id}`);
-  return res.data;
-};
-
-export const updateCategory = async (data: CategoryInput, id: number) => {
+export const updateCategory = async ({data, id}: UpdateCategoryInput) => {
   const res = await API.put(`/categories/${id}`, data);
   return res.data;
 };

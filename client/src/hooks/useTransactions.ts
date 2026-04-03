@@ -33,8 +33,8 @@ export const useCreateTransaction = () => {
       });
     },
 
-    onError: (error: any) => {
-      toast.error("Failed to create");
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Failed to create");
     },
   });
 };
@@ -54,8 +54,8 @@ export const useDeleteTransaction = () => {
       });
     },
 
-    onError: () => {
-      toast.error("Failed to delete");
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Failed to delete");
     },
   });
 };
@@ -74,8 +74,8 @@ export const useUpdateTransaction = () => {
       });
     },
     
-    onError: () => {
-      toast.error("Failed to update")
+    onError: (error) => {
+      toast.error(error.response?.data?.message ||"Failed to update")
     },
     
   });
