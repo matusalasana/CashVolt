@@ -57,8 +57,8 @@ export const useDeleteAccount = () => {
       })
       toast.success("Account deleted")
     },
-    onError: () => {
-      toast.error("Error deleting the account")
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to delete account")
     }
   });
 };

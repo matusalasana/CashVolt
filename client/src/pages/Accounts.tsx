@@ -63,9 +63,7 @@ const Accounts = () => {
                 setIsEditOpen(true);
               }}
               onDelete={() => {
-                if(window.confirm("Are you sure you want to delete this account?")) {
-                  deleteAccount(acnt.id);
-                }
+                deleteAccount(acnt.id);
               }}
             />
           ))}
