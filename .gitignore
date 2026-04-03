@@ -27,3 +27,16 @@ Designs
 *.sln
 *.sw?
 Designs 
+
+# env files
+.env
+**/.env
+
+# dependencies
+node_modules/
+
+# builds
+dist/
+build/
+
+echo "" >> .gitignore
