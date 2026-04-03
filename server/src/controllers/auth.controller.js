@@ -131,6 +131,14 @@ export const updateUser = async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
   const user_id = req.user.userId;
   
+  const emailExists = await sql`
+    SELECT * FROM users WHERE email=${email}
+  `
+  
+  if(emailExists){
+    return res.status(400).json({message: "This email is already taken"})
+  }
+  
   const updatedUser = await sql`
     UPDATE users 
     SET
