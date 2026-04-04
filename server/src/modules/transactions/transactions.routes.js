@@ -10,10 +10,10 @@ import { protect} from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 
-router.post("/", protect, addTransaction)
-router.get("/", protect, getTransactions)
-router.get("/:id", protect,  getTransaction)
-router.put("/:id", protect, updateTransaction)
-router.delete("/:id", protect, deleteTransaction)
+router.post("/", addTransaction)
+router.get("/", getTransactions)
+router.get("/:id",  getTransaction)
+router.put("/:id", updateTransaction)
+router.delete("/:id", deleteTransaction)
 
 export default router

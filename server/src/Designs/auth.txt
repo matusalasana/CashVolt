@@ -1,13 +1,7 @@
 
-------------------  🔐 JWT ( JSON Web Token )  --------------------
+------------------  🔐 JWT Architecture  --------------------
 
-🧩 What does a JWT look like?
-- It has 3 parts:
-HEADER.PAYLOAD.SIGNATURE
-
-Header → type of token
-Payload → user data (like user_id)
-Signature → security part (prevents cheating)
+Route → Controller → Service → Repository → DB
 
 
 ------------------  Server.js ftle  --------------------
