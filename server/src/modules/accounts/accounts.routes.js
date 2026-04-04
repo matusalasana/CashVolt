@@ -1,20 +1,21 @@
-import express from "express"
+import express from "express";
 import {
   getAccounts,
-  getAccount,
+  createAccount,
   updateAccount,
-  deleteAccount,
-  addAccount
-} from "../controllers/accounts.controller.js"
-import { protect} from "../middleware/auth.middleware.js"
-import { authorizeRoles } from "../middleware/roleAuth.middleware.js"
+  deleteAccount
+} from "./accounts.controller.js";
 
-const router = express.Router()
+import { protect } from "../../middleware/auth.middleware.js";
 
-router.post("/", protect, addAccount)
-router.get("/", protect, getAccounts)
-router.get("/:id", protect,  getAccount)
-router.put("/:id", protect, updateAccount)
-router.delete("/:id", protect, authorizeRoles('admin'), deleteAccount)
+const router = express.Router();
 
-export default router 
+// protect all routes
+router.use(protect);
+
+router.get("/", getAccounts);
+router.post("/", createAccount);
+router.put("/:id", updateAccount);
+router.delete("/:id", deleteAccount);
+
+export default router;

@@ -1,19 +1,19 @@
-import express from "express"
+import express from "express";
 import {
   getTransactions,
-  getTransaction,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
-} from "../controllers/transactions.controller.js"
-import { protect} from "../middleware/auth.middleware.js"
+  createTransaction,
+  deleteTransaction
+} from "./transactions.controller.js";
 
-const router = express.Router()
+import { protect } from "../../middleware/auth.middleware.js";
 
-router.post("/", addTransaction)
-router.get("/", getTransactions)
-router.get("/:id",  getTransaction)
-router.put("/:id", updateTransaction)
-router.delete("/:id", deleteTransaction)
+const router = express.Router();
 
-export default router
+// protect all routes
+router.use(protect);
+
+router.get("/", getTransactions);
+router.post("/", createTransaction);
+router.delete("/:id", deleteTransaction);
+
+export default router;

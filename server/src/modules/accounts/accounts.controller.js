@@ -1,121 +1,59 @@
-import { sql } from "../config/db.js";
+import {
+  getAccountsService,
+  createAccountService,
+  updateAccountService,
+  deleteAccountService
+} from "./accounts.service.js";
 
-// GET ALL ACCOUNTS
+// GET ALL
 export const getAccounts = async (req, res) => {
   try {
-    const user_id = req.user.userId;
-    if(!user_id){
-      return res.status(400).json({message: "user_id is required "})
-    }
-    const accounts = await sql`
-      SELECT * FROM accounts WHERE user_id = ${user_id} ORDER BY name DESC
-    `;
-    if (accounts.length === 0){
-      return res.status(404).json({message: "Account not found "})
-    }
-
-    res.status(200).json(accounts);
+    const data = await getAccountsService(req.user.userId);
+    res.json(data);
   } catch (err) {
-    console.log("Error fetching accounts:", err);
-    res.status(500).json({ message: "Error fetching accounts" });
+    res.status(400).json({ message: err.message });
   }
 };
 
-// GET SINGLE ACCOUNT
-export const getAccount = async (req, res) => {
+// CREATE
+export const createAccount = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user_id  = req.user.userId;
-    
-    if(!user_id){
-      return res.status(400).json({message: "user_id is required "})
-    }
-    const account = await sql`
-      SELECT * FROM accounts WHERE id = ${id} AND user_id = ${user_id}
-    `;
+    const data = await createAccountService(
+      req.body,
+      req.user.userId
+    );
 
-    if (account.length === 0) {
-      return res.status(404).json({ message: "Account not found" });
-    }
-  
-    res.status(200).json(account[0]);
+    res.status(201).json(data[0]);
   } catch (err) {
-    console.log("Error getting account:", err);
-    res.status(500).json({ message: "Error getting account" });
-  }
-}
-
-// CREATE ACCOUNT
-export const addAccount = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const  user_id  = req.user.userId;
-
-    const newAccount = await sql`
-      INSERT INTO accounts (name, user_id)
-      VALUES (${name}, ${user_id})
-      RETURNING *
-    `;
-
-    res.status(201).json(newAccount[0]);
-  } catch (err) {
-    console.log("Error adding account:", err);
-    res.status(500).json({ message: "Error adding account" });
+    res.status(400).json({ message: err.message });
   }
 };
 
-// UPDATE ACCOUNT
+// UPDATE
 export const updateAccount = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name } = req.body;
-    const user_id  = req.user.userId;
+    const data = await updateAccountService(
+      req.params.id,
+      req.body,
+      req.user.userId
+    );
 
-    if(!user_id){
-      return res.status(400).json({message: "user_id is required "})
-    }
-    
-    const updatedAccount = await sql`
-      UPDATE accounts
-      SET name = ${name}
-      WHERE id = ${id} AND user_id = ${user_id}
-      RETURNING *
-    `;
-
-    if (updatedAccount.length === 0) {
-      return res.status(404).json({ message: "Account not found" });
-    }
-
-    res.status(200).json(updatedAccount[0]);
+    res.json(data);
   } catch (err) {
-    console.log("Error updating account:", err);
-    res.status(500).json({ message: "Error updating account" });
+    res.status(400).json({ message: err.message });
   }
 };
 
-// DELETE ACCOUNT
+// DELETE
 export const deleteAccount = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user_id  = req.user.userId;
+    await deleteAccountService(
+      req.params.id,
+      req.user.userId
+    );
 
-    if(!user_id){
-      return res.status(400).json({message: "user_id is required "})
-    }
-    
-    const deletedAccount = await sql`
-      DELETE FROM accounts
-      WHERE id = ${id} AND user_id = ${user_id}
-      RETURNING id
-    `;
-
-    if (deletedAccount.length === 0) {
-      return res.status(404).json({ message: "Account not found" });
-    }
-
-    res.status(200).json({ message: `Account with id ${id} deleted` });
+    res.json({ message: "Account deleted" });
   } catch (err) {
-    console.log("Error deleting account:", err);
-    res.status(500).json({ message: "Error deleting account" });
+    res.status(404).json({ message: err.message });
   }
 };

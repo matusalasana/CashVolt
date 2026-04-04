@@ -1,20 +1,21 @@
-import express from "express"
+import express from "express";
 import {
   getCategories,
-  getCategory,
-  addCategory,
+  createCategory,
   updateCategory,
   deleteCategory
-} from "../controllers/categories.controller.js"
-// import { authorizeRoles } from "../middleware/roleAuth.js"
-import { protect} from "../middleware/auth.middleware.js"
+} from "./categories.controller.js";
 
-const router = express.Router()
+import { protect } from "../../middleware/auth.middleware.js";
 
-router.post("/", protect, addCategory)
-router.get("/", protect, getCategories)
-router.get("/:id", protect, getCategory)
-router.put("/:id", protect, updateCategory)
-router.delete("/:id", protect, deleteCategory)
+const router = express.Router();
 
-export default router 
+// protect everything
+router.use(protect);
+
+router.get("/", getCategories);
+router.post("/", createCategory);
+router.put("/:id", updateCategory);
+router.delete("/:id", deleteCategory);
+
+export default router;

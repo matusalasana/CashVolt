@@ -1,14 +1,14 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { JWT_SECRET } from "../../config/env.js";
+import { hashPassword, comparePassword } from "../../utils/hash.js";
+import { signToken } from "../../utils/jwt.js";
 
 import {
   findUserByEmail,
   createUser,
   findUserById
 } from "./auth.repository.js";
-
-dotenv.config();
 
 // REGISTER
 export const registerUser = async (data) => {
@@ -22,7 +22,7 @@ export const registerUser = async (data) => {
   }
 
   // hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   // save user
   const user = await createUser({
@@ -47,18 +47,12 @@ export const loginUser = async (data) => {
 
   const user = result[0];
 
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await comparePassword(password, user.password);
 
   if (!isMatch) {
     throw new Error("Invalid credentials");
   }
-
-  const token = jwt.sign(
-    { userId: user.id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-
+  const token = await signToken({ userId: user.id, role: user.role });
   return { user, token };
 };
 

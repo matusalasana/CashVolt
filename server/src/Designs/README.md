@@ -82,6 +82,12 @@ server/
 
 
 
+categories are user-specific
+→ user_id protects data
+→ no user can see another user’s categories
+
+
+
 Perfect — this is exactly what you need now: a clear step-by-step roadmap so you stop feeling lost.
 
 I’ll give you a real developer workflow (what to build, in order, and how to test each step).

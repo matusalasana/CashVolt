@@ -4,7 +4,10 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 
 import authRoutes from "./modules/auth/auth.routes.js";
-import { protect } from "./middleware/auth.middleware.js"
+import accountsRoutes from "./modules/accounts/accounts.routes.js";
+import categoriesRoutes from "./modules/categories/categories.routes.js";
+import transactionsRoutes from "./modules/transactions/transactions.routes.js";
+
 const app = express();
 
 // Rate limiter
@@ -25,11 +28,11 @@ app.use(
   })
 );
 
-// Health check
-app.get("/health", (req, res) => {
-  res.json({ message: "API is running" });
-});
 
+app.use("/api/accounts", accountsRoutes);
+app.use("/api/categories", categoriesRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/transactions", transactionsRoutes);
+
 
 export default app;

@@ -1,19 +1,13 @@
 import {
   getTransactionsService,
   createTransactionService,
-  getTransactionService,
-  updateTransactionService,
   deleteTransactionService
 } from "./transactions.service.js";
 
 // GET ALL
 export const getTransactions = async (req, res) => {
   try {
-    const data = await getTransactionsService(
-      req.user.userId,
-      req.query.type
-    );
-
+    const data = await getTransactionsService(req.user.userId);
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -21,7 +15,7 @@ export const getTransactions = async (req, res) => {
 };
 
 // CREATE
-export const addTransaction = async (req, res) => {
+export const createTransaction = async (req, res) => {
   try {
     const data = await createTransactionService(
       req.body,
@@ -29,35 +23,6 @@ export const addTransaction = async (req, res) => {
     );
 
     res.status(201).json(data[0]);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// GET ONE
-export const getTransaction = async (req, res) => {
-  try {
-    const data = await getTransactionService(
-      req.params.id,
-      req.user.userId
-    );
-
-    res.json(data);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
-
-// UPDATE
-export const updateTransaction = async (req, res) => {
-  try {
-    const data = await updateTransactionService(
-      req.params.id,
-      req.user.userId,
-      req.body
-    );
-
-    res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -71,7 +36,7 @@ export const deleteTransaction = async (req, res) => {
       req.user.userId
     );
 
-    res.json({ message: "Transaction deleted successfully" });
+    res.json({ message: "Transaction deleted" });
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

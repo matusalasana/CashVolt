@@ -1,54 +1,32 @@
 import {
   getTransactionsRepo,
   createTransactionRepo,
-  getTransactionByIdRepo,
-  updateTransactionRepo,
   deleteTransactionRepo
 } from "./transactions.repository.js";
 
 // GET ALL
-export const getTransactionsService = async (user_id, type) => {
-  if (!user_id) {
-    throw new Error("User ID required");
-  }
-
-  return await getTransactionsRepo(user_id, type);
+export const getTransactionsService = async (user_id) => {
+  return await getTransactionsRepo(user_id);
 };
 
 // CREATE
 export const createTransactionService = async (data, user_id) => {
-  const { amount, account_id, category_id, transaction_date } = data;
+  const {
+    amount,
+    type,
+    account_id,
+    category_id
+  } = data;
 
-  if (!amount || !account_id || !category_id || !transaction_date) {
+  if (!amount || !type || !account_id || !category_id) {
     throw new Error("Missing required fields");
   }
 
-  return await createTransactionRepo({
-    ...data,
-    user_id
-  });
-};
-
-// GET ONE
-export const getTransactionService = async (id, user_id) => {
-  const result = await getTransactionByIdRepo(id, user_id);
-
-  if (result.length === 0) {
-    throw new Error("Transaction not found");
+  if (!["income", "expense"].includes(type)) {
+    throw new Error("Invalid transaction type");
   }
 
-  return result[0];
-};
-
-// UPDATE
-export const updateTransactionService = async (id, user_id, data) => {
-  const result = await updateTransactionRepo(id, user_id, data);
-
-  if (result.length === 0) {
-    throw new Error("Transaction not found");
-  }
-
-  return result[0];
+  return await createTransactionRepo(data, user_id);
 };
 
 // DELETE
