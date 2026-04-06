@@ -1,16 +1,26 @@
 import {
-  getCategoriesRepo,
+  getCategoriesRepoWithType,
+  getCategoriesRepoWithoutType,
   createCategoryRepo,
   updateCategoryRepo,
   deleteCategoryRepo
 } from "./categories.repository.js";
 
 // GET ALL
-export const getCategoriesService = async (user_id) => {
+export const getCategoriesService = async (user_id, type) => {
   if (!user_id) {
     throw new Error("user_id is required");
   }
-  return await getCategoriesRepo(user_id);
+  const cleanType = type || null;
+
+  // validate
+  if (cleanType && !["income", "expense"].includes(cleanType)) {
+    throw new Error("Invalid category type");
+  }
+  if (!cleanType) {
+    return await getCategoriesRepoWithoutType(user_id);
+  }
+  return await getCategoriesRepoWithType(user_id, cleanType);
 };
 
 // CREATE
@@ -18,7 +28,7 @@ export const createCategoryService = async (data, user_id) => {
   const { name, type } = data;
 
   if (!name || !type) {
-    throw new Error("Name and type are required");
+    throw new Error("Missing required fields");
   }
 
   return await createCategoryRepo(name, type, user_id);

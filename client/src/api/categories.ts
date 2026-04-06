@@ -6,8 +6,10 @@ type UpdateCategoryInput = {
   data: CategoryInput;
 }
 
-export const getCategories = async () => {
-  const res = await API.get("/categories");
+export const getCategories = async (type?: string) => {
+  const res = await API.get("/categories", {
+    params: type ? { type } : {}
+  });
   return res.data;
 };
 

@@ -9,10 +9,10 @@ import {
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-export const useTransactions = () => {
+export const useTransactions = (type?: string) => {
   return useQuery({
-    queryKey: ["transactions"],
-    queryFn: getTransactions,
+    queryKey: ["transactions", type],
+    queryFn: () =>  getTransactions(type),
     
     retry: false,
     staleTime: 1000 * 60 * 5,

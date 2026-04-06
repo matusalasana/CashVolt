@@ -6,8 +6,10 @@ type UpdateTransactionInput = {
   data: TransactionInput;
 };
 
-export const getTransactions = async () => {
-  const res = await API.get("/transactions");
+export const getTransactions = async (type?: string) => {
+  const res = await API.get("/transactions", {
+    params: type ? { type } : {}
+  });
   return res.data;
 };
 

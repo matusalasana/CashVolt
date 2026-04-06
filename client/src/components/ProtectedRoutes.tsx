@@ -13,8 +13,12 @@ const ProtectedRoutes = () => {
   }
 
   // IMPORTANT: treat error as unauthenticated
-  if (isError || !user) {
+  if (!user) {
     return <Navigate to="/login" replace />;
+  }
+  
+  if (isError) {
+    throw new Error("Error occurred")
   }
 
   return <Outlet />;

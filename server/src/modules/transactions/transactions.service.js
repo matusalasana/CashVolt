@@ -1,12 +1,24 @@
 import {
-  getTransactionsRepo,
+  getTransactionsRepoWithType,
+  getTransactionsRepoWithoutType,
   createTransactionRepo,
   deleteTransactionRepo
 } from "./transactions.repository.js";
 
 // GET ALL
-export const getTransactionsService = async (user_id) => {
-  return await getTransactionsRepo(user_id);
+export const getTransactionsService = async (type, user_id) => {
+  
+  if(!user_id){
+    throw new Error("user_id is required")
+  }
+  const cleanType = type || null
+  if(cleanType && !(['income', 'expense']).includes(cleanType)){
+    throw new Error("Invalid transaction type")
+  }
+  if(!cleanType){
+    return await getTransactionsRepoWithoutType(user_id);
+  }
+  return await getTransactionsRepoWithType(type, user_id);
 };
 
 // CREATE

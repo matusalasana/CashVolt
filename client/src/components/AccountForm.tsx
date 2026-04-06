@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import { useCreateAccount, useUpdateAccount } from "../hooks/useAccounts"
+import { Loader2 } from "lucide-react";
 
 interface Props {
   account?: AccountInput & { id: number }
@@ -11,8 +12,6 @@ interface Props {
 }
 
 const AccountForm = ({ account, mode, onSuccess }: Props) => {
-  const { mutate: createAccount } = useCreateAccount()
-  const { mutate: updateAccount } = useUpdateAccount()
 
   const {
     register,
@@ -25,6 +24,16 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
       name: ""
     }
   })
+  
+  const { mutate: createAccount, isPending: isCreating } = useCreateAccount();
+  const { mutate: updateAccount, isPending: isUpdating } = useUpdateAccount();
+  const isPending = isCreating || isUpdating
+
+  useEffect(() => {
+    if (account) {
+      reset(account)
+    }
+  }, [account, reset])
 
   useEffect(() => {
     if (mode === "edit" && account) {
@@ -54,6 +63,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
   
 
   return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
     <form
   onSubmit={handleSubmit(onFormSubmit)}
   className="w-full max-w-md mx-auto bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-100"
@@ -84,16 +94,18 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
   {/* Button */}
   <button
     type="submit"
-    disabled={isSubmitting}
+    disabled={isPending}
     className="w-full bg-blue-600 text-white py-2 rounded-lg 
                hover:bg-blue-700 active:scale-[0.99] 
                transition disabled:opacity-50 disabled:cursor-not-allowed"
   >
-    {mode === "edit"
-      ? "Update Account"
-      : "Create Account"}
+    { isPending ? <Loader2 className="animate-spin" />
+      : mode==="edit" ? "Update Account"
+      : "Add Account"
+    }
   </button>
 </form>
+</div>
   )
 }
 

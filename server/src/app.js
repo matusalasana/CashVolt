@@ -9,6 +9,7 @@ import categoriesRoutes from "./modules/categories/categories.routes.js";
 import transactionsRoutes from "./modules/transactions/transactions.routes.js";
 import budgetsRoutes from "./modules/budgets/budgets.routes.js";
 import analyticsRoutes from "./modules/analytics/analytics.routes.js";
+import usersRoutes from "./modules/users/users.routes.js";
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionsRoutes);
 app.use("/api/budgets", budgetsRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/users", usersRoutes);
 
 
 export default app;

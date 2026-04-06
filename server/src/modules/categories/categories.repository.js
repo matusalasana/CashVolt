@@ -1,7 +1,16 @@
 import { sql } from "../../config/db.js";
 
-// GET ALL
-export const getCategoriesRepo = async (user_id) => {
+// GET ALL with types
+export const getCategoriesRepoWithType = async (user_id, type) => {
+  return await sql`
+    SELECT * FROM categories
+    WHERE user_id = ${user_id} AND type=${type}
+    ORDER BY created_at DESC
+  `;
+};
+
+// GET ALL without types 
+export const getCategoriesRepoWithoutType = async (user_id) => {
   return await sql`
     SELECT * FROM categories
     WHERE user_id = ${user_id}

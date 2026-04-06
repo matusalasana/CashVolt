@@ -8,7 +8,8 @@ import {
 // GET ALL
 export const getCategories = async (req, res) => {
   try {
-    const data = await getCategoriesService(req.user.userId);
+    const {type} = req.query;
+    const data = await getCategoriesService(req.user.userId, type);
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });

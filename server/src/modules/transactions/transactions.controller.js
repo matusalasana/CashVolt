@@ -7,7 +7,9 @@ import {
 // GET ALL
 export const getTransactions = async (req, res) => {
   try {
-    const data = await getTransactionsService(req.user.userId);
+    const { type } = req.query;
+    const user_id = req.user.userId;
+    const data = await getTransactionsService(type, user_id);
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });

@@ -12,10 +12,10 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-export const useCategories = () => {
+export const useCategories = (type?: string) => {
   return useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
+    queryKey: ["categories", type],
+    queryFn: () => getCategories(type),
     
     retry: false,
     staleTime: 1000 * 60 * 5,

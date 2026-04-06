@@ -17,13 +17,14 @@ export const accountSchema = z.object({
 export const categorySchema = z.object({
   id: z.number().int().optional(),
   name: z.string().min(1, "Category name is required"),
-  type: z.enum(["income", "expense"]).optional(),
+  type: z.enum(["income", "expense"]),
 });
 
 export const transactionSchema = z.object({
   id: z.number().int().optional(),
   account_name: z.string().optional(),
   category_name: z.string(). optional(),
+  type: z.enum(["income", "expense"]),
   transaction_type: z.enum(["income", "expense"]).optional(),
   amount: z.coerce.number().positive("Amount must be positive"),
   description: z.string().min(1, "Description is required"),
@@ -33,12 +34,18 @@ export const transactionSchema = z.object({
   created_at: z.string().optional(),
 });
 
+export const budgetSchema = z.object({
+  id: z.number().int().optional(),
+  category_id: z.coerce.number().int().min(1, "Category is required"),
+  amount: z.coerce.number().positive("Amount must be positive"),
+  month: z.string().min(1, "Date is required")
+})
+
 export const registerSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(6),
-  // add profile image  later
 });
 
 export const loginSchema = z.object({
@@ -51,6 +58,7 @@ export type UserInput = z.infer<typeof userSchema>;
 export type AccountInput = z.infer<typeof accountSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type TransactionInput = z.infer<typeof transactionSchema>;
+export type BudgetInput = z.infer<typeof budgetSchema>;
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;

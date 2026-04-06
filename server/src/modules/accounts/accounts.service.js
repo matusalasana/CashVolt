@@ -17,6 +17,8 @@ export const createAccountService = async (data, user_id) => {
   if (!data.name) {
     throw new Error("Account name is required");
   }
+  
+  if (!user_id) throw new Error("User ID required");
 
   return await createAccountRepo(data.name, user_id);
 };
@@ -26,6 +28,7 @@ export const updateAccountService = async (id, data, user_id) => {
   if (!data.name) {
     throw new Error("Account name is required");
   }
+  if (!user_id) throw new Error("User ID required");
 
   const result = await updateAccountRepo(id, data.name, user_id);
 
@@ -40,6 +43,7 @@ export const updateAccountService = async (id, data, user_id) => {
 export const deleteAccountService = async (id, user_id) => {
   const result = await deleteAccountRepo(id, user_id);
 
+  if (!user_id) throw new Error("User ID required");
   if (result.length === 0) {
     throw new Error("Account not found");
   }

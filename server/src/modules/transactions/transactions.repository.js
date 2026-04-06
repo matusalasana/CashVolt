@@ -1,7 +1,21 @@
 import { sql } from "../../config/db.js";
 
-// GET ALL
-export const getTransactionsRepo = async (user_id) => {
+// GET ALL with type
+export const getTransactionsRepoWithType = async (type, user_id) => {
+  return await sql`
+    SELECT t.*, 
+           a.name AS account_name,
+           c.name AS category_name
+    FROM transactions t
+    JOIN accounts a ON t.account_id = a.id
+    JOIN categories c ON t.category_id = c.id
+    WHERE t.user_id = ${user_id} AND t.type=${type}
+    ORDER BY t.transaction_date DESC;
+  `;
+};
+
+// GET ALL without type
+export const getTransactionsRepoWithoutType = async (user_id) => {
   return await sql`
     SELECT t.*, 
            a.name AS account_name,

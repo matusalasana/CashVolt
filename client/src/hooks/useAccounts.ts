@@ -52,10 +52,11 @@ export const useDeleteAccount = () => {
     mutationFn: deleteAccount,
     
     onSuccess: () => {
+      toast.success("Account deleted");
       queryClient.invalidateQueries({
         queryKey: ["accounts"]
-      })
-      toast.success("Account deleted")
+      });
+      
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to delete account")
