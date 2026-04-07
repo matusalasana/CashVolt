@@ -27,44 +27,19 @@ export const getCategoriesService = async (user_id, type) => {
 export const createCategoryService = async (data, user_id) => {
   const { name, type } = data;
 
-  if (!name || name.trim() === "") {
-    throw new Error("Category name is required");
-  }
-
-  if (!["income", "expense"].includes(type)) {
-    throw new Error("Invalid category type");
-  }
-
   return await createCategoryRepo(name, type, user_id);
 };
 
 // UPDATE
 export const updateCategoryService = async (id, data, user_id) => {
-  const { name, type } = data;
 
-  const fields = {};
-
-  if (name !== undefined) {
-    if (name.trim() === "") {
-      throw new Error("Name cannot be empty");
-    }
-    fields.name = name;
-  }
-
-  if (type !== undefined) {
-    if (!["income", "expense"].includes(type)) {
-      throw new Error("Invalid category type");
-    }
-    fields.type = type;
-  }
-
-  const result = await updateCategoryRepo(id, fields, user_id);
+  const result = await updateCategoryRepo(id, data, user_id);
 
   if (result.length === 0) {
     throw new Error("Category not found");
   }
 
-  return result[0];
+  return result;
 };
 
 // DELETE

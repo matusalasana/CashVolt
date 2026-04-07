@@ -28,11 +28,14 @@ export const createCategoryRepo = async (name, type, user_id ) => {
   `;
 };
 
-// UPDATE (FIXED - dynamic safe update)
-export const updateCategoryRepo = async ( id, fields, user_id ) => {
+// UPDATE
+export const updateCategoryRepo = async ( id, data, user_id ) => {
+  const { name, type } = data
   return await sql`
     UPDATE categories
-    SET ${sql(fields)}
+    SET 
+      name=${name},
+      type=${type}
     WHERE id = ${id} AND user_id = ${user_id}
     RETURNING *;
   `;

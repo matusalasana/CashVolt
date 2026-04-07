@@ -30,7 +30,7 @@ export const createCategory = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data);
+    res.status(201).json(data[0]);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

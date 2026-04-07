@@ -3,6 +3,7 @@ import { Plus, X, LayoutGrid } from "lucide-react";
 
 // Components
 import TransactionForm from "../components/TransactionForm";
+import CategoryForm from "../components/CategoryForm";
 import TransactionCard from "../components/TransactionCard";
 import DeleteConfirmationCard from "../components/DeleteConfirmationCard";
 
@@ -51,6 +52,8 @@ const Transaction = () => {
           Add Transaction
         </button>
       </div>
+      
+      <CategoryForm />
 
       {/* Delete Confirmation Modal */}
       {isDeleteOpen && deletingTransaction && (
