@@ -82,15 +82,20 @@ const Accounts = () => {
       {/* DELETE MODAL */}
       {isDeleteOpen && deletingAccount && (
         <DeleteConfirmationCard
-          isDeleteing={ isPending ? true : false }
+          isDeleting={isPending}
           item_name={deletingAccount.name}
           onCancel={() => {
             setIsDeleteOpen(false);
             setDeletingAccount(null);
           }}
           onDelete={() => {
+            if (!deletingAccount || isPending) return;
+          
             deleteAccount(deletingAccount.id, {
-              onSuccess: setIsDeleteOpen(false)
+              onSuccess: () => {
+                setDeletingAccount(null);
+                setIsDeleteOpen(false);
+              },
             });
           }}
         />
