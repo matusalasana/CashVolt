@@ -56,10 +56,8 @@ const Accounts = () => {
 
       {/* Accounts Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 w-full bg-base-200 animate-pulse rounded-xl"></div>
-          ))}
+        <div className="flex justify-center py-20">
+          <span className="loading loading-dots loading-lg text-primary"></span>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -81,21 +79,18 @@ const Accounts = () => {
         </div>
       )}
 
-      {/* ✅ DELETE MODAL (FIXED) */}
+      {/* DELETE MODAL */}
       {isDeleteOpen && deletingAccount && (
         <DeleteConfirmationCard
+          isDeleteing={ isPending ? true : false }
           item_name={deletingAccount.name}
           onCancel={() => {
             setIsDeleteOpen(false);
             setDeletingAccount(null);
           }}
-          isDeleteing={isPending}
           onDelete={() => {
             deleteAccount(deletingAccount.id, {
-              onSuccess: () => {
-                setIsDeleteOpen(false);
-                setDeletingAccount(null);
-              }
+              onSuccess: setIsDeleteOpen(false)
             });
           }}
         />
@@ -105,13 +100,6 @@ const Accounts = () => {
       {isAddOpen && (
         <div className="modal modal-open animate-in fade-in duration-300">
           <div className="modal-box p-0 max-w-md bg-transparent border-none relative">
-            <button 
-              onClick={() => setIsAddOpen(false)}
-              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 z-50"
-            >
-              <X size={20} />
-            </button>
-
             <AccountForm
               mode="add"
               onSuccess={() => setIsAddOpen(false)}
@@ -129,16 +117,6 @@ const Accounts = () => {
       {isEditOpen && editingAccount && (
         <div className="modal modal-open">
           <div className="modal-box p-0 max-w-md bg-transparent border-none relative">
-            <button 
-              onClick={() => {
-                setIsEditOpen(false);
-                setEditingAccount(null);
-              }}
-              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 z-50"
-            >
-              <X size={20} />
-            </button>
-
             <AccountForm
               mode="edit"
               account={editingAccount}
@@ -163,12 +141,6 @@ const Accounts = () => {
           <p className="text-xl font-medium text-base-content/50">
             No accounts found
           </p>
-          <button 
-            onClick={() => setIsAddOpen(true)} 
-            className="btn btn-link btn-primary"
-          >
-            Create your first one
-          </button>
         </div>
       )}
     </div>

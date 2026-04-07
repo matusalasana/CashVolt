@@ -1,13 +1,15 @@
 import API from "../api/api";
 import { useForm } from "react-hook-form";
+import { Loader2} from "lucide-react";
 import { type RegisterInput, registerSchema } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useRegister } from "../hooks/useAuth";
 
 const Signup = () => {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  const { mutate: registerUser, isPending } = useRegister()
   const {
     register,
     handleSubmit,
@@ -16,17 +18,10 @@ const Signup = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterInput) => {
-    try {
-      await API.post("/auth/register", data);
-
-      toast.success("Account created! Please login.");
-      navigate("/login");
-
-    } catch (error: any) {
-      console.error("Signup failed:", error);
-      toast.error(error.response?.data?.message || "Signup failed");
-    }
+  const onSubmit = (data: RegisterInput) => {
+    registerUser(data, {
+      onSuccess: () => navigate ("/login")
+    })
   };
 
   return (
@@ -77,8 +72,15 @@ const Signup = () => {
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
 
-        <button type="submit" className="btn btn-neutral mt-4">
-          Sign Up
+        <button 
+          type="submit" 
+          disabled={isPending}
+          className="btn btn-neutral mt-4"
+        >
+        { isPending 
+          ? <Loader2 className="animate-spin" /> 
+          : "Sign up" 
+        }
         </button>
 
         <p className="text-sm mt-4 text-center">

@@ -1,37 +1,24 @@
-import API from "../api/api";
-import { useAuth } from "../hooks/useAuth";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useLogout } from "../hooks/useAuth";
 
 const LogoutButton = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { refetch } = useAuth();
+  const { mutate: logoutUser, isPending } = useLogout();
 
-  const handleLogout = async () => {
-    try {
-      await API.post("/auth/logout");
-      
-      // Clear all cached queries to prevent showing old data
-      await queryClient.clear();
-      
-      toast.success("Logged out successfully");
-      
-      // Navigate to login page
-      navigate("/login");
-      
-      await refetch(); // refetch() ensures the auth state is fresh when user returns
-      
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Logout failed");
-    }
+  const handleLogout = () => {
+    logoutUser(undefined, {
+      onSuccess: () => navigate("/login"),
+    });
   };
 
   return (
-    <button onClick={handleLogout} className="btn btn-outline">
-      Logout
+    <button
+      onClick={handleLogout}
+      disabled={isPending}
+      className="btn btn-outline flex items-center gap-2"
+    >
+      {isPending && <span className="loading loading-spinner loading-sm"></span>}
+      {isPending ? "Logging out..." : "Logout"}
     </button>
   );
 };

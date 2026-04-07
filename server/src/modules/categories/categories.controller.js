@@ -8,8 +8,14 @@ import {
 // GET ALL
 export const getCategories = async (req, res) => {
   try {
-    const {type} = req.query;
-    const data = await getCategoriesService(req.user.userId, type);
+    const { type } = req.query;
+    const user_id = req.user.userId
+    const data = await getCategoriesService(
+      user_id,
+      type
+    );
+    console.log(user_id)
+
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -24,7 +30,7 @@ export const createCategory = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data[0]);
+    res.status(201).json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -33,11 +39,17 @@ export const createCategory = async (req, res) => {
 // UPDATE
 export const updateCategory = async (req, res) => {
   try {
+    const id = Number(req.params.id);
+
     const data = await updateCategoryService(
-      req.params.id,
+      id,
       req.body,
       req.user.userId
     );
+
+    if (!data) {
+      return res.status(404).json({ message: "Category not found" });
+    }
 
     res.json(data);
   } catch (err) {
@@ -48,10 +60,16 @@ export const updateCategory = async (req, res) => {
 // DELETE
 export const deleteCategory = async (req, res) => {
   try {
-    await deleteCategoryService(
-      req.params.id,
+    const id = Number(req.params.id);
+
+    const result = await deleteCategoryService(
+      id,
       req.user.userId
     );
+
+    if (!result) {
+      return res.status(404).json({ message: "Category not found" });
+    }
 
     res.json({ message: "Category deleted" });
   } catch (err) {

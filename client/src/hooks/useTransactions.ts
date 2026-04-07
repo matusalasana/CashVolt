@@ -70,12 +70,13 @@ export const useUpdateTransaction = () => {
     onSuccess: () => {
       toast.success("Transaction updated")
       queryClient.invalidateQueries({
-        queryKey: ["transactions"]
-      });
+      queryKey: ["transactions"],
+      exact: false,
+    });
     },
     
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Failed to update")
+      toast.error(error?.message ||"Failed to update")
     },
     
   });

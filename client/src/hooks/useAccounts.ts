@@ -1,6 +1,13 @@
 import API from "../api/api";
-import { getAccounts, createAccount, updateAccount, deleteAccount} from "../api/accounts"
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { 
+  getAccounts, 
+  createAccount, 
+  updateAccount, 
+  deleteAccount} from "../api/accounts"
+import { 
+  useQueryClient, 
+  useQuery, 
+  useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 export const useAccounts = () => {

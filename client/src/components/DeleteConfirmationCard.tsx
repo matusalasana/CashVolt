@@ -4,7 +4,7 @@ interface Props{
   item_name?: string;
   onDelete?: () => void;
   onCancel?: () => void;
-  isDeleting?: string;
+  isDeleting?: boolean;
 }
 
 const DeleteConfirmationCard = ({ isDeleting, onDelete, onCancel, item_name }: Props) => {
@@ -36,9 +36,11 @@ const DeleteConfirmationCard = ({ isDeleting, onDelete, onCancel, item_name }: P
           </button>
 
           <button
-            onClick={onDelete}
+            onClick={() => {
+              if (!isDeleting) onDelete?.();
+            }}
             disabled={isDeleting}
-            className="px-4 py-2 text-sm w-20 h-10 rounded-xl bg-red-500 text-white hover:bg-red-600 transition shadow-sm"
+            className="px-4 py-2 text-sm w-20 h-10 rounded-xl bg-red-500 text-white hover:bg-red-600 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
           { isDeleting 
             ? <Loader2 className="animate-spin mx-auto" />

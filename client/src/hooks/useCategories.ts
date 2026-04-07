@@ -19,7 +19,7 @@ export const useCategories = (type?: string) => {
     
     retry: false,
     staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false
   });
 };
 

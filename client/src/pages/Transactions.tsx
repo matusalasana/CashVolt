@@ -59,8 +59,13 @@ const Transaction = () => {
           onCancel={() => setIsDeleteOpen(false)}
           isDeleting ={isPending}
           onDelete={() => {
+            if (!deletingTransaction || isPending) return;
+          
             deleteTransaction(deletingTransaction.id, {
-              onSuccess: setIsDeleteOpen(false),
+              onSuccess: () => {
+                setIsDeleteOpen(false);
+                setDeletingTransaction(null);
+              },
             });
           }}
         />
@@ -143,7 +148,7 @@ const Transaction = () => {
       )}
 
       {/* Edit Transaction Modal */}
-      {isEditOpen && (
+      {isEditOpen && editingTransaction && (
         <div className="modal modal-open animate-in fade-in duration-300">
           <div className="modal-box p-0 max-w-lg bg-transparent border-none shadow-none relative">
             <TransactionForm
