@@ -1,8 +1,8 @@
-import { type AccountInput, accountSchema } from "../types"
+import { type AccountInput, accountSchema } from "../../types"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
-import { useCreateAccount, useUpdateAccount } from "../hooks/useAccounts"
+import { useCreateAccount, useUpdateAccount } from "../../hooks/useAccounts"
 import { Loader2, X } from "lucide-react";
 
 interface Props {
@@ -17,7 +17,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors }
+    formState: { errors }
   } = useForm<AccountInput>({
     resolver: zodResolver(accountSchema),
     defaultValues: {

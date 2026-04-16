@@ -6,8 +6,9 @@ const ProtectedRoutes = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="loading loading-spinner loading-lg"></div>
+        <p className="skeleton text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl skeleton-text font-bold">CashVolt</p>
       </div>
     );
   }

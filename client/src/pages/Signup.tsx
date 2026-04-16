@@ -1,9 +1,7 @@
-import API from "../api/api";
 import { useForm } from "react-hook-form";
 import { Loader2} from "lucide-react";
 import { type RegisterInput, registerSchema } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks/useAuth";
 

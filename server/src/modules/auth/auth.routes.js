@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  register,
-  login,
-  logout,
+  registerUser,
+  loginUser,
+  logoutUser,
   getMe
 } from "./auth.controller.js";
 import { protect } from "../../middleware/auth.middleware.js";
@@ -10,9 +10,9 @@ import { protect } from "../../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/logout", logout);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", logoutUser);
 router.get("/me", protect, getMe);
 
 export default router;

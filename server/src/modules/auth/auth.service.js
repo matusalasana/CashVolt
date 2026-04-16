@@ -1,68 +1,62 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../../config/env.js";
 import { hashPassword, comparePassword } from "../../utils/hash.js";
 import { signToken } from "../../utils/jwt.js";
 
 import {
-  findUserByEmail,
-  createUser,
-  findUserById
+  findUserByEmailRepo,
+  registerUserRepo,
+  findUserByIdRepo
 } from "./auth.repository.js";
 
 // REGISTER
-export const registerUser = async (data) => {
+export const registerUserService = async (data) => {
   const { first_name, last_name, email, password } = data;
-
-  // check existing user
-  const existing = await findUserByEmail(email);
-
-  if (existing.length > 0) {
-    throw new Error("User already exists");
+  
+  if(!first_name || !last_name || !email || !password){
+    throw new Error("Missing required fields")
+  }
+  const existing = await findUserByEmailRepo(email);
+  if (existing) {
+    throw new Error("User with this email already exists");
   }
 
-  // hash password
   const hashedPassword = await hashPassword(password);
-
-  // save user
-  const user = await createUser({
+  
+  const user = await registerUserRepo({
     first_name,
     last_name,
     email,
     password: hashedPassword
   });
 
-  return user[0];
+  return user;
 };
 
 // LOGIN
-export const loginUser = async (data) => {
+export const loginUserService = async (data) => {
   const { email, password } = data;
-
-  const result = await findUserByEmail(email);
-
-  if (result.length === 0) {
-    throw new Error("Invalid credentials");
+  
+  if (!email || !password) {
+    throw new Error("Missing required fields");
   }
-
-  const user = result[0];
-
+  
+  if (password.length < 6) {
+    throw new Error("Password must be at least 6 characters");
+  }
+  const user = await findUserByEmailRepo(email.toLowerCase().trim());
+  if (!user) throw new Error("Invalid credentials");
   const isMatch = await comparePassword(password, user.password);
-
-  if (!isMatch) {
-    throw new Error("Invalid credentials");
-  }
-  const token = await signToken({ userId: user.id, role: user.role });
+  if (!isMatch) throw new Error("Invalid credentials");
+  
+  const token = signToken({ userId: user.id, role: user.role });
   return { user, token };
 };
 
 // UserInfo
-export const getUserProfile = async (userId) => {
-  const result = await findUserById(userId);
-
-  if (result.length === 0) {
+export const getMeService = async (userId) => {
+  const user = await findUserByIdRepo(userId);
+  if (!user) {
     throw new Error("User not found");
   }
-
-  return result[0];
+  return user;
 };

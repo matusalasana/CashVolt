@@ -25,9 +25,6 @@ const Login = () => {
     });
   };
 
-
-
-  // Keep this it's helpful because user might not be found immediately 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -35,7 +32,7 @@ const Login = () => {
       </div>
     );
   }
-    // if already logged in → redirectconst { data: user, isLoading } = useAuth();
+  
   if (user) {
     return <Navigate to="/" replace />;
   }

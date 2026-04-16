@@ -8,7 +8,18 @@ import {
 // GET ALL
 export const getBudgets = async (req, res) => {
   try {
-    const data = await getBudgetsService(req.user.userId);
+    const { month, year } = req.query;
+    const user_id = req.user.userId;
+
+    const parsedMonth = month ? Number(month) : undefined;
+    const parsedYear = year ? Number(year) : undefined;
+
+    const data = await getBudgetsService(
+      user_id,
+      parsedMonth,
+      parsedYear
+    );
+
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -23,7 +34,7 @@ export const createBudget = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data[0]);
+    res.status(201).json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

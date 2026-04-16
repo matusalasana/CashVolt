@@ -1,52 +1,28 @@
-import { useState } from 'react';
-import { Plus, X, Wallet, ArrowRightLeft } from "lucide-react";
-import AccountForm from "../components/AccountForm";
+import { Plus } from "lucide-react";
+
 import { useAccounts, useDeleteAccount } from "../hooks/useAccounts";
-import AccountCard from "../components/AccountCard";
-import DeleteConfirmationCard from "../components/DeleteConfirmationCard";
+import { useAccountModals } from "../components/accounts/useAccountModals";
+
+import AccountsHeader from "../components/accounts/AccountsHeader";
+import AccountsGrid from "../components/accounts/AccountsGrid";
+import AccountsEmptyState from "../components/accounts/AccountsEmptyState";
+import AccountModals from "../components/accounts/AccountModals";
 
 const Accounts = () => {
   const { data: accounts, isLoading } = useAccounts();
   const { mutate: deleteAccount, isPending } = useDeleteAccount();
 
-  const [editingAccount, setEditingAccount] = useState<any>(null);
-  const [deletingAccount, setDeletingAccount] = useState<any>(null);
-
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const modals = useAccountModals();
 
   return (
     <div className="p-4 max-w-6xl mx-auto min-h-screen">
       
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Wallet className="text-primary" size={24} />
-            <h1 className="text-3xl font-bold tracking-tight">Your Accounts</h1>
-          </div>
-          <p className="text-base-content/60">
-            Manage your banks, cards, and cash wallets.
-          </p>
-        </div>
-
-        <div className="stats shadow bg-base-100 border border-base-200">
-          <div className="stat py-2 px-6">
-            <div className="stat-title text-xs uppercase font-bold">
-              Total Accounts
-            </div>
-            <div className="stat-value text-2xl text-primary">
-              {accounts?.length || 0}
-            </div>
-          </div>
-        </div>
-      </div>
+      <AccountsHeader accountsLength={accounts?.length || 0} />
 
       {/* Add Button */}
       <div className="mb-6">
-        <button 
-          onClick={() => setIsAddOpen(true)} 
+        <button
+          onClick={() => modals.setIsAddOpen(true)}
           className="btn btn-primary gap-2 shadow-md"
         >
           <Plus size={20} />
@@ -54,100 +30,26 @@ const Accounts = () => {
         </button>
       </div>
 
-      {/* Accounts Grid */}
-      {isLoading ? (
-        <div className="flex justify-center py-20">
-          <span className="loading loading-dots loading-lg text-primary"></span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {accounts?.map((acnt) => (
-            <AccountCard 
-              key={acnt.id}
-              name={acnt.name}
-              id={acnt.id}
-              onEdit={() => {
-                setEditingAccount(acnt);
-                setIsEditOpen(true);
-              }}
-              onDelete={() => {
-                setDeletingAccount(acnt);
-                setIsDeleteOpen(true);
-              }}
-            />
-          ))}
-        </div>
-      )}
+      <AccountsGrid
+        accounts={accounts}
+        isLoading={isLoading}
+        onEdit={(acnt) => {
+          modals.setEditingAccount(acnt);
+          modals.setIsEditOpen(true);
+        }}
+        onDelete={(acnt) => {
+          modals.setDeletingAccount(acnt);
+          modals.setIsDeleteOpen(true);
+        }}
+      />
 
-      {/* DELETE MODAL */}
-      {isDeleteOpen && deletingAccount && (
-        <DeleteConfirmationCard
-          isDeleting={isPending}
-          item_name={deletingAccount.name}
-          onCancel={() => {
-            setIsDeleteOpen(false);
-            setDeletingAccount(null);
-          }}
-          onDelete={() => {
-            if (!deletingAccount || isPending) return;
-          
-            deleteAccount(deletingAccount.id, {
-              onSuccess: () => {
-                setDeletingAccount(null);
-                setIsDeleteOpen(false);
-              },
-            });
-          }}
-        />
-      )}
+      {!isLoading && accounts?.length === 0 && <AccountsEmptyState />}
 
-      {/* Add Modal */}
-      {isAddOpen && (
-        <div className="modal modal-open animate-in fade-in duration-300">
-          <div className="modal-box p-0 max-w-md bg-transparent border-none relative">
-            <AccountForm
-              mode="add"
-              onSuccess={() => setIsAddOpen(false)}
-            />
-          </div>
-
-          <div 
-            className="modal-backdrop bg-base-900/40 backdrop-blur-sm" 
-            onClick={() => setIsAddOpen(false)}
-          />
-        </div>
-      )}
-
-      {/* Edit Modal */}
-      {isEditOpen && editingAccount && (
-        <div className="modal modal-open">
-          <div className="modal-box p-0 max-w-md bg-transparent border-none relative">
-            <AccountForm
-              mode="edit"
-              account={editingAccount}
-              onSuccess={() => {
-                setIsEditOpen(false);
-                setEditingAccount(null);
-              }}
-            />
-          </div>
-
-          <div 
-            className="modal-backdrop bg-base-900/40 backdrop-blur-sm" 
-            onClick={() => setIsEditOpen(false)}
-          />
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!isLoading && accounts?.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 bg-base-200/30 rounded-3xl border-2 border-dashed border-base-300">
-          <ArrowRightLeft className="text-base-content/20 mb-4" size={48} />
-          <p className="text-xl font-medium text-base-content/50">
-            No accounts found
-          </p>
-        </div>
-      )}
+      <AccountModals
+        {...modals}
+        deleteAccount={deleteAccount}
+        isPending={isPending}
+      />
     </div>
   );
 };

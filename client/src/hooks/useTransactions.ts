@@ -1,5 +1,4 @@
 
-import API from "../api/api";
 import { 
   getTransactions, 
   deleteTransaction,  
@@ -34,7 +33,7 @@ export const useCreateTransaction = () => {
     },
 
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Failed to create");
+      toast.error(error.message ||"Failed to create the transaction");
     },
   });
 };
@@ -55,7 +54,7 @@ export const useDeleteTransaction = () => {
     },
 
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Failed to delete");
+      toast.error(error.message ||"Failed to delete");
     },
   });
 };
@@ -76,7 +75,7 @@ export const useUpdateTransaction = () => {
     },
     
     onError: (error) => {
-      toast.error(error?.message ||"Failed to update")
+      toast.error(error.message ||"Failed to update")
     },
     
   });

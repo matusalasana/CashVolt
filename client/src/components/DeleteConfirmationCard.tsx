@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Loader2 } from "lucide-react";
 interface Props{
   item_name?: string;
@@ -30,6 +30,7 @@ const DeleteConfirmationCard = ({ isDeleting, onDelete, onCancel, item_name }: P
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
+            disabled={isDeleting}
             className="px-4 py-2 text-sm rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
           >
             Cancel

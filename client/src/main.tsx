@@ -4,7 +4,10 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { initChartConfig } from './utils/chart';
 
+// Initialize Chart settings
+initChartConfig();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

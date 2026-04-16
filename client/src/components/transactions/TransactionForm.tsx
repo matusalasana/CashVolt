@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,13 +14,13 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 
-import { type TransactionInput, transactionSchema } from "../types";
+import { type TransactionInput, transactionSchema } from "../../types";
 import {
   useCreateTransaction,
   useUpdateTransaction,
-} from "../hooks/useTransactions";
-import { useAccounts } from "../hooks/useAccounts";
-import { useCategories } from "../hooks/useCategories";
+} from "../../hooks/useTransactions";
+import { useAccounts } from "../../hooks/useAccounts";
+import { useCategories } from "../../hooks/useCategories";
 
 interface Props {
   transaction?: TransactionInput & { id: number};
@@ -46,8 +46,8 @@ const TransactionForm = ({ transaction, mode="add", onSuccess }: Props) => {
   const selectedType = watch("type")
 
   // --- Data ---
-  const { data: accounts, isLoading: isAccoountsLoading } = useAccounts();
-  const { data: categories, isLoading: isCategoriesLoading } = useCategories(selectedType);
+  const { data: accounts, isLoading: isAccountsLoading } = useAccounts();
+const { data: categories, isLoading: isCategoriesLoading } = useCategories(selectedType);
 
   // --- Mutations ---
   const { mutate: createTransaction, isPending: isCreating } = useCreateTransaction();
@@ -63,7 +63,7 @@ const TransactionForm = ({ transaction, mode="add", onSuccess }: Props) => {
     if (mode === "edit" && transaction) {
       reset(transaction);
     }
-  }, [transaction, mode, isAccoountsLoading, isCategoriesLoading, reset]);
+  }, [transaction, mode, isAccountsLoading, isCategoriesLoading, reset]);
 
   // --- Handlers ---
   const onFormSubmit = (data: TransactionInput) => {
@@ -92,7 +92,6 @@ const TransactionForm = ({ transaction, mode="add", onSuccess }: Props) => {
       >
         <X size={20} />
       </button>
-       showing {categories?.length} categories 
 
       <div className="card-body">
         <h2 className="card-title flex items-center gap-2 text-2xl mb-4">

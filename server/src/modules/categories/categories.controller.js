@@ -14,7 +14,6 @@ export const getCategories = async (req, res) => {
       user_id,
       type
     );
-    console.log(user_id)
 
     res.json(data);
   } catch (err) {

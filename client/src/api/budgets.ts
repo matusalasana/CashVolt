@@ -6,8 +6,10 @@ type BudgetUpdateInput = {
   data: BudgetInput;
 }
 
-export const getBudgets = async () => {
-  const result = await API.get("/budgets")
+export const getBudgets = async (month?:number, year?: number) => {
+  const result = await API.get("/budgets", {
+    params: { month, year }
+  })
   return result.data
 }
 

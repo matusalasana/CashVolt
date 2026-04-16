@@ -1,6 +1,5 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { 
   getUser,
   loginUser,
@@ -26,7 +25,7 @@ export const useLogin = () => {
     toast.success("Login successful")
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Login failed: server error")
+      toast.error(error.message || "Login failed")
     }
   })
 }
@@ -43,7 +42,7 @@ export const useRegister = () => {
       toast.success("Signup successful")
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Something went wrong, please try again")
+      toast.error(error.message || "Something went wrong, please try again")
     }
   })
 }
@@ -60,7 +59,7 @@ export const useLogout = () => {
     },
 
     onError: (error: any) => {
-      toast.error(error?.message || "Logout failed")
+      toast.error(error.message || "Logout failed")
     }
   })
 }

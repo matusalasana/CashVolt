@@ -37,9 +37,11 @@ export const transactionSchema = z.object({
 export const budgetSchema = z.object({
   id: z.number().int().optional(),
   category_id: z.coerce.number().int().min(1, "Category is required"),
+  category_name: z.string().optional(),
   amount: z.coerce.number().positive("Amount must be positive"),
-  month: z.string().min(1, "Date is required")
-})
+  month: z.coerce.number().min(1, "Date is required"),
+  year: z.coerce.number().optional()
+});
 
 export const registerSchema = z.object({
   first_name: z.string().min(1),
@@ -53,6 +55,13 @@ export const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+export type BudgetPayload = {
+  category_id: number;
+  amount: number;
+  month: number;
+  year: number;
+};
+
 
 export type UserInput = z.infer<typeof userSchema>;
 export type AccountInput = z.infer<typeof accountSchema>;
@@ -62,5 +71,3 @@ export type BudgetInput = z.infer<typeof budgetSchema>;
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
-
-export type AuthResponse = z.infer<typeof authResponseSchema>;

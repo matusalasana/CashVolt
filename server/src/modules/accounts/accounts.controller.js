@@ -23,7 +23,7 @@ export const createAccount = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data[0]);
+    res.status(201).json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

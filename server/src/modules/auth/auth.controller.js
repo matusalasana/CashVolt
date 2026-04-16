@@ -1,13 +1,14 @@
 import {
-  registerUser,
-  loginUser,
-  getUserProfile
+  registerUserService,
+  loginUserService,
+  getMeService
 } from "./auth.service.js";
+import { NODE_ENV } from "../../config/env.js";
 
 // REGISTER
-export const register = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
-    const user = await registerUser(req.body);
+    const user = await registerUserService(req.body);
 
     res.status(201).json({
       message: "User created successfully",
@@ -19,13 +20,13 @@ export const register = async (req, res) => {
 };
 
 // LOGIN
-export const login = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const { user, token } = await loginUser(req.body);
+    const { user, token } = await loginUserService(req.body);
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
+      secure: NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/"
@@ -44,9 +45,10 @@ export const login = async (req, res) => {
 };
 
 // LOGOUT
-export const logout = (req, res) => {
+export const logoutUser = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
+    secure: NODE_ENV === "production",
     sameSite: "lax",
     path: "/"
   });
@@ -54,11 +56,13 @@ export const logout = (req, res) => {
   res.json({ message: "Logged out successfully" });
 };
 
-// GET ME
+// GET ME/USER
 export const getMe = async (req, res) => {
   try {
-    const user = await getUserProfile(req.user.userId);
-
+    const user = await getMeService(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json(user);
   } catch (error) {
     res.status(404).json({ message: error.message });

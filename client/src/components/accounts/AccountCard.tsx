@@ -1,23 +1,22 @@
-import { Pencil, Trash2, Wallet } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react"
 
 interface Props {
   name: string
-  id: string | number
+  id: number
   onEdit?: () => void
   onDelete?: () => void
 }
 
 const AccountCard = ({ name, id, onEdit, onDelete }: Props) => {
-  // Get the first letter for a nice placeholder avatar
-  const initial = name.charAt(0).toUpperCase();
+  const firstLetter = name.charAt(0).toUpperCase();
 
   return (
     <div className="card card-side bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-all duration-200 group">
-      {/* Left side Icon/Avatar Section */}
+      {/* Avatar Section */}
       <figure className="p-4 pr-0">
         <div className="avatar placeholder">
-          <div className="bg-primary/10 text-primary rounded-xl w-12">
-            <span className="text-xl flex justify-center items-center font-bold">{initial}</span>
+          <div className="bg-primary/10 flex justify-center items-center font-bold text-center text-primary rounded-xl w-12">
+            {firstLetter}
           </div>
         </div>
       </figure>
@@ -31,7 +30,7 @@ const AccountCard = ({ name, id, onEdit, onDelete }: Props) => {
           </div>
         </div>
 
-        {/* Action buttons - appear slightly more prominently on hover */}
+        {/* Action buttons */}
         <div className="flex items-center gap-1">
           <button
             onClick={onEdit}

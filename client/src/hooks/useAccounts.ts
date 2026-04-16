@@ -1,4 +1,4 @@
-import API from "../api/api";
+
 import { 
   getAccounts, 
   createAccount, 
@@ -29,8 +29,8 @@ export const useCreateAccount = () => {
       })
       toast.success("Account added successfully")
     },
-    onError: () => {
-      toast.error("Error adding new account")
+    onError: (error) => {
+      toast.error(error.message || "Error adding new account")
     }
   });
 };
@@ -46,8 +46,8 @@ export const useUpdateAccount = () => {
       toast.success("Account updated")
     },
 
-    onError: () => {
-      toast.error("Error updating the account")
+    onError: (error) => {
+      toast.error(error.message || "Error updating the account")
     }
   })
 }
@@ -66,7 +66,7 @@ export const useDeleteAccount = () => {
       
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Failed to delete account")
+      toast.error(error.message || "Failed to delete account")
     }
   });
 };

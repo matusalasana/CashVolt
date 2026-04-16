@@ -1,4 +1,4 @@
-import API from "../api/api";
+
 import { 
   getCategories,
   createCategory,
@@ -35,7 +35,7 @@ export const useCreateCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Error creating category")
+      toast.error(error.message ||"Error creating category")
     }
   })
 }
@@ -51,7 +51,7 @@ export const useUpdateCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Error updating category")
+      toast.error(error.message ||"Error updating category")
     }
   })
 }
@@ -68,7 +68,7 @@ export const useDeleteCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message ||"Error deleting category")
+      toast.error(error.message ||"Error deleting category")
     }
   })
 }
