@@ -22,25 +22,31 @@ export const categorySchema = z.object({
 
 export const transactionSchema = z.object({
   id: z.number().int().optional(),
-  account_name: z.string().optional(),
-  category_name: z.string(). optional(),
+
   type: z.enum(["income", "expense"]),
-  transaction_type: z.enum(["income", "expense"]).optional(),
-  amount: z.coerce.number().positive("Amount must be positive"),
-  description: z.string().min(1, "Description is required"),
-  account_id: z.coerce.number().int().min(1, "Account is required"),
-  category_id: z.coerce.number().int().min(1, "Category is required"),
-  transaction_date: z.string().min(1, "Date is required"),
+
+  amount: z.coerce.number().positive(),
+  description: z.string().min(1),
+
+  account_id: z.coerce.number().int().min(1),
+  category_id: z.coerce.number().int().min(1),
+
+  transaction_date: z.string(),
+
+  account_name: z.string().optional(),
+  category_name: z.string().optional(),
   created_at: z.string().optional(),
 });
 
 export const budgetSchema = z.object({
   id: z.number().int().optional(),
-  category_id: z.coerce.number().int().min(1, "Category is required"),
+
+  category_id: z.coerce.number().int().min(1),
+  amount: z.coerce.number().positive(),
+  month: z.coerce.number().int().min(1).max(12),
+  year: z.coerce.number().int().optional(),
+
   category_name: z.string().optional(),
-  amount: z.coerce.number().positive("Amount must be positive"),
-  month: z.coerce.number().min(1, "Date is required"),
-  year: z.coerce.number().optional()
 });
 
 export const registerSchema = z.object({
@@ -55,11 +61,22 @@ export const loginSchema = z.object({
   password: z.string().min(6),
 });
 
-export type BudgetPayload = {
+export type BudgetFormValues = {
+  id?: number;
   category_id: number;
   amount: number;
   month: number;
   year: number;
+  category_name?: string;
+};
+
+export type TransactionFormValues = {
+  type: "income" | "expense";
+  amount: number;
+  description: string;
+  account_id: number;
+  category_id: number;
+  transaction_date: string;
 };
 
 
