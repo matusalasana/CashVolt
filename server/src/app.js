@@ -10,7 +10,7 @@ import transactionsRoutes from "./modules/transactions/transactions.routes.js";
 import budgetsRoutes from "./modules/budgets/budgets.routes.js";
 import analyticsRoutes from "./modules/analytics/analytics.routes.js";
 import usersRoutes from "./modules/users/users.routes.js";
-import {FRONTEND_URL  } from "./config/env.js";
+import {FRONTEND_URL, FRONTEND_LOCALHOST_URL  } from "./config/env.js";
 
 
 const app = express();
@@ -28,7 +28,7 @@ app.use(limiter);
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: [ FRONTEND_URL, FRONTEND_LOCALHOST_URL ],
     credentials: true,
   })
 );
