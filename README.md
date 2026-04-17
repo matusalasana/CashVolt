@@ -81,6 +81,85 @@ The project follows a modular full-stack architecture with clear separation betw
 💰 CashVolt/ │ ├── 🌐 client/                          # Frontend (React + TypeScript) │   ├── 📁 public/                      # Static assets │   ├── 📁 src/ │   │   ├── 🔌 api/                    # Axios API layer │   │   ├── 🧩 components/             # Reusable UI components │   │   │   ├── 🏦 accounts/ │   │   │   ├── 💰 budgets/ │   │   │   ├── 🗂 categories/ │   │   │   ├── 💳 transactions/ │   │   │   └── 🔧 shared/ │   │   ├── 🪝 hooks/                  # React Query hooks │   │   ├── 📄 pages/                  # App pages (Dashboard, Settings) │   │   ├── 🧠 types/                  # TypeScript types + Zod schemas │   │   ├── 🛠 utils/                  # Helper functions │   │   ├── 🌍 context/               # Global state (if any) │   │   ├── App.tsx │   │   └── main.tsx │ ├── ⚙️ server/                          # Backend (Node.js + Express) │   ├── 📁 src/ │   │   ├── 🧩 modules/               # Feature-based architecture │   │   │   ├── 🔐 auth/ │   │   │   ├── 🏦 accounts/ │   │   │   ├── 💰 budgets/ │   │   │   ├── 🗂 categories/ │   │   │   └── 💳 transactions/ │   │   ├── 🌐 routes/                # API route definitions │   │   ├── 🛡 middleware/            # Auth, error handling │   │   ├── ⚙️ config/                # Database & environment config │   │   ├── 🛠 utils/                 # Helper functions │   │   ├── app.ts │   │   └── server.ts │ ├── 🔐 .env                           # Environment variables ├── 📦 package.json                   # Project dependencies └── 📘 README.md
 
 
-## below are wrong
-
-# Static assets │   ├── src/ │   │   ├── api/                    # Axios API instances & requests │   │   ├── components/             # Reusable UI components │   │   │   ├── accounts/ │   │   │   ├── budgets/ │   │   │   ├── categories/ │   │   │   ├── transactions/ │   │   │   └── shared/ │   │   ├── hooks/                  # React Query custom hooks │   │   ├── pages/                  # Route pages (Dashboard, Settings, etc.) │   │   ├── types/                  # TypeScript types + Zod schemas │   │   ├── utils/                 # Helpers & utilities │   │   ├── context/               # Global state (if used) │   │   ├── App.tsx │   │   └── main.tsx │ ├── server/                          # Backend (Node.js + Express) │   ├── src/ │   │   ├── modules/               # Feature-based modules │   │   │   ├── auth/ │   │   │   ├── accounts/ │   │   │   ├── budgets/ │   │   │   ├── categories/ │   │   │   └── transactions/ │   │   ├── routes/                # API route definitions │   │   ├── middleware/            # Auth, error handling, etc. │   │   ├── config/                # DB & environment config │   │   ├── utils/                 # Helper functions │   │   ├── app.ts                 # Express app setup │   │   └── server.ts              # Entry point │ ├── .env                           # Environment variables ├── package.json                   # Root config (if monorepo) └── README.md
+## Backend Structure 
+server/
+│
+├── src/
+│   │
+│   ├── config/
+│   │   ├── db.js
+│   │   └── env.js
+│   │
+│   ├── modules/
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── auth.routes.js
+│   │   │   ├── auth.controller.js
+│   │   │   ├── auth.service.js
+│   │   │   ├── auth.repository.js
+│   │   │   └── auth.middleware.js
+│   │   │
+│   │   ├── users/
+│   │   │   ├── users.routes.js
+│   │   │   ├── users.controller.js
+│   │   │   ├── users.service.js
+│   │   │   └── users.repository.js
+│   │   │
+│   │   ├── accounts/
+│   │   │   ├── accounts.routes.js
+│   │   │   ├── accounts.controller.js
+│   │   │   ├── accounts.service.js
+│   │   │   └── accounts.repository.js
+│   │   │
+│   │   ├── categories/
+│   │   │   ├── categories.routes.js
+│   │   │   ├── categories.controller.js
+│   │   │   ├── categories.service.js
+│   │   │   └── categories.repository.js
+│   │   │
+│   │   ├── transactions/
+│   │   │   ├── transactions.routes.js
+│   │   │   ├── transactions.controller.js
+│   │   │   ├── transactions.service.js
+│   │   │   └── transactions.repository.js
+│   │   │
+│   │   ├── budgets/
+│   │   │   ├── budgets.routes.js
+│   │   │   ├── budgets.controller.js
+│   │   │   ├── budgets.service.js
+│   │   │   └── budgets.repository.js
+│   │   │
+│   │   └── analytics/
+│   │       ├── analytics.routes.js
+│   │       ├── analytics.controller.js
+│   │       └── analytics.service.js
+│   │
+│   ├── middlewares/
+│   │   ├── auth.middleware.js
+│   │   ├── error.middleware.js
+│   │   └── validate.middleware.js
+│   │
+│   ├── utils/
+│   │   ├── jwt.js
+│   │   ├── hash.js
+│   │   ├── response.js
+│   │   └── constants.js
+│   │
+│   ├── shared/
+│   │   ├── errors/
+│   │   │   ├── AppError.js
+│   │   │   └── asyncHandler.js
+│   │   │
+│   │   ├── helpers/
+│   │   │   ├── pagination.js
+│   │   │   └── date.js
+│   │   │
+│   │   └── enums/
+│   │       ├── roles.js
+│   │       └── transactionTypes.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── package.json
+└── .env
