@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod"; // Import zod
 
 import {
-  transactionSchema,
   type TransactionInput,
   type TransactionFormValues,
 } from "../../types";
@@ -17,30 +17,23 @@ import { useAccounts } from "../../hooks/useAccounts";
 import { useCategories } from "../../hooks/useCategories";
 
 import {
-  Wallet,
   X,
-  Tag,
-  Calendar,
-  FileText,
-  DollarSign,
   PlusCircle,
   Save,
   Loader2,
-  ArrowUpDown,
-} from "lucide-react";
+} from "lucide-react"; // Only keep used imports
 
-/**
- * 🔥 IMPORTANT:
- * RHF FORM INPUT = STRINGS (safe for HTML inputs)
- */
-type TransactionFormInput = {
-  type: "income" | "expense";
-  amount: string;
-  description: string;
-  account_id: string;
-  category_id: string;
-  transaction_date: string;
-};
+// Create string-based schema for form input
+const transactionFormSchema = z.object({
+  type: z.enum(["income", "expense"]),
+  amount: z.string().min(1, "Amount is required"),
+  description: z.string().min(1, "Description is required"),
+  account_id: z.string().min(1, "Account is required"),
+  category_id: z.string().min(1, "Category is required"),
+  transaction_date: z.string().min(1, "Date is required"),
+});
+
+type TransactionFormInput = z.infer<typeof transactionFormSchema>;
 
 interface Props {
   transaction?: TransactionInput & { id: number };
@@ -55,9 +48,8 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
     reset,
     watch,
     setValue,
-    formState: { errors },
   } = useForm<TransactionFormInput>({
-    resolver: zodResolver(transactionSchema),
+    resolver: zodResolver(transactionFormSchema), // Use string schema
     defaultValues: {
       type: "expense",
       amount: "",
@@ -157,7 +149,6 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
           {/* AMOUNT */}
           <input
             type="number"

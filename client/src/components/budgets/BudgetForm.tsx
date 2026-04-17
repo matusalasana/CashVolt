@@ -1,16 +1,22 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { z } from "zod"; // Import zod
 
-import { budgetSchema } from "../../types";
-import type {
-  BudgetFormInput,
-  BudgetFormValues,
-} from "../../types/forms";
-
+import type { BudgetFormValues } from "../../types";
 import { useCreateBudget, useUpdateBudget } from "../../hooks/useBudgets";
 import { useCategories } from "../../hooks/useCategories";
 import { Loader2, X } from "lucide-react";
+
+// Create a string-based schema for form input
+const budgetFormSchema = z.object({
+  category_id: z.string().min(1, "Category is required"),
+  amount: z.string().min(1, "Amount is required"),
+  month: z.string().min(1, "Month is required"),
+  year: z.string().min(1, "Year is required"),
+});
+
+type BudgetFormInput = z.infer<typeof budgetFormSchema>;
 
 interface Props {
   budget?: BudgetFormValues & { id: number };
@@ -23,9 +29,8 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<BudgetFormInput>({
-    resolver: zodResolver(budgetSchema),
+    resolver: zodResolver(budgetFormSchema), // Use string schema
     defaultValues: {
       category_id: "",
       amount: "",
