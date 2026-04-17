@@ -1,5 +1,3 @@
-import { Plus } from "lucide-react";
-
 import { useAccounts, useDeleteAccount } from "../hooks/useAccounts";
 import { useAccountModals } from "../components/accounts/useAccountModals";
 
@@ -17,19 +15,10 @@ const Accounts = () => {
   return (
     <div className="p-4 max-w-6xl mx-auto min-h-screen">
       
-      <AccountsHeader accountsLength={accounts?.length || 0} />
-
-      {/* Add Button */}
-      <div className="mb-6">
-        <button
-          onClick={() => modals.setIsAddOpen(true)}
-          className="btn btn-primary gap-2 shadow-md"
-        >
-          <Plus size={20} />
-          Add New Account
-        </button>
-      </div>
-
+      <AccountsHeader 
+        accountsLength={accounts?.length || 0} 
+        onAdd={() => modals.setIsAddOpen(true)} // Pass onAdd prop
+      />
       <AccountsGrid
         accounts={accounts}
         isLoading={isLoading}

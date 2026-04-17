@@ -11,12 +11,14 @@ export const useAccountModals = () => {
   return {
     editingAccount,
     deletingAccount,
+    
     isEditOpen,
     isAddOpen,
     isDeleteOpen,
 
     setEditingAccount,
     setDeletingAccount,
+    
     setIsEditOpen,
     setIsAddOpen,
     setIsDeleteOpen,

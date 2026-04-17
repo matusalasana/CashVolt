@@ -1,6 +1,7 @@
 import AccountForm from "./AccountForm";
 import DeleteConfirmationCard from "../DeleteConfirmationCard";
 
+
 const AccountModals = ({
   isAddOpen,
   isEditOpen,
@@ -68,7 +69,7 @@ const AccountModals = ({
             setDeletingAccount(null);
           }}
           onDelete={() => {
-            if (!deletingAccount || isPending) return;
+            if (!deletingAccount) return;
 
             deleteAccount(deletingAccount.id, {
               onSuccess: () => {

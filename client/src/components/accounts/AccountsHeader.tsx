@@ -1,6 +1,11 @@
-import { Wallet } from "lucide-react";
+import { Wallet, Plus } from "lucide-react";
 
-const AccountsHeader = ({ accountsLength }) => {
+interface Props {
+  onAdd: () => void;
+  accountsLength: number;
+}
+
+const AccountsHeader = ({ accountsLength, onAdd }: Props) => {
   return (
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
       
@@ -16,6 +21,14 @@ const AccountsHeader = ({ accountsLength }) => {
           Manage your banks, cards, and cash wallets.
         </p>
       </div>
+      
+      <button
+        onClick={onAdd}
+        className="btn btn-primary gap-2 shadow-lg hover:shadow-primary/20 transition-all"
+      >
+        <Plus size={20} />
+        Add Accounts
+      </button>
 
       <div className="stats shadow bg-base-100 border border-base-200">
         <div className="stat py-2 px-6">

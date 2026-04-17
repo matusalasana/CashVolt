@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"; // Import zod
+import { z } from "zod";
 
 import {
   type TransactionInput,
@@ -21,7 +21,7 @@ import {
   PlusCircle,
   Save,
   Loader2,
-} from "lucide-react"; // Only keep used imports
+} from "lucide-react";
 
 // Create string-based schema for form input
 const transactionFormSchema = z.object({
@@ -48,8 +48,9 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
     reset,
     watch,
     setValue,
+    formState: { errors }, // Add formState to show errors
   } = useForm<TransactionFormInput>({
-    resolver: zodResolver(transactionFormSchema), // Use string schema
+    resolver: zodResolver(transactionFormSchema),
     defaultValues: {
       type: "expense",
       amount: "",
@@ -97,7 +98,7 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
   }, [transaction, mode, reset]);
 
   /**
-   * SUBMIT → convert string → number (FINAL API TYPE)
+   * SUBMIT → convert string → number 
    */
   const onSubmit = (data: TransactionFormInput) => {
     const payload: TransactionFormValues = {
@@ -150,52 +151,79 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* AMOUNT */}
-          <input
-            type="number"
-            placeholder="Amount"
-            className="input input-bordered w-full"
-            {...register("amount")}
-          />
+          <div className="form-control">
+            <input
+              type="number"
+              placeholder="Amount"
+              className={`input input-bordered w-full ${errors.amount ? 'input-error' : ''}`}
+              {...register("amount")}
+            />
+            {errors.amount && (
+              <span className="text-error text-xs mt-1">{errors.amount.message}</span>
+            )}
+          </div>
 
           {/* TYPE */}
-          <select className="select select-bordered w-full" {...register("type")}>
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
+          <div className="form-control">
+            <select className="select select-bordered w-full" {...register("type")}>
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
 
           {/* ACCOUNT */}
-          <select className="select select-bordered w-full" {...register("account_id")}>
-            <option value="">Select Account</option>
-            {accounts?.map((acc) => (
-              <option key={acc.id} value={acc.id}>
-                {acc.name}
-              </option>
-            ))}
-          </select>
+          <div className="form-control">
+            <select className="select select-bordered w-full" {...register("account_id")}>
+              <option value="">Select Account</option>
+              {accounts?.map((acc) => (
+                <option key={acc.id} value={acc.id}>
+                  {acc.name}
+                </option>
+              ))}
+            </select>
+            {errors.account_id && (
+              <span className="text-error text-xs mt-1">{errors.account_id.message}</span>
+            )}
+          </div>
 
           {/* CATEGORY */}
-          <select className="select select-bordered w-full" {...register("category_id")}>
-            <option value="">Select Category</option>
-            {categories?.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+          <div className="form-control">
+            <select className="select select-bordered w-full" {...register("category_id")}>
+              <option value="">Select Category</option>
+              {categories?.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            {errors.category_id && (
+              <span className="text-error text-xs mt-1">{errors.category_id.message}</span>
+            )}
+          </div>
 
           {/* DATE */}
-          <input
-            type="date"
-            className="input input-bordered w-full"
-            {...register("transaction_date")}
-          />
+          <div className="form-control">
+            <input
+              type="date"
+              className={`input input-bordered w-full ${errors.transaction_date ? 'input-error' : ''}`}
+              {...register("transaction_date")}
+            />
+            {errors.transaction_date && (
+              <span className="text-error text-xs mt-1">{errors.transaction_date.message}</span>
+            )}
+          </div>
 
           {/* DESCRIPTION */}
-          <textarea
-            className="textarea textarea-bordered w-full"
-            placeholder="Description"
-            {...register("description")}
-          />
+          <div className="form-control">
+            <textarea
+              className={`textarea textarea-bordered w-full ${errors.description ? 'textarea-error' : ''}`}
+              placeholder="Description"
+              {...register("description")}
+            />
+            {errors.description && (
+              <span className="text-error text-xs mt-1">{errors.description.message}</span>
+            )}
+          </div>
 
           {/* SUBMIT */}
           <button
