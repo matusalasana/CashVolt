@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   transactionSchema,
+  type TransactionInput,
   type TransactionFormValues,
 } from "../../types";
 
@@ -15,8 +16,34 @@ import {
 import { useAccounts } from "../../hooks/useAccounts";
 import { useCategories } from "../../hooks/useCategories";
 
+import {
+  Wallet,
+  X,
+  Tag,
+  Calendar,
+  FileText,
+  DollarSign,
+  PlusCircle,
+  Save,
+  Loader2,
+  ArrowUpDown,
+} from "lucide-react";
+
+/**
+ * 🔥 IMPORTANT:
+ * RHF FORM INPUT = STRINGS (safe for HTML inputs)
+ */
+type TransactionFormInput = {
+  type: "income" | "expense";
+  amount: string;
+  description: string;
+  account_id: string;
+  category_id: string;
+  transaction_date: string;
+};
+
 interface Props {
-  transaction?: TransactionFormValues & { id: number };
+  transaction?: TransactionInput & { id: number };
   mode?: "edit" | "add";
   onSuccess?: () => void;
 }
@@ -27,16 +54,16 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
     handleSubmit,
     reset,
     watch,
-    setValue
-  } = useForm<TransactionFormValues>({
+    setValue,
+    formState: { errors },
+  } = useForm<TransactionFormInput>({
     resolver: zodResolver(transactionSchema),
-
     defaultValues: {
       type: "expense",
-      amount: 0,
+      amount: "",
       description: "",
-      account_id: 0,
-      category_id: 0,
+      account_id: "",
+      category_id: "",
       transaction_date: new Date().toISOString().split("T")[0],
     },
   });
@@ -48,29 +75,55 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
 
   const { mutate: createTransaction, isPending: isCreating } =
     useCreateTransaction();
+
   const { mutate: updateTransaction, isPending: isUpdating } =
     useUpdateTransaction();
 
   const isPending = isCreating || isUpdating;
 
+  /**
+   * Reset category when type changes
+   */
   useEffect(() => {
-    setValue("category_id", 0);
+    setValue("category_id", "");
   }, [selectedType, setValue]);
 
+  /**
+   * Edit mode preload
+   */
   useEffect(() => {
     if (mode === "edit" && transaction) {
-      reset(transaction);
+      reset({
+        type: transaction.type,
+        amount: String(transaction.amount),
+        description: transaction.description,
+        account_id: String(transaction.account_id),
+        category_id: String(transaction.category_id),
+        transaction_date: transaction.transaction_date,
+      });
     }
   }, [transaction, mode, reset]);
 
-  const onFormSubmit = (data: TransactionFormValues) => {
+  /**
+   * SUBMIT → convert string → number (FINAL API TYPE)
+   */
+  const onSubmit = (data: TransactionFormInput) => {
+    const payload: TransactionFormValues = {
+      type: data.type,
+      amount: Number(data.amount),
+      description: data.description,
+      account_id: Number(data.account_id),
+      category_id: Number(data.category_id),
+      transaction_date: data.transaction_date,
+    };
+
     if (mode === "edit" && transaction) {
       updateTransaction(
-        { id: transaction.id, data },
+        { id: transaction.id, data: payload },
         { onSuccess: () => onSuccess?.() }
       );
     } else {
-      createTransaction(data, {
+      createTransaction(payload, {
         onSuccess: () => {
           reset();
           onSuccess?.();
@@ -80,45 +133,96 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-
-      <input
-        type="number"
-        className="input"
-        {...register("amount", { valueAsNumber: true })}
-      />
-
-      <select {...register("type")}>
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
-      </select>
-
-      <select {...register("account_id", { valueAsNumber: true })}>
-        <option value="">Account</option>
-        {accounts?.map((a) => (
-          <option key={a.id} value={a.id}>
-            {a.name}
-          </option>
-        ))}
-      </select>
-
-      <select {...register("category_id", { valueAsNumber: true })}>
-        <option value="">Category</option>
-        {categories?.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.name}
-          </option>
-        ))}
-      </select>
-
-      <input type="date" {...register("transaction_date")} />
-
-      <textarea {...register("description")} />
-
-      <button disabled={isPending}>
-        {isPending ? "Loading..." : "Save"}
+    <div className="relative card w-full max-w-lg bg-base-100 shadow-xl border border-base-200">
+      {/* Close button */}
+      <button
+        type="button"
+        onClick={onSuccess}
+        className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4"
+      >
+        <X size={18} />
       </button>
-    </form>
+
+      <div className="card-body">
+        <h2 className="card-title flex items-center gap-2 text-2xl mb-4">
+          {mode === "edit" ? (
+            <>
+              <Save className="text-primary" /> Edit Transaction
+            </>
+          ) : (
+            <>
+              <PlusCircle className="text-success" /> Add Transaction
+            </>
+          )}
+        </h2>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+          {/* AMOUNT */}
+          <input
+            type="number"
+            placeholder="Amount"
+            className="input input-bordered w-full"
+            {...register("amount")}
+          />
+
+          {/* TYPE */}
+          <select className="select select-bordered w-full" {...register("type")}>
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+
+          {/* ACCOUNT */}
+          <select className="select select-bordered w-full" {...register("account_id")}>
+            <option value="">Select Account</option>
+            {accounts?.map((acc) => (
+              <option key={acc.id} value={acc.id}>
+                {acc.name}
+              </option>
+            ))}
+          </select>
+
+          {/* CATEGORY */}
+          <select className="select select-bordered w-full" {...register("category_id")}>
+            <option value="">Select Category</option>
+            {categories?.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+
+          {/* DATE */}
+          <input
+            type="date"
+            className="input input-bordered w-full"
+            {...register("transaction_date")}
+          />
+
+          {/* DESCRIPTION */}
+          <textarea
+            className="textarea textarea-bordered w-full"
+            placeholder="Description"
+            {...register("description")}
+          />
+
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            disabled={isPending}
+            className="btn btn-primary w-full"
+          >
+            {isPending ? (
+              <Loader2 className="animate-spin" size={18} />
+            ) : mode === "edit" ? (
+              "Update Transaction"
+            ) : (
+              "Create Transaction"
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

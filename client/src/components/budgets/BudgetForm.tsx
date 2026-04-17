@@ -1,10 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { budgetSchema, type BudgetFormValues } from "../../types";
+
+import { budgetSchema } from "../../types";
+import type {
+  BudgetFormInput,
+  BudgetFormValues,
+} from "../../types/forms";
+
 import { useCreateBudget, useUpdateBudget } from "../../hooks/useBudgets";
-import { X, Loader2 } from "lucide-react";
 import { useCategories } from "../../hooks/useCategories";
+import { Loader2, X } from "lucide-react";
 
 interface Props {
   budget?: BudgetFormValues & { id: number };
@@ -17,13 +23,14 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
     register,
     handleSubmit,
     reset,
-  } = useForm<BudgetFormValues>({
+    formState: { errors },
+  } = useForm<BudgetFormInput>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
-      amount: 0,
-      category_id: undefined,
-      month: 1,
-      year: new Date().getFullYear(),
+      category_id: "",
+      amount: "",
+      month: "1",
+      year: String(new Date().getFullYear()),
     },
   });
 
@@ -34,8 +41,8 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
 
   const isPending = isCreating || isUpdating;
 
-  const onSubmit = (data: BudgetFormValues) => {
-    const payload = {
+  const onSubmit = (data: BudgetFormInput) => {
+    const payload: BudgetFormValues = {
       category_id: Number(data.category_id),
       amount: Number(data.amount),
       month: Number(data.month),
@@ -59,31 +66,40 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
 
   useEffect(() => {
     if (mode === "edit" && budget) {
-      reset(budget);
+      reset({
+        category_id: String(budget.category_id),
+        amount: String(budget.amount),
+        month: String(budget.month),
+        year: String(budget.year ?? new Date().getFullYear()),
+      });
     }
   }, [budget, mode, reset]);
 
   return (
     <div className="modal modal-open">
-      <div className="modal-box">
-        <button onClick={onSuccess} className="btn btn-circle btn-sm absolute right-2 top-2">
-          <X size={16} />
+      <div className="modal-box relative">
+        <button
+          onClick={onSuccess}
+          className="btn btn-sm btn-circle absolute right-2 top-2"
+        >
+          <X size={18} />
         </button>
 
-        <h2 className="text-lg font-bold mb-4">
+        <h2 className="text-lg font-semibold mb-4">
           {mode === "edit" ? "Edit Budget" : "Create Budget"}
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input
             type="number"
+            placeholder="Amount"
             className="input input-bordered w-full"
-            {...register("amount", { valueAsNumber: true })}
+            {...register("amount")}
           />
 
           <select
             className="select select-bordered w-full"
-            {...register("category_id", { valueAsNumber: true })}
+            {...register("category_id")}
           >
             <option value="">Select Category</option>
             {categories?.map((c) => (
@@ -98,13 +114,13 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             min={1}
             max={12}
             className="input input-bordered w-full"
-            {...register("month", { valueAsNumber: true })}
+            {...register("month")}
           />
 
           <input
             type="number"
             className="input input-bordered w-full"
-            {...register("year", { valueAsNumber: true })}
+            {...register("year")}
           />
 
           <button className="btn btn-primary w-full" disabled={isPending}>
