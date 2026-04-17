@@ -3,7 +3,6 @@ import {
   loginUserService,
   getMeService
 } from "./auth.service.js";
-import { NODE_ENV } from "../../config/env.js";
 
 // REGISTER
 export const registerUser = async (req, res) => {
@@ -26,7 +25,7 @@ export const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: NODE_ENV === "production",
+      secure: true,
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/"
@@ -48,7 +47,7 @@ export const loginUser = async (req, res) => {
 export const logoutUser = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: NODE_ENV === "production",
+    secure: true,
     sameSite: "lax",
     path: "/"
   });
