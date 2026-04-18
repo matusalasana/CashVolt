@@ -18,19 +18,13 @@ const Contact = () => {
         <div className="card bg-base-100 shadow-xl p-6 text-center">
           <Mail className="w-8 h-8 mx-auto text-blue-500 mb-3" />
           <h2 className="text-lg font-semibold">Email Support</h2>
-          <p className="text-gray-500 mt-2">support@cashvolt.app</p>
-        </div>
-
-        <div className="card bg-base-100 shadow-xl p-6 text-center">
-          <MessageSquare className="w-8 h-8 mx-auto text-green-500 mb-3" />
-          <h2 className="text-lg font-semibold">Live Chat</h2>
-          <p className="text-gray-500 mt-2">Fast responses for urgent issues</p>
+          <p className="text-gray-500 mt-2">matusalasana@gmail.com</p>
         </div>
 
         <div className="card bg-base-100 shadow-xl p-6 text-center">
           <Phone className="w-8 h-8 mx-auto text-purple-500 mb-3" />
           <h2 className="text-lg font-semibold">Phone Support</h2>
-          <p className="text-gray-500 mt-2">Available for premium users</p>
+          <p className="text-gray-500 mt-2">+251-945807386</p>
         </div>
 
       </div>

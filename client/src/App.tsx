@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AppLayout from "./components/AppLayout";
 
+// Components 
 import Footer from "./components/Footer";
 
 // Pages
@@ -19,6 +20,9 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import AboutDevelopers from "./pages/AboutDevelopers";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
@@ -40,6 +44,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/developers" element={<AboutDevelopers />} />
 
         {/* PROTECTED ROUTES */}
         <Route element={<ProtectedRoutes />}>
