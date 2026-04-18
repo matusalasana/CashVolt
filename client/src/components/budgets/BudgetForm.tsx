@@ -7,7 +7,6 @@ import { useCreateBudget, useUpdateBudget } from "../../hooks/useBudgets";
 import { useCategories } from "../../hooks/useCategories";
 import { Loader2, X } from "lucide-react";
 
-
 interface Props {
   budget?: BudgetInput & { id: number };
   mode?: "add" | "edit";
@@ -16,32 +15,35 @@ interface Props {
 
 const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
   const currentYear = new Date().getFullYear();
-    const {
-      register,
-      handleSubmit,
-      reset,
-      formState: { errors },
-    } = useForm<BudgetInput>({
-      resolver: zodResolver(budgetSchema),
-      defaultValues: {
-        month: new Date().getMonth() + 1,
-        year: currentYear,
-      },
-    });
   
-  const monthsOfTheYear= [
-    {name: "January", value:1},
-    {name: "February", value:2},
-    {name: "March", value:3},
-    {name: "April", value:4},
-    {name: "May", value:5},
-    {name: "June", value:6},
-    {name: "July", value:7},
-    {name: "August", value:8},
-    {name: "September", value:9},
-    {name: "October", value:10},
-    {name: "November", value:11},
-    {name: "December", value:12}
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<BudgetInput>({
+    resolver: zodResolver(budgetSchema),
+    defaultValues: {
+      month: new Date().getMonth() + 1,
+      year: currentYear,
+      amount: undefined, // Add this to match the BudgetInput type
+      category_id: undefined, // Add this to match the BudgetInput type
+    },
+  });
+  
+  const monthsOfTheYear = [
+    { name: "January", value: 1 },
+    { name: "February", value: 2 },
+    { name: "March", value: 3 },
+    { name: "April", value: 4 },
+    { name: "May", value: 5 },
+    { name: "June", value: 6 },
+    { name: "July", value: 7 },
+    { name: "August", value: 8 },
+    { name: "September", value: 9 },
+    { name: "October", value: 10 },
+    { name: "November", value: 11 },
+    { name: "December", value: 12 }
   ];
 
   const { mutate: createBudget, isPending: isCreating } = useCreateBudget();
@@ -52,7 +54,6 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
   const isPending = isCreating || isUpdating;
 
   const onSubmit = (data: BudgetInput) => {
-
     if (mode === "edit" && budget) {
       updateBudget(
         { id: budget.id, data: data },
@@ -61,7 +62,12 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
     } else {
       createBudget(data, {
         onSuccess: () => {
-          reset();
+          reset({
+            month: new Date().getMonth() + 1,
+            year: currentYear,
+            amount: undefined,
+            category_id: undefined,
+          });
           onSuccess?.();
         },
       });
@@ -76,7 +82,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
         month: budget.month ?? new Date().getMonth() + 1,
       });
     }
-  }, [budget, mode, reset]);
+  }, [budget, mode, reset, currentYear]);
 
   return (
     <div>
@@ -97,7 +103,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             type="number"
             placeholder="Amount"
             className="input input-bordered w-full"
-            {...register("amount")}
+            {...register("amount", { valueAsNumber: true })}
           />
           {errors.amount && (
             <p id="name-error" className="text-red-500 text-sm">
@@ -107,7 +113,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
 
           <select
             className="select select-bordered w-full"
-            {...register("category_id")}
+            {...register("category_id", { valueAsNumber: true })}
           >
             <option value="">Select Category</option>
             {categories?.map((c) => (
@@ -124,7 +130,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
 
           <select
             className="select select-bordered w-full"
-            {...register("month")}
+            {...register("month", { valueAsNumber: true })}
           >
             <option value="">Select Month</option>
             {monthsOfTheYear?.map((mon) => (
@@ -143,7 +149,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             type="number"
             readOnly
             className="input input-bordered w-full"
-            {...register("year")}
+            {...register("year", { valueAsNumber: true })}
           />
 
           <button className="btn btn-primary w-full" disabled={isPending}>
