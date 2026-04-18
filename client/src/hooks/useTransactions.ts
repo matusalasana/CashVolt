@@ -8,10 +8,10 @@ import {
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-export const useTransactions = (type?: string) => {
+export const useTransactions = (type?: string, limit?: number, offset?: number) => {
   return useQuery({
-    queryKey: ["transactions", type],
-    queryFn: () =>  getTransactions(type),
+    queryKey: ["transactions", type, limit, offset],
+    queryFn: () =>  getTransactions(type, limit, offset),
     
     retry: false,
     staleTime: 1000 * 60 * 5,

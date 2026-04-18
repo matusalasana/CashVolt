@@ -1,4 +1,5 @@
 import TransactionCard from "./TransactionCard";
+import TransactionsLoader from "./TransactionsLoader";
 
 const TransactionsGrid = ({
   transactions,
@@ -8,9 +9,7 @@ const TransactionsGrid = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="flex justify-center py-20">
-        <span className="loading loading-dots loading-lg text-primary"></span>
-      </div>
+      <TransactionsLoader />
     );
   }
 

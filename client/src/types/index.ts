@@ -40,12 +40,10 @@ export const transactionSchema = z.object({
 
 export const budgetSchema = z.object({
   id: z.number().int().optional(),
-
   category_id: z.coerce.number().int().min(1),
   amount: z.coerce.number().positive(),
   month: z.coerce.number().int().min(1).max(12),
   year: z.coerce.number().int().optional(),
-
   category_name: z.string().optional(),
 });
 
@@ -60,15 +58,6 @@ export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
-
-export type BudgetFormValues = {
-  id?: number;
-  category_id: number;
-  amount: number;
-  month: number;
-  year: number;
-  category_name?: string;
-};
 
 export type TransactionFormValues = {
   type: "income" | "expense";

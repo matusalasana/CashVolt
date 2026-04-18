@@ -4,7 +4,7 @@ import { sql } from "../../config/db.js";
 export const getTransactionsRepo = async (
   user_id,
   type,
-  limit = 20,
+  limit = 10,
   offset = 0,
 ) => {
   return await sql`

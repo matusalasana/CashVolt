@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useTransactions, useDeleteTransaction } from "../hooks/useTransactions";
 import { useTransactionModals } from "../components/transactions/useTransactionModals";
-
+import TransactionPagination from "../components/transactions/TransactionPagination";
 import TransactionsHeader from "../components/transactions/TransactionsHeader";
 import TransactionsFilters from "../components/transactions/TransactionsFilters";
 import TransactionsGrid from "../components/transactions/TransactionsGrid";
@@ -11,9 +11,13 @@ import TransactionsModals from "../components/transactions/TransactionsModals";
 
 const Transaction = () => {
   const [selectedType, setSelectedType] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const transactionsLimit = 10; // ✅ fixed limit
+  const offset = transactionsLimit * (pageNumber - 1);
 
   const { data: transactions, isLoading } =
-    useTransactions(selectedType);
+    useTransactions(selectedType, transactionsLimit, offset);
 
   const { mutate: deleteTransaction, isPending } =
     useDeleteTransaction();
@@ -53,6 +57,14 @@ const Transaction = () => {
         modals={modals}
         deleteTransaction={deleteTransaction}
         isDeleting={isPending}
+      />
+
+      <TransactionPagination 
+        onClickNext={() => setPageNumber(prev => prev + 1)}
+        onClickPrevious={() => setPageNumber(prev => prev - 1)}
+        pageNumber={pageNumber}
+        isLastPage={transactions?.length < transactionsLimit}
+        isFirstPage={pageNumber === 1}
       />
     </div>
   );

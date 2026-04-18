@@ -12,7 +12,7 @@ import {
 export const getTransactionsService = async (
   type,
   user_id,
-  limit = 20,
+  limit = 10,
   offset = 0,
 ) => {
   if (!user_id) throw new Error("user_id is required");

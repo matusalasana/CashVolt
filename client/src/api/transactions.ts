@@ -6,10 +6,18 @@ type UpdateTransactionInput = {
   data: TransactionInput;
 };
 
-export const getTransactions = async (type?: string) => {
-  const res = await API.get("/transactions", {
-    params: type ? { type } : {}
-  });
+export const getTransactions = async (
+  type?: string,
+  limit?: number,
+  offset?: number
+) => {
+  const params: any = {};
+
+  if (type !== undefined) params.type = type;
+  if (limit !== undefined) params.limit = limit;
+  if (offset !== undefined) params.offset = offset;
+
+  const res = await API.get("/transactions", { params });
   return res.data;
 };
 
