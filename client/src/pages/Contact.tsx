@@ -1,4 +1,4 @@
-import { Mail, MessageSquare, Phone, Send } from "lucide-react";
+import { Mail, Phone, Send } from "lucide-react";
 
 const Contact = () => {
   return (
