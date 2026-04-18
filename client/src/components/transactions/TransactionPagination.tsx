@@ -1,4 +1,3 @@
-import React from 'react'
 
 const TransactionPagination = ({onClickNext, onClickPrevious, pageNumber, isLastPage, isFirstPage}) => {
   return (

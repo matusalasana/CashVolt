@@ -70,7 +70,11 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
 
   useEffect(() => {
     if (mode === "edit" && budget) {
-      reset(budget);
+      reset({
+        ...budget,
+        year: budget.year ?? currentYear,
+        month: budget.month ?? new Date().getMonth() + 1,
+      });
     }
   }, [budget, mode, reset]);
 
@@ -113,7 +117,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             ))}
           </select>
           {errors.category_id && (
-            <p id="name-error" className="text-red-500 text-sm">
+            <p id="category-error" className="text-red-500 text-sm">
               category is required 
             </p>
           )}
@@ -130,7 +134,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             ))}
           </select>
           {errors.month && (
-            <p id="name-error" className="text-red-500 text-sm">
+            <p id="month-error" className="text-red-500 text-sm">
               select month
             </p>
           )}
