@@ -8,16 +8,20 @@ import TransactionsFilters from "../components/transactions/TransactionsFilters"
 import TransactionsGrid from "../components/transactions/TransactionsGrid";
 import TransactionsEmptyState from "../components/transactions/TransactionsEmptyState";
 import TransactionsModals from "../components/transactions/TransactionsModals";
+import TransactionSorts from "../components/transactions/TransactionSorts";
 
 const Transaction = () => {
   const [selectedType, setSelectedType] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  
+  const [sortBy, setSortBy] = useState("");
+  const [order, setOrder] = useState("desc");
 
-  const transactionsLimit = 10; // ✅ fixed limit
+  const transactionsLimit = 10;
   const offset = transactionsLimit * (pageNumber - 1);
 
   const { data: transactions, isLoading } =
-    useTransactions(selectedType, transactionsLimit, offset);
+    useTransactions(selectedType, sortBy, order, transactionsLimit, offset);
 
   const { mutate: deleteTransaction, isPending } =
     useDeleteTransaction();
@@ -34,6 +38,15 @@ const Transaction = () => {
       <TransactionsFilters
         selectedType={selectedType}
         setSelectedType={setSelectedType}
+      />
+      
+      <TransactionSorts
+        order={order}
+        onClickDescending={() => {
+          setOrder(order === "desc" ? "asc" : "desc");
+        }}
+        onSortChange={(value) => setSortBy(value)}
+        isLoading={isLoading}
       />
 
       <TransactionsGrid
@@ -57,6 +70,7 @@ const Transaction = () => {
         modals={modals}
         deleteTransaction={deleteTransaction}
         isDeleting={isPending}
+        isTransactionLoading={isLoading}
       />
 
       <TransactionPagination 

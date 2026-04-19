@@ -8,12 +8,16 @@ type UpdateTransactionInput = {
 
 export const getTransactions = async (
   type?: string,
+  sortBy?: string,
+  order?: string,
   limit?: number,
   offset?: number
 ) => {
   const params: any = {};
 
   if (type !== undefined) params.type = type;
+  if (sortBy !== undefined) params.sortBy = sortBy;
+  if (order !== undefined) params.order = order;
   if (limit !== undefined) params.limit = limit;
   if (offset !== undefined) params.offset = offset;
 

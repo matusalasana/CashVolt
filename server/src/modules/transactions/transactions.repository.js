@@ -4,6 +4,8 @@ import { sql } from "../../config/db.js";
 export const getTransactionsRepo = async (
   user_id,
   type,
+  safeSort,
+  safeOrder, 
   limit = 10,
   offset = 0,
 ) => {
@@ -16,7 +18,7 @@ export const getTransactionsRepo = async (
     LEFT JOIN categories c ON t.category_id = c.id
     WHERE t.user_id = ${user_id}
     ${type ? sql`AND t.type = ${type}` : sql``}
-    ORDER BY t.transaction_date DESC
+    ORDER BY ${sql.unsafe(safeSort)} ${sql.unsafe(safeOrder)}
     LIMIT ${limit}
     OFFSET ${offset};
   `;
@@ -33,7 +35,7 @@ export const createTransactionRepo = async (data, user_id) => {
     transaction_date,
   } = data;
 
-  return await sql`
+  const result = await sql`
     INSERT INTO transactions (
       amount,
       type,
@@ -54,6 +56,7 @@ export const createTransactionRepo = async (data, user_id) => {
     )
     RETURNING *;
   `;
+  return result[0];
 };
 
 // UPDATE
@@ -67,7 +70,7 @@ export const updateTransactionRepo = async (id, data, user_id) => {
     transaction_date,
   } = data;
 
-  return await sql`
+  const result = await sql`
     UPDATE transactions
     SET 
       amount = ${amount},
@@ -79,35 +82,40 @@ export const updateTransactionRepo = async (id, data, user_id) => {
     WHERE id = ${id} AND user_id = ${user_id}
     RETURNING *;
   `;
+  return result[0];
 };
 
 // DELETE
 export const deleteTransactionRepo = async (id, user_id) => {
-  return await sql`
+  const result = await sql`
     DELETE FROM transactions
     WHERE id = ${id} AND user_id = ${user_id}
     RETURNING *;
   `;
+  return result[0]
 };
 
 // VALIDATION HELPERS
 export const getAccountById = async (id, user_id) => {
-  return await sql`
+  const account = await sql`
     SELECT * FROM accounts 
     WHERE id = ${id} AND user_id = ${user_id}
   `;
+  return account[0];
 };
 
 export const getCategoryById = async (id, user_id) => {
-  return await sql`
+  const category = await sql`
     SELECT * FROM categories 
     WHERE id = ${id} AND user_id = ${user_id}
   `;
+  return category[0]
 };
 
 export const getTransactionById = async (id, user_id) => {
-  return await sql`
+  const transaction = await sql`
     SELECT * FROM transactions 
     WHERE id = ${id} AND user_id = ${user_id}
   `;
+  return transaction[0]
 };

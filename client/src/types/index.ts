@@ -25,11 +25,11 @@ export const transactionSchema = z.object({
 
   type: z.enum(["income", "expense"]),
 
-  amount: z.coerce.number().positive(),
+  amount: z.number().positive(),
   description: z.string().min(1),
 
-  account_id: z.coerce.number().int().min(1),
-  category_id: z.coerce.number().int().min(1),
+  account_id: z.number().int().min(1),
+  category_id: z.number().int().min(1),
 
   transaction_date: z.string(),
 

@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 import {
-  type TransactionInput,
-  type TransactionFormValues,
+  type TransactionInput, transactionSchema
 } from "../../types";
 
 import {
@@ -23,48 +21,32 @@ import {
   Loader2,
 } from "lucide-react";
 
-// Create string-based schema for form input
-const transactionFormSchema = z.object({
-  type: z.enum(["income", "expense"]),
-  amount: z.string().min(1, "Amount is required"),
-  description: z.string().min(1, "Description is required"),
-  account_id: z.string().min(1, "Account is required"),
-  category_id: z.string().min(1, "Category is required"),
-  transaction_date: z.string().min(1, "Date is required"),
-});
-
-type TransactionFormInput = z.infer<typeof transactionFormSchema>;
-
 interface Props {
   transaction?: TransactionInput & { id: number };
   mode?: "edit" | "add";
   onSuccess?: () => void;
+  isTransactionLoading?: boolean;
 }
 
-const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
+const TransactionForm = ({ transaction, isTransactionLoading, mode = "add", onSuccess }: Props) => {
   const {
     register,
     handleSubmit,
     reset,
     watch,
-    setValue,
-    formState: { errors }, // Add formState to show errors
-  } = useForm<TransactionFormInput>({
-    resolver: zodResolver(transactionFormSchema),
+    formState: { errors },
+  } = useForm<TransactionInput>({
+    resolver: zodResolver(transactionSchema),
     defaultValues: {
       type: "expense",
-      amount: "",
-      description: "",
-      account_id: "",
-      category_id: "",
       transaction_date: new Date().toISOString().split("T")[0],
     },
   });
 
   const selectedType = watch("type");
 
-  const { data: accounts } = useAccounts();
-  const { data: categories } = useCategories(selectedType);
+  const { data: accounts, isLoading:isAccountLoading } = useAccounts();
+  const { data: categories, isLoading: isCategoryLoading } = useCategories(selectedType);
 
   const { mutate: createTransaction, isPending: isCreating } =
     useCreateTransaction();
@@ -73,50 +55,29 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
     useUpdateTransaction();
 
   const isPending = isCreating || isUpdating;
+  const isFormLoading = isTransactionLoading || isAccountLoading || isCategoryLoading
 
-  /**
-   * Reset category when type changes
-   */
-  useEffect(() => {
-    setValue("category_id", "");
-  }, [selectedType, setValue]);
-
-  /**
-   * Edit mode preload
-   */
+  // Edit mode preload
   useEffect(() => {
     if (mode === "edit" && transaction) {
-      reset({
-        type: transaction.type,
-        amount: String(transaction.amount),
-        description: transaction.description,
-        account_id: String(transaction.account_id),
-        category_id: String(transaction.category_id),
-        transaction_date: transaction.transaction_date,
-      });
+      reset(transaction);
     }
-  }, [transaction, mode, reset]);
+  }, [
+    transaction, 
+    mode, 
+    reset, 
+    isFormLoading,
+  ]);
 
-  /**
-   * SUBMIT → convert string → number 
-   */
-  const onSubmit = (data: TransactionFormInput) => {
-    const payload: TransactionFormValues = {
-      type: data.type,
-      amount: Number(data.amount),
-      description: data.description,
-      account_id: Number(data.account_id),
-      category_id: Number(data.category_id),
-      transaction_date: data.transaction_date,
-    };
+  const onSubmit = (data: TransactionInput) => {
 
     if (mode === "edit" && transaction) {
       updateTransaction(
-        { id: transaction.id, data: payload },
+        { id: transaction.id, data: data },
         { onSuccess: () => onSuccess?.() }
       );
     } else {
-      createTransaction(payload, {
+      createTransaction(data, {
         onSuccess: () => {
           reset();
           onSuccess?.();
@@ -156,7 +117,7 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
               type="number"
               placeholder="Amount"
               className={`input input-bordered w-full ${errors.amount ? 'input-error' : ''}`}
-              {...register("amount")}
+              {...register("amount", {valueAsNumber: true})}
             />
             {errors.amount && (
               <span className="text-error text-xs mt-1">{errors.amount.message}</span>
@@ -165,7 +126,7 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
 
           {/* TYPE */}
           <div className="form-control">
-            <select className="select select-bordered w-full" {...register("type")}>
+            <select disabled={isFormLoading} className="select select-bordered w-full" {...register("type")}>
               <option value="expense">Expense</option>
               <option value="income">Income</option>
             </select>
@@ -173,8 +134,8 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
 
           {/* ACCOUNT */}
           <div className="form-control">
-            <select className="select select-bordered w-full" {...register("account_id")}>
-              <option value="">Select Account</option>
+            <select disabled={isFormLoading} className="select select-bordered w-full" {...register("account_id", {valueAsNumber: true})}>
+              <option value="">{isFormLoading ? "Loading..." : "Select Account"}</option>
               {accounts?.map((acc) => (
                 <option key={acc.id} value={acc.id}>
                   {acc.name}
@@ -188,8 +149,13 @@ const TransactionForm = ({ transaction, mode = "add", onSuccess }: Props) => {
 
           {/* CATEGORY */}
           <div className="form-control">
-            <select className="select select-bordered w-full" {...register("category_id")}>
-              <option value="">Select Category</option>
+            <select disabled={isFormLoading} className="select select-bordered w-full" {...register("category_id", {valueAsNumber: true})}>
+              <option value="">
+                {isFormLoading 
+                  ? "Loading..."
+                  : "Select Category"
+                }
+              </option>
               {categories?.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}

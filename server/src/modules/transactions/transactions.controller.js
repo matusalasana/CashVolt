@@ -9,14 +9,16 @@ import {
 export const getTransactions = async (req, res) => {
   try {
     const user_id = req.user.userId;
-    const { type, limit, offset } = req.query;
-
+    const { type, sortBy, order, limit, offset } = req.query;
+    
     const data = await getTransactionsService(
-      type,
       user_id,
+      type,
+      sortBy,
+      order,
       limit,
       offset
-    )
+    );
     res.json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -31,7 +33,7 @@ export const createTransaction = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data[0]);
+    res.status(201).json(data);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -40,7 +42,7 @@ export const createTransaction = async (req, res) => {
 // UPDATE 
 export const updateTransaction = async (req, res) => {
   try{
-    const id = req.params.id;
+    const id = Number(req.params.id);
 
     const updated = await updateTransactionService(
       id,
@@ -48,7 +50,7 @@ export const updateTransaction = async (req, res) => {
       req.user.userId
     );
   
-    res.json(updated[0]);
+    res.json(updated);
   }catch(err){
     res.status(404).json({ message: err.message });
   }

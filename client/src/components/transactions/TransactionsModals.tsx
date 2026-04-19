@@ -5,6 +5,7 @@ const TransactionsModals = ({
   modals,
   deleteTransaction,
   isDeleting,
+  isTransactionLoading,
 }) => {
   const {
     isAddOpen,
@@ -29,6 +30,7 @@ const TransactionsModals = ({
             <TransactionForm
               mode="add"
               onSuccess={() => setIsAddOpen(false)}
+              isTransactionLoading={isTransactionLoading}
             />
           </div>
 
@@ -46,6 +48,7 @@ const TransactionsModals = ({
             mode="edit"
             transaction={editingTransaction}
             onSuccess={() => setIsEditOpen(false)}
+            isTransactionLoading={isTransactionLoading}
           />
         </div>
       )}
