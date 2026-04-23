@@ -47,7 +47,7 @@ const Dashboard = () => {
     };
   };
 
-  if (monthlyDataLoading || yearlyDataLoading || userLoading) {
+  if (monthlyDataLoading || yearlyDataLoading || userLoading || !user) {
     return <DashboardLoader />;
   }
 

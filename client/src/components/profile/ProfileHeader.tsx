@@ -20,7 +20,7 @@ const ProfileHeader = ({
   const avatar = avatar_url || `https://placehold.net/avatar.png`;
 
   return (
-    <div className="text-center">
+    <div className="text-center pt-10">
       {/* Avatar Section */}
       <div className="relative -mt-12 flex justify-center">
         <div className="avatar">
