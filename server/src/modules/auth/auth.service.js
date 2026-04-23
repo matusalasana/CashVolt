@@ -5,6 +5,7 @@ import { signToken } from "../../utils/jwt.js";
 import {
   findUserByEmailRepo,
   registerUserRepo,
+  updateUserRepo,
   findUserByIdRepo
 } from "./auth.repository.js";
 
@@ -50,6 +51,22 @@ export const loginUserService = async (data) => {
   
   const token = signToken({ userId: user.id, role: user.role });
   return { user, token };
+};
+
+// Update 
+export const updateUserService = async (data, user_id) => {
+  const user = await findUserByIdRepo(user_id);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (!data) {
+    throw new Error("No update data provided");
+  }
+
+  const result = await updateUserRepo(data, user_id);
+
+  return result;
 };
 
 // UserInfo

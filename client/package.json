@@ -16,7 +16,7 @@
     "axios": "^1.13.6",
     "chart.js": "^4.5.1",
     "emoji-picker-react": "^4.18.0",
-    "framer-motion": "^12.35.0",
+    "framer-motion": "^12.38.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.576.0",
     "moment": "^2.30.1",

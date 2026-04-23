@@ -4,6 +4,7 @@ import {
   getUser,
   loginUser,
   registerUser,
+  updateUser,
   logoutUser
   } from "../api/auth"
 
@@ -26,6 +27,22 @@ export const useLogin = () => {
     },
     onError: (error) => {
       toast.error(error.message || "Login failed")
+    }
+  })
+}
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient()
+  return useMutation ({
+    mutationFn: updateUser, 
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["auth"]
+      })
+    toast.success("Updated successfully")
+    },
+    onError: (error) => {
+      toast.error(error.message || "Update failed")
     }
   })
 }

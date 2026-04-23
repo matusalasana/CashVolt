@@ -1,12 +1,21 @@
 import { z } from 'zod';
 
 export const userSchema = z.object({
-  id: z.number().int().optional(),
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.string().optional().default("user"),
+});
+
+export const updateUserSchema = z.object({
+  first_name: z.string().min(1).optional(),
+  last_name: z.string().min(1).optional(),
+  email: z.string().email().optional(),
+  password: z.string().min(6).optional(),
+  role: z.string().optional(),
+  profile_picture: z.string().optional(),
+  created_at: z.string().optional(),
 });
 
 export const accountSchema = z.object({
@@ -69,6 +78,7 @@ export type TransactionFormValues = {
 };
 
 export type UserInput = z.infer<typeof userSchema>;
+export type UserUpdateInput = z.infer<typeof updateUserSchema>;
 export type AccountInput = z.infer<typeof accountSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type TransactionInput = z.infer<typeof transactionSchema>;

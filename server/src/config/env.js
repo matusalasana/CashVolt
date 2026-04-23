@@ -7,3 +7,7 @@ export const FRONTEND_URL = process.env.FRONTEND_URL || "https://cash-volt.verce
 export const FRONTEND_LOCALHOST_URL = process.env.FRONTEND_LOCALHOST_URL || "http://localhost:5173";
 export const DATABASE_URL = process.env.DATABASE_URL;
 export const JWT_SECRET = process.env.JWT_SECRET;
+
+export const CLOUD_NAME = process.env.CLOUD_NAME;
+export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;

@@ -2,7 +2,6 @@ import WelcomeUserCard from "../components/dashboard/WelcomeUserCard";
 import CategoryPieChart from "../components/categories/CategoryPieChart";
 import { useOverviewAnalytics, useYearlyAnalytics } from "../hooks/useAnalytics";
 import { useAuth } from "../hooks/useAuth";
-import Test from "../components/Test";
 import DashboardLoader from "../components/dashboard/DashboardLoader";
 import MonthlyOverviewSection from "../components/dashboard/MonthlyOverviewSection";
 import YearlyOverviewChart from "../components/dashboard/YearlyOverviewChart";
@@ -61,8 +60,6 @@ const Dashboard = () => {
         monthName={monthsOfTheYear[currentMonth - 1]}
         year={currentYear}
       />
-      
-      <Test />
 
       <MonthlyOverviewSection
         overviews={overviews}

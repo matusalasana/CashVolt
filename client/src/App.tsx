@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 
 // Pages
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import Transactions from "./pages/Transactions";
 import Budgets from "./pages/Budgets";
 import Accounts from "./pages/Accounts";
@@ -59,6 +60,7 @@ function App() {
             <Route path="/goals" element={<Goals />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
 

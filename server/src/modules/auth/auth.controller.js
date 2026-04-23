@@ -1,6 +1,7 @@
 import {
   registerUserService,
   loginUserService,
+  updateUserService,
   getMeService
 } from "./auth.service.js";
 
@@ -40,6 +41,23 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+// Update 
+export const updateUser = async (req, res) => {
+  try {
+    const result = await updateUserService(
+      req.body,
+      req.user.userId
+    );
+
+    return res.status(200).json(result);
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "failed to update"
+    });
   }
 };
 
