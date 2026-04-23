@@ -77,7 +77,7 @@ export const getOverviewAnalyticsService = async (user_id, month, year) => {
       AND EXTRACT(YEAR FROM t.transaction_date) = ${year};
   `;
 
-  return result;
+  return result[0];
 };
 
 

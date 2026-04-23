@@ -4,22 +4,21 @@ import MonthlyBarChart from "./MonthlyBarChart";
 const MonthlyOverviewSection = ({ overviews, monthName, year }) => {
   return (
     <>
-      {overviews?.map((overview, index) => (
-        <div key={overview.id || index} className="space-y-6">
+        <div className="space-y-6">
           <OverviewAnalyticsCard
-            total_balance={overview.total_balance}
-            total_income={overview.total_income}
-            total_expense={overview.total_expense}
-            total_budget={overview.total_budget}
+            total_balance={overviews.total_balance}
+            total_income={overviews.total_income}
+            total_expense={overviews.total_expense}
+            total_budget={overviews.total_budget}
           />
 
           <MonthlyBarChart
-            overview={overview}
+            overview={overviews}
             monthName={monthName}
             year={year}
           />
         </div>
-      ))}
+
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBudgetAnalytics } from "../hooks/useAnalytics";
+import { useBudgetAnalytics, useOverviewAnalytics } from "../hooks/useAnalytics";
 import AnalyticsHeader from "../components/analytics/AnalyticsHeader";
 import AnalyticsFilter from "../components/analytics/AnalyticsFilter";
 import AnalyticsGrid from "../components/analytics/AnalyticsCard";
@@ -29,7 +29,9 @@ const Analytics = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   // Fetch analytics data
-  const { data: analyticsData, isLoading } = useBudgetAnalytics(selectedMonth, selectedYear);
+  const { data: analyticsData, isLoading: budgetAnalyticsLoading } = useBudgetAnalytics(selectedMonth, selectedYear);
+  const { data: overviews, isLoading: totalBudgetLoading } =
+    useOverviewAnalytics(selectedMonth, selectedYear);
 
   // Calculate summary statistics
   const calculateSummary = () => {
@@ -38,18 +40,16 @@ const Analytics = () => {
         totalBudget: 0,
         totalSpent: 0,
         totalRemaining: 0,
-        averageUtilization: 0,
+      
         overBudgetCount: 0,
         onTrackCount: 0,
       };
     }
-
-    const totalBudget = analyticsData.reduce((sum, item) => sum + item.amount, 0);
-    const totalSpent = analyticsData.reduce((sum, item) => sum + item.spent, 0);
+    
+    const totalBudget = overviews?.total_budget ?? 0;
+    const totalSpent = overviews?.total_expense ?? 0;
     const totalRemaining = totalBudget - totalSpent;
-    const averageUtilization = totalBudget > 0 
-      ? Math.round((totalSpent / totalBudget) * 100) 
-      : 0;
+
     const overBudgetCount = analyticsData.filter(item => item.spent > item.amount).length;
     const onTrackCount = analyticsData.filter(item => item.spent <= item.amount).length;
 
@@ -57,7 +57,6 @@ const Analytics = () => {
       totalBudget,
       totalSpent,
       totalRemaining,
-      averageUtilization,
       overBudgetCount,
       onTrackCount,
     };
@@ -65,7 +64,7 @@ const Analytics = () => {
 
   const summary = calculateSummary();
 
-  if (isLoading) {
+  if (budgetAnalyticsLoading || totalBudgetLoading || !overviews) {
     return <AnalyticsLoader />;
   }
 
@@ -90,12 +89,12 @@ const Analytics = () => {
       )}
 
       {/* Analytics Grid */}
-      {!isLoading && analyticsData && analyticsData.length > 0 && (
+      {!budgetAnalyticsLoading && analyticsData && analyticsData.length > 0 && (
         <AnalyticsGrid data={analyticsData} />
       )}
 
       {/* Empty State */}
-      {!isLoading && (!analyticsData || analyticsData.length === 0) && (
+      {!budgetAnalyticsLoading && (!analyticsData || analyticsData.length === 0) && (
         <AnalyticsEmptyState />
       )}
     </div>
