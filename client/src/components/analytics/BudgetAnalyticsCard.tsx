@@ -101,7 +101,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
 
           <div className="flex justify-between text-xs mt-2 opacity-70">
             <span>{percentSpent}% used</span>
-            <span>ETB {budget.toLocaleString()} budget</span>
+            <span>ETB {budget} budget</span>
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Spent
           </div>
           <p className="text-lg font-bold">
-            ETB {spent.toLocaleString()}
+            ETB {spent}
           </p>
         </div>
 
@@ -127,7 +127,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Budget
           </div>
           <p className="text-lg font-bold">
-            ETB {budget.toLocaleString()}
+            ETB {budget}
           </p>
         </div>
 
@@ -142,7 +142,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
               remaining < 0 ? "text-error" : ""
             }`}
           >
-            ETB {Math.max(remaining, 0).toLocaleString()}
+            ETB {Math.max(remaining, 0)}
           </p>
         </div>
       </div>

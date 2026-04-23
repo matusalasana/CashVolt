@@ -26,7 +26,7 @@ const AnalyticsGrid = ({ data }: AnalyticsGridProps) => {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {data.map((b, index) => (
         <BudgetAnalyticsCard
-          key={`${b.category_name}-${b.month}-${b.year}-${index}`}
+          key={index}
           name={b.category_name}
           spent={b.spent}
           budget={b.amount}

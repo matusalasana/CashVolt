@@ -50,7 +50,7 @@ const Analytics = () => {
     const totalSpent = overviews?.total_expense ?? 0;
     const totalRemaining = totalBudget - totalSpent;
 
-    const overBudgetCount = analyticsData.filter(item => item.spent > item.amount).length;
+    const overBudgetCount = analyticsData.filter(item => Number(item.spent) > Number(item.amount)).length;
     const onTrackCount = analyticsData.filter(item => item.spent <= item.amount).length;
 
     return {
