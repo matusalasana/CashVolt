@@ -11,7 +11,7 @@ export const getAccounts = async (req, res) => {
     const data = await getAccountsService(req.user.userId);
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -23,9 +23,9 @@ export const createAccount = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data);
+    res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -40,7 +40,7 @@ export const updateAccount = async (req, res) => {
 
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -54,6 +54,6 @@ export const deleteAccount = async (req, res) => {
 
     res.json({ message: "Account deleted" });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };

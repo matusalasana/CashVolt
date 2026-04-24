@@ -11,7 +11,7 @@ export const getBudgetAnalytics = async (req, res) => {
     const data = await getBudgetAnalyticsService(user_id, month, year)
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -22,7 +22,7 @@ export const getOverviewAnalytics = async (req, res) => {
     const data = await getOverviewAnalyticsService(user_id, month, year)
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -34,6 +34,6 @@ export const getYearlyAnalytics = async (req, res) => {
     const data = await getYearlyAnalyticsService(user_id, yearNum)
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };

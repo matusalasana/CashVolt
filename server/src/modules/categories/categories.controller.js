@@ -17,7 +17,7 @@ export const getCategories = async (req, res) => {
 
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -29,9 +29,9 @@ export const createCategory = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data[0]);
+    res.json(data[0]);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -47,12 +47,12 @@ export const updateCategory = async (req, res) => {
     );
 
     if (!data) {
-      return res.status(404).json({ message: "Category not found" });
+      return res.json({ message: "Category not found" });
     }
 
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -67,11 +67,11 @@ export const deleteCategory = async (req, res) => {
     );
 
     if (!result) {
-      return res.status(404).json({ message: "Category not found" });
+      return res.json({ message: "Category not found" });
     }
 
     res.json({ message: "Category deleted" });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };

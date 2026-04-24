@@ -40,7 +40,7 @@ export const loginUser = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 
@@ -52,10 +52,10 @@ export const updateUser = async (req, res) => {
       req.user.userId
     );
 
-    return res.status(200).json(result);
+    return res.json(result);
 
   } catch (error) {
-    return res.status(500).json({
+    return res.json({
       message: error.message || "failed to update"
     });
   }
@@ -82,6 +82,6 @@ export const getMe = async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };

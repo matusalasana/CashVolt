@@ -22,7 +22,7 @@ export const getBudgets = async (req, res) => {
 
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -34,9 +34,9 @@ export const createBudget = async (req, res) => {
       req.user.userId
     );
 
-    res.status(201).json(data);
+    res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -51,7 +51,7 @@ export const updateBudget = async (req, res) => {
 
     res.json(data);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
 
@@ -65,6 +65,6 @@ export const deleteBudget = async (req, res) => {
 
     res.json({ message: "Budget deleted" });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.json({ message: err.message });
   }
 };
