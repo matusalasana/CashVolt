@@ -1,21 +1,33 @@
 import { Camera } from "lucide-react";
 
-const ProfileHeader = ({
-  first_name = "User",
-  last_name = "",
-  role = "Member",
+
+interface ProfileHeaderProps {
+  first_name?: string;
+  last_name?: string;
+  role?: string;
+  joinedDate?: string;
+  avatar_url?: string;
+}
+
+  const formatJoinDate = (dateString: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Recently";
+    
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${month} ${year}`;
+  };
+
+const ProfileHeader = ({ 
+  first_name = "User", 
+  last_name = "", 
+  role = "user", 
   joinedDate,
-  avatar_url,
-}) => {
-  
-  const monthsOfTheYear = [
-    "Jan","Feb","Mar","Apr","May","Jun",
-    "Jul","Aug","Sep","Oct","Nov","Dec"
-  ];
-  const joinedMonth = monthsOfTheYear[Number(joinedDate[6])];
-  const joinedYear = joinedDate.slice(0,4);
-  
-  const formattedDate = `${joinedMonth} ${joinedYear}`
+  avatar_url 
+}: ProfileHeaderProps) => {
+  const formattedDate = joinedDate ? formatJoinDate(joinedDate) : "Recently";
 
   const avatar = avatar_url || `https://placehold.net/avatar.png`;
 

@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
+
 import { verifyToken } from "../utils/jwt.js"
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   try {
     // 1. Get token
     const token = req.cookies.token;
@@ -13,7 +13,7 @@ export const protect = (req, res, next) => {
     }
 
     // 2. Verify token
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
 
     // 3. Attach user to request
     req.user = decoded;

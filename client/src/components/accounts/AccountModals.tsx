@@ -1,6 +1,26 @@
 import AccountForm from "./AccountForm";
 import DeleteConfirmationCard from "../DeleteConfirmationCard";
+import { type AccountInput } from "../../types";
+import { type UseMutateFunction } from "@tanstack/react-query";
 
+interface AccountModalsProps {
+  isAddOpen: boolean;
+  isEditOpen: boolean;
+  isDeleteOpen: boolean;
+  editingAccount: AccountInput | null;
+  deletingAccount: AccountInput | null;
+  setIsAddOpen: (open: boolean) => void;
+  setIsEditOpen: (open: boolean) => void;
+  setIsDeleteOpen: (open: boolean) => void;
+  setEditingAccount: (account: AccountInput | null) => void;
+  setDeletingAccount: (account: AccountInput | null) => void;
+  deleteAccount: UseMutateFunction<
+    unknown,  // data
+    unknown,  // error
+    number    // variables (id)
+  >;
+  isPending: boolean;
+}
 
 const AccountModals = ({
   isAddOpen,
@@ -18,7 +38,7 @@ const AccountModals = ({
 
   deleteAccount,
   isPending,
-}) => {
+}: AccountModalsProps) => {
   return (
     <>
       {/* ADD */}

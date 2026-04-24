@@ -9,7 +9,7 @@ import { type AccountInput, accountSchema } from "../../types";
 import { useCreateAccount, useUpdateAccount } from "../../hooks/useAccounts";
 
 interface Props {
-  account?: AccountInput & { id: number };
+  account?: AccountInput & { id?: number };
   mode?: "add" | "edit";
   onSuccess?: () => void;
 }
@@ -23,7 +23,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
   } = useForm<AccountInput>({
     resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: "",
+      name:account?.name || "",
     },
   });
 
@@ -70,7 +70,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
       />
       <form
         onSubmit={handleSubmit(onFormSubmit)}
-        className="w-full max-w-md mx-auto bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-100"
+        className="w-full max-w-md mx-auto bg-base-100 shadow-xl rounded-xl p-6 border border-base-200 flex flex-col items-center gap-3"
       >
         {/* Title */}
         <h2 className="text-lg font-semibold text-gray-800">

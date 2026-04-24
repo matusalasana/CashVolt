@@ -3,7 +3,8 @@ import {
   createBudgetRepo,
   updateBudgetRepo,
   deleteBudgetRepo,
-  getBudgetByIdRepo
+  getBudgetByIdRepo,
+  getCategoryByIdRepo
 } from "./budgets.repository.js";
 
 // GET ALL
@@ -23,6 +24,16 @@ export const createBudgetService = async (data, user_id) => {
     throw new Error("Budget must be greater than 0");
   }
   
+  if (month < 1 || month > 12) {
+    throw new Error("Month must be between 1 and 12");
+  }
+  if (year < 2000 || year > 2100) {
+    throw new Error("Invalid year");
+  }
+  
+  const category = await getCategoryByIdRepo(category_id, user_id);
+  if (!category) throw new Error("Invalid category");
+  
   const result = await createBudgetRepo(data, user_id);
 
   return result;
@@ -31,10 +42,17 @@ export const createBudgetService = async (data, user_id) => {
 // UPDATE
 export const updateBudgetService = async (id, data, user_id) => {
   const existing = await getBudgetByIdRepo(id, user_id);
+  const { amount } = data;
 
   if (!existing) {
-  throw new Error("Budget not found");
-}
+    throw new Error("Budget not found");
+  }
+  
+
+  if (amount !== undefined) {
+    if (amount <= 0) throw new Error("Budget must be greater than 0");
+    if (isNaN(amount)) throw new Error("Valid amount is required");
+  }
 
   return await updateBudgetRepo(id, data, user_id);
 };

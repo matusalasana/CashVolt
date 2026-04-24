@@ -12,6 +12,8 @@ export const useBudgetAnalytics = (month?: number, year?: number) => {
     queryKey: ["budget-analytics", month, year],
     queryFn: () => getBudgetAnalytics(month, year),
     enabled: month != null && year != null,
+    retry: 1,
+    staleTime: 1000*60*5,
   });
 };
 

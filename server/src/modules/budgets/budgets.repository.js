@@ -49,11 +49,22 @@ export const deleteBudgetRepo = async (id, user_id) => {
   return result[0]
 };
 
-// GET SINGLE (optional but useful)
+// GET SINGLE
 export const getBudgetByIdRepo = async (id, user_id) => {
   const result = await sql`
     SELECT * FROM budgets
     WHERE id = ${id} AND user_id = ${user_id}
+  `;
+
+  return result[0];
+};
+
+
+// HELPERS
+export const getCategoryByIdRepo = async (category_id, user_id) => {
+  const result = await sql`
+    SELECT * FROM categories 
+    WHERE id = ${category_id} AND user_id = ${user_id}
   `;
 
   return result[0];

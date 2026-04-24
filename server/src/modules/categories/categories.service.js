@@ -1,6 +1,5 @@
 import {
-  getCategoriesRepoWithType,
-  getCategoriesRepoWithoutType,
+  getCategoriesRepo,
   createCategoryRepo,
   updateCategoryRepo,
   deleteCategoryRepo
@@ -16,18 +15,22 @@ export const getCategoriesService = async (user_id, type) => {
     throw new Error("Invalid category type");
   }
 
-  if (!type) {
-    return await getCategoriesRepoWithoutType(user_id);
-  }
-
-  return await getCategoriesRepoWithType(user_id, type);
+  const result = await getCategoriesRepo(user_id, type);
+  
+  return result;
 };
 
 // CREATE
 export const createCategoryService = async (data, user_id) => {
   const { name, type } = data;
-
-  return await createCategoryRepo(name, type, user_id);
+  
+  if (!name || !name.trim()) throw new Error("Category name is required");
+  if (!type) throw new Error("Category type is required");
+  if (!["income", "expense"].includes(type)) throw new Error("Invalid category type");
+  if (!user_id) throw new Error("User ID required");
+  
+  const result = await createCategoryRepo(name.trim(), type, user_id);
+  return result;
 };
 
 // UPDATE
@@ -35,7 +38,7 @@ export const updateCategoryService = async (id, data, user_id) => {
 
   const result = await updateCategoryRepo(id, data, user_id);
 
-  if (result.length === 0) {
+  if (!result) {
     throw new Error("Category not found");
   }
 
@@ -46,9 +49,9 @@ export const updateCategoryService = async (id, data, user_id) => {
 export const deleteCategoryService = async (id, user_id) => {
   const result = await deleteCategoryRepo(id, user_id);
 
-  if (result.length === 0) {
+  if (!result) {
     throw new Error("Category not found");
   }
 
-  return result[0];
+  return result;
 };

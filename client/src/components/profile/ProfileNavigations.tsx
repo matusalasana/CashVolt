@@ -6,19 +6,48 @@ import {
   LogOut
 } from 'lucide-react';
 
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useLogout } from "../../hooks/useAuth";
+
 const ProfileNavigations = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { mutate: logout } = useLogout();
+
+  const navItems = [
+    { path: "/profile", icon: User, label: "Personal Info" },
+    { path: "/profile/payment-methods", icon: Wallet, label: "Payment Methods" },
+    { path: "/profile/notifications", icon: Bell, label: "Notifications" },
+    { path: "/profile/security", icon: ShieldCheck, label: "Security" },
+  ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div className="card bg-base-100 shadow-xl">
-            <ul className="menu bg-base-100 w-full rounded-box p-2">
-              <li><a className="active"><User size={18} /> Personal Info</a></li>
-              <li><a><Wallet size={18} /> Payment Methods</a></li>
-              <li><a><Bell size={18} /> Notifications</a></li>
-              <li><a><ShieldCheck size={18} /> Security</a></li>
-              <div className="divider my-1"></div>
-              <li><a className="text-error"><LogOut size={18} /> Logout</a></li>
-            </ul>
-          </div>
-  )
-}
+      <ul className="menu bg-base-100 w-full rounded-box p-2">
+        {navItems.map((item) => (
+          <li key={item.path}>
+            <a 
+              onClick={() => navigate(item.path)}
+              className={location.pathname === item.path ? "active" : ""}
+            >
+              <item.icon size={18} /> {item.label}
+            </a>
+          </li>
+        ))}
+        <div className="divider my-1"></div>
+        <li>
+          <a onClick={handleLogout} className="text-error">
+            <LogOut size={18} /> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export default ProfileNavigations

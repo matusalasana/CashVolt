@@ -6,25 +6,27 @@ const ProfilePictureUploader = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { mutate: updateImage } = useUpdateUser();
   const [loading, setLoading] = useState(false);
+  const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+  const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  
 
-const uploadToCloudinary = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "CashVolt profile pictures");
-
-  const res = await axios.post(
-    "https://api.cloudinary.com/v1_1/dkwfrnwek/image/upload",
-    formData
-  );
-
-  const data = res.data;
-
-  if (!data.secure_url) {
-    throw new Error("Upload failed");
-  }
-
-  return data.secure_url;
-};
+  const uploadToCloudinary = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, formData
+    );
+  
+    const data = res.data;
+  
+    if (!data.secure_url) {
+      throw new Error("Upload failed");
+    }
+  
+    return data.secure_url;
+  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -1,7 +1,21 @@
 import { Bar } from "react-chartjs-2";
 import { chartColors, barOptions } from "../../utils/chart";
 
-const MonthlyBarChart = ({ overview, monthName, year }) => {
+interface MonthlyBarChartProps {
+  overview: {
+    total_income: number;
+    total_expense: number;
+  };
+  monthName: string;
+  year: number;
+}
+
+const MonthlyBarChart = ({ overview, monthName, year }: MonthlyBarChartProps) => {
+  
+  if (!overview || !monthName || !year) {
+    return <div className="skeleton h-[350px]" />;
+  }
+
   return (
     <div className=" card bg-base-100 shadow-xl p-6 h-[350px]">
       <h2 className="text-xl font-bold mb-4">

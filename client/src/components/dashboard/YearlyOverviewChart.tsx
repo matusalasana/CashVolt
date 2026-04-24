@@ -1,7 +1,16 @@
 import { Line } from "react-chartjs-2";
 import { chartColors } from "../../utils/chart";
 
-const YearlyOverviewChart = ({ chart, labels, year }) => {
+interface YearlyOverviewChartProps {
+  chart: {
+    income: number[];
+    expenses: number[];
+  };
+  labels: string[];
+  year: number;
+}
+
+const YearlyOverviewChart = ({ chart, labels, year }: YearlyOverviewChartProps) => {
   return (
     <div className="card bg-base-100 shadow-xl p-6 h-[350px]">
       <h2 className="text-xl font-bold mb-4">

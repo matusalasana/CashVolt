@@ -5,6 +5,8 @@ import { useAuth } from "../hooks/useAuth";
 import DashboardLoader from "../components/dashboard/DashboardLoader";
 import MonthlyOverviewSection from "../components/dashboard/MonthlyOverviewSection";
 import YearlyOverviewChart from "../components/dashboard/YearlyOverviewChart";
+import { Helmet } from 'react-helmet-async';
+
 
 const monthsOfTheYear = [
   "Jan","Feb","Mar","Apr","May","Jun",
@@ -54,6 +56,10 @@ const Dashboard = () => {
   const chart = getYearlyChart(yearlyData);
 
   return (
+  <>
+    <Helmet>
+      <title>Dashboard | Cash Volt</title>
+    </Helmet>
     <div className="p-6 space-y-8">
       <WelcomeUserCard
         name={user.first_name}
@@ -75,6 +81,7 @@ const Dashboard = () => {
 
       <CategoryPieChart />
     </div>
+  </>
   );
 };
 

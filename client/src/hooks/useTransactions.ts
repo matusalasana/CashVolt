@@ -35,7 +35,7 @@ export const useTransactions = (
     retry: false,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-    enabled: type != null && sortBy != null && limit != null && offset != null && order != null,
+    enabled: true,
   });
 };
 

@@ -32,6 +32,12 @@ export const updateAccountService = async (id, data, user_id) => {
     throw new Error("Account name is required");
   }
   if (!user_id) throw new Error("User ID required");
+
+  const updateData = {};
+  if (name) updateData.name = name.toUpperCase().trim();
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No fields to update");
+  }
   const cleanAccountName = name.toUpperCase().trim()
   const isAccountFound = await findAccountByIdRepo(id, user_id)
   if (!isAccountFound) {

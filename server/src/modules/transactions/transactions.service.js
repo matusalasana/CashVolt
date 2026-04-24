@@ -42,10 +42,6 @@ export const getTransactionsService = async (
     throw new Error("Invalid sort field");
   }
   
-  if (sortBy && !allowedSortFields.includes(sortBy)) {
-    throw new Error("Invalid sort field");
-  }
-  
   const result = await getTransactionsRepo(
     user_id,
     type,
@@ -74,6 +70,9 @@ export const createTransactionService = async (data, user_id) => {
 
   if(!user_id){
     throw new Error("User id is required")
+  }
+  if (!transaction_date || isNaN(Date.parse(transaction_date))) {
+    throw new Error("Valid transaction date is required");
   }
   if (isNaN(parsedAmount)) {
     throw new Error("Valid amount is required");
@@ -121,6 +120,9 @@ export const updateTransactionService = async (id, data, user_id) => {
     throw new Error("User id is required")
   }
   if (!id) throw new Error("Transaction id is required");
+  if (!transaction_date || isNaN(Date.parse(transaction_date))) {
+    throw new Error("Valid transaction date is required");
+  }
   if (isNaN(parsedAmount)) {
     throw new Error("Valid amount is required");
   }

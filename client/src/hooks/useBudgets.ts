@@ -36,8 +36,10 @@ export const useUpdateBudget = () => {
 
   return useMutation({
     mutationFn: updateBudget,
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      toast.success("Budget updated successfully");
     },
     onError: (error: any) => {
       toast.error(error.message || "Error updating budget");

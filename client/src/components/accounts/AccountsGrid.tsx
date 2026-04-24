@@ -1,4 +1,5 @@
 import AccountCard from "./AccountCard";
+import AccountsEmptyState from "./AccountsEmptyState";
 
 const AccountsGrid = ({ accounts, onEdit, onDelete, isLoading }) => {
   if (isLoading) {
@@ -7,6 +8,10 @@ const AccountsGrid = ({ accounts, onEdit, onDelete, isLoading }) => {
         <span className="loading loading-dots loading-lg text-primary"></span>
       </div>
     );
+  }
+  
+  if (!accounts?.length) {
+    return <AccountsEmptyState />;
   }
 
   return (
