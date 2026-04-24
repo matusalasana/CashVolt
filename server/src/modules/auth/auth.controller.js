@@ -10,12 +10,12 @@ export const registerUser = async (req, res) => {
   try {
     const user = await registerUserService(req.body);
 
-    res.status(201).json({
+    res.json({
       message: "User created successfully",
       user
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 
