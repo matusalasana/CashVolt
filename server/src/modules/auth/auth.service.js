@@ -22,16 +22,16 @@ export const registerUserService = async (data) => {
   }
 
   const hashedPassword = await hashPassword(password);
-
+  
   const user = await registerUserRepo(
     first_name,
     last_name,
     email,
-    hashedPassword,
+    hashedPassword
   );
 
   return user;
-};
+  };
 
 // LOGIN
 export const loginUserService = async (data) => {

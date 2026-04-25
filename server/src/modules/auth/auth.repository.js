@@ -6,13 +6,42 @@ export const registerUserRepo = async (
   email,
   password
 ) => {
-  const result = await sql`
-    INSERT INTO users (first_name, last_name, email, password)
-    VALUES (${first_name}, ${last_name}, ${email}, ${password})
-    RETURNING id, first_name, last_name, email, role
-  `;
 
-  return result[0];
+  try {
+    await sql`BEGIN`;
+
+    // 1. Register user
+    const userResult = await sql
+      `INSERT INTO users (first_name, last_name, email, password)
+       VALUES (${first_name}, ${last_name}, ${email}, ${password})
+       RETURNING id, first_name, last_name, email, role`
+
+    const user = userResult[0];
+
+    // 2. Create default accounts
+    await sql
+      `INSERT INTO accounts (name, user_id)
+       VALUES 
+        ('Bank', ${user.id}),
+        ('Cash', ${user.id})
+      `;
+
+    // 3. Create default categories
+    await sql
+      `INSERT INTO categories (name, type, user_id)
+       VALUES 
+        ('Food', 'expense', ${user.id}),
+        ('Transportation', 'expense', ${user.id}),
+        ('Salary', 'income', ${user.id})`
+
+    await sql`COMMIT`
+
+    return user;
+    
+  } catch (err) {
+    await sql`ROLLBACK`
+    throw err;
+  }
 };
 
 
@@ -33,6 +62,7 @@ export const updateUserRepo = async (data, user_id) => {
   return result[0];
 };
 
+// HELPERS 
 export const findUserByIdRepo = async (id) => {
   const result = await sql`
     SELECT *
