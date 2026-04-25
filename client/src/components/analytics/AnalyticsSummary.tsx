@@ -1,4 +1,5 @@
 import { Wallet, TrendingDown, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth"
 
 type AnalyticsSummaryProps = {
   summary: {
@@ -18,6 +19,9 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
     overBudgetCount,
     onTrackCount,
   } = summary;
+  
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
 
 
   return (
@@ -29,7 +33,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Budget</p>
               <p className="text-2xl font-bold text-primary">
-                {totalBudget.toLocaleString()}
+                {totalBudget.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-primary/10 p-3 rounded-full">
@@ -46,7 +50,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Spent</p>
               <p className="text-2xl font-bold text-error">
-                {totalSpent.toLocaleString()}
+                {totalSpent.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-error/10 p-3 rounded-full">
@@ -63,7 +67,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Remaining</p>
               <p className="text-2xl font-bold text-success">
-                {totalRemaining.toLocaleString()}
+                {totalRemaining.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-success/10 p-3 rounded-full">

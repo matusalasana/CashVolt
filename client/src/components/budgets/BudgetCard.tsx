@@ -1,4 +1,5 @@
 import { Edit, Trash2, Calendar } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth"
 
 type BudgetCardProps = {
   id: number;
@@ -18,6 +19,14 @@ const BudgetCard = ({
   onEdit,
   onDelete,
 }: BudgetCardProps) => {
+  
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
+  
+  const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
   return (
     <div className="card bg-base-100 shadow-xl p-5 space-y-4">
@@ -47,7 +56,7 @@ const BudgetCard = ({
       {/* Amount */}
       <div>
         <p className="text-2xl font-bold text-primary">
-          ETB {Number(amount || 0).toLocaleString()}
+          {Number(amount || 0).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
         </p>
         <p className="text-sm text-gray-500">Budget Amount</p>
       </div>
@@ -56,7 +65,7 @@ const BudgetCard = ({
       <div className="flex items-center gap-2 text-sm text-gray-500">
         <Calendar className="w-4 h-4" />
         <span>
-          {month} {year}
+          {MONTHS[month-1]} {year}
         </span>
       </div>
     </div>

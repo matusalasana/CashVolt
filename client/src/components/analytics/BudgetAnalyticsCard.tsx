@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   CheckCircle2,
 } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth"
 
 interface BudgetAnalyticsCardProps {
   name: string;
@@ -30,6 +31,9 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
 
   const isOverBudget = spent > budget;
   const isNearLimit = percentSpent >= 85 && !isOverBudget;
+  
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
 
   const getStatus = () => {
     if (isOverBudget)
@@ -99,9 +103,8 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             max={budget}
           ></progress>
 
-          <div className="flex justify-between text-xs mt-2 opacity-70">
+          <div className="flex justify-start text-xs mt-2 opacity-70">
             <span>{percentSpent}% used</span>
-            <span>ETB {budget} budget</span>
           </div>
         </div>
       </div>
@@ -116,7 +119,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Spent
           </div>
           <p className="text-lg font-bold">
-            ETB {spent}
+            {spent} <span className="text-sm font-normal">{currency}</span>
           </p>
         </div>
 
@@ -127,7 +130,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Budget
           </div>
           <p className="text-lg font-bold">
-            ETB {budget}
+            {budget} <span className="text-sm font-normal">{currency}</span>
           </p>
         </div>
 
@@ -142,7 +145,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
               remaining < 0 ? "text-error" : ""
             }`}
           >
-            ETB {Math.max(remaining, 0)}
+            {Math.max(remaining, 0)} <span className="text-sm font-normal">{currency}</span>
           </p>
         </div>
       </div>

@@ -4,6 +4,7 @@ import {
   TrendingDown,
   PiggyBank,
 } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth"
 
 interface OverviewAnalyticsProps {
   total_balance: number;
@@ -18,6 +19,8 @@ const OverviewAnalyticsCard = ({
   total_expense,
   total_budget,
 }: OverviewAnalyticsProps) => {
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
 
@@ -30,7 +33,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2">
-            ${total_balance.toLocaleString()}
+            ${total_balance.toLocaleString()} {currency}
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -48,7 +51,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-success">
-            ${total_income.toLocaleString()}
+            {total_income.toLocaleString()} {currency}
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -66,7 +69,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-error">
-            ${total_expense.toLocaleString()}
+            ${total_expense.toLocaleString()} {currency}
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -84,7 +87,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-info">
-            ${total_budget.toLocaleString()}
+            ${total_budget.toLocaleString()} {currency}
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
