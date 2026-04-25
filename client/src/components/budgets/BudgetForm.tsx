@@ -75,7 +75,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
     if (mode==="edit" && budget){
       setValue("category_id", budget.category_id)
     } else{
-      setValue("category_id", "")
+      setValue("category_id", undefined)
     }
   
   }, [setValue, categoriesLoading])

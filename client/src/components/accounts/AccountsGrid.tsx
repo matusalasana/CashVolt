@@ -1,13 +1,10 @@
 import AccountCard from "./AccountCard";
 import AccountsEmptyState from "./AccountsEmptyState";
+import AccountsLoader from "./AccountsLoader";
 
 const AccountsGrid = ({ accounts, onEdit, onDelete, isLoading }) => {
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <span className="loading loading-dots loading-lg text-primary"></span>
-      </div>
-    );
+    return <AccountsLoader />;
   }
   
   if (!accounts?.length) {

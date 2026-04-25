@@ -12,7 +12,8 @@ import {
   Info,
   UserRoundSearch, 
   Goal,
-  ChartColumnBig
+  ChartColumnBig,
+  UserRound,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -126,6 +127,11 @@ const Sidebar = () => {
           <NavLink to="/settings" className={linkClass} onClick={handleLinkClick}>
             <Settings size={20} />
             Settings 
+          </NavLink>
+          
+          <NavLink to="/profile" className={linkClass} onClick={handleLinkClick}>
+            <UserRound size={20} />
+            My Profile
           </NavLink>
 
         </nav>

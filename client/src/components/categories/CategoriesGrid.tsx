@@ -1,4 +1,5 @@
 import CategoryCard from "./CategoryCard";
+import CategoryLoader from "./CategoryLoader";
 
 const CategoriesGrid = ({
   categories,
@@ -7,11 +8,7 @@ const CategoriesGrid = ({
   onDelete,
 }) => {
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <span className="loading loading-dots loading-lg text-primary"></span>
-      </div>
-    );
+    return <CategoryLoader />;
   }
 
   if (!categories?.length) {
