@@ -11,6 +11,8 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { getErrorMessage } from "../utils/getErrorMessage";
+
 
 export const useCategories = (type?: string) => {
   return useQuery({
@@ -35,7 +37,7 @@ export const useCreateCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message ||"Error creating category")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -51,7 +53,7 @@ export const useUpdateCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message ||"Error updating category")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -68,7 +70,7 @@ export const useDeleteCategory = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message ||"Error deleting category")
+      toast.error(getErrorMessage(error))
     }
   })
 }

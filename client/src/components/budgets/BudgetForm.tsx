@@ -19,6 +19,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<BudgetInput>({
@@ -49,9 +50,11 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
   const { mutate: createBudget, isPending: isCreating } = useCreateBudget();
   const { mutate: updateBudget, isPending: isUpdating } = useUpdateBudget();
 
-  const { data: categories } = useCategories("expense");
+  const { data: categories, isLoading: categoriesLoading } = useCategories("expense");
 
   const isPending = isCreating || isUpdating;
+  
+  const currentMonth = new Date().getMonth()+1
 
   const onSubmit = (data: BudgetInput) => {
     if (mode === "edit" && budget) {
@@ -62,17 +65,20 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
     } else {
       createBudget(data, {
         onSuccess: () => {
-          reset({
-            month: new Date().getMonth() + 1,
-            year: currentYear,
-            amount: undefined,
-            category_id: undefined,
-          });
           onSuccess?.();
         },
       });
     }
   };
+  
+  useEffect (() => {
+    if (mode==="edit" && budget){
+      setValue("category_id", budget.category_id)
+    } else{
+      setValue("category_id", "")
+    }
+  
+  }, [setValue, categoriesLoading])
 
   useEffect(() => {
     if (mode === "edit" && budget) {
@@ -133,7 +139,7 @@ const BudgetForm = ({ budget, mode = "add", onSuccess }: Props) => {
             {...register("month", { valueAsNumber: true })}
           >
             <option value="">Select Month</option>
-            {monthsOfTheYear?.map((mon) => (
+            {monthsOfTheYear?.slice(currentMonth-1,12).map((mon) => (
               <option key={mon.value} value={mon.value}>
                 {mon.name}
               </option>

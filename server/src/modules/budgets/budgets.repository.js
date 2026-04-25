@@ -1,6 +1,6 @@
 import { sql } from "../../config/db.js";
 
-// GET ALL budgets for user
+// GET ALL budgets
 export const getBudgetsRepo = async (user_id, month, year) => {
   return await sql`
     SELECT b.*, 
@@ -10,7 +10,7 @@ export const getBudgetsRepo = async (user_id, month, year) => {
     WHERE b.user_id = ${user_id}
     ${month ? sql`AND b.month = ${month}` : sql``}
     ${year ? sql`AND b.year = ${year}` : sql``}
-    ORDER BY b.month DESC;
+    ORDER BY b.created_at DESC;
   `;
 };
 
@@ -28,11 +28,14 @@ export const createBudgetRepo = async (data, user_id) => {
 
 // UPDATE budget
 export const updateBudgetRepo = async (id, data, user_id) => {
-  const { amount } = data;
+  const { amount, category_id, month } = data;
 
   const result = await sql`
     UPDATE budgets
-    SET amount = ${amount}, updated_at = CURRENT_TIMESTAMP
+    SET amount = ${amount}, 
+      category_id=${category_id}, 
+      month=${month}, 
+      updated_at = CURRENT_TIMESTAMP
     WHERE id = ${id} AND user_id = ${user_id}
     RETURNING *;
   `;
@@ -55,7 +58,6 @@ export const getBudgetByIdRepo = async (id, user_id) => {
     SELECT * FROM budgets
     WHERE id = ${id} AND user_id = ${user_id}
   `;
-
   return result[0];
 };
 

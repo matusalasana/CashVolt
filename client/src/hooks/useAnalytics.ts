@@ -4,8 +4,7 @@ import {
   getOverviewAnalytics,
   getYearlyAnalytics
 } from "../api/analytics"
-import { 
-  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"
 
 export const useBudgetAnalytics = (month?: number, year?: number) => {
   return useQuery({

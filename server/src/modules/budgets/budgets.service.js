@@ -43,6 +43,10 @@ export const createBudgetService = async (data, user_id) => {
 export const updateBudgetService = async (id, data, user_id) => {
   const existing = await getBudgetByIdRepo(id, user_id);
   const { amount } = data;
+  
+  console.log("The budget being updated is:", existing)
+  console.log("The user id is:", user_id)
+  console.log("The id is:", id)
 
   if (!existing) {
     throw new Error("Budget not found");

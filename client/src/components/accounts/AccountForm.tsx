@@ -78,7 +78,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
         </h2>
 
         {/* Input */}
-        <div className="space-y-1">
+        <div className="space-y-1 w-full">
           <input
             type="text"
             placeholder="Account name"

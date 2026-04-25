@@ -56,13 +56,17 @@ export const createBudget = async (req, res) => {
 // UPDATE
 export const updateBudget = async (req, res) => {
   try {
-    const data = await updateBudgetService(
-      req.params.id,
-      req.body,
-      req.user.userId
+    const id  = req.params.id;
+    const data = req.body;
+    const user_id = req.user.userId;
+    
+    const result = await updateBudgetService(
+      id,
+      data,
+      user_id,
     );
 
-    return res.status(200).json(data);
+    return res.status(200).json(result);
 
   } catch (err) {
     console.log("Update budget error:", err.message);

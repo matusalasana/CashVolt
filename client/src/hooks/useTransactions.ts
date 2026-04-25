@@ -7,6 +7,7 @@ import {
 } from "../api/transactions"
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useTransactions = (
   type?: string, 
@@ -53,8 +54,8 @@ export const useCreateTransaction = () => {
     },
 
     onError: (error) => {
-      toast.error(error.message ||"Failed to create the transaction");
-    },
+      toast.error(getErrorMessage(error))
+    }
   });
 };
 
@@ -74,8 +75,8 @@ export const useDeleteTransaction = () => {
     },
 
     onError: (error) => {
-      toast.error(error.message ||"Failed to delete");
-    },
+      toast.error(getErrorMessage(error))
+    }
   });
 };
 
@@ -95,8 +96,8 @@ export const useUpdateTransaction = () => {
     },
     
     onError: (error) => {
-      toast.error(error.message ||"Failed to update")
-    },
+      toast.error(getErrorMessage(error))
+    }
     
   });
 };

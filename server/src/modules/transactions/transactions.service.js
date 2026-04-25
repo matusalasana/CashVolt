@@ -60,6 +60,7 @@ export const createTransactionService = async (data, user_id) => {
     amount, 
     type, 
     account_id, 
+    transaction_date,
     category_id } = data;
   
   const parsedAmount = Number(amount);
@@ -71,8 +72,8 @@ export const createTransactionService = async (data, user_id) => {
   if(!user_id){
     throw new Error("User id is required")
   }
-  if (!transaction_date || isNaN(Date.parse(transaction_date))) {
-    throw new Error("Valid transaction date is required");
+  if (!transaction_date) {
+    throw new Error("Transaction date is required");
   }
   if (isNaN(parsedAmount)) {
     throw new Error("Valid amount is required");

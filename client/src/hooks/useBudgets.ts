@@ -4,9 +4,10 @@ import {
   updateBudget,
   deleteBudget,
 } from "../api/budgets";
-
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { getErrorMessage } from "../utils/getErrorMessage";
+
 
 export const useBudgets = (month?: number, year?: number) => {
   return useQuery({
@@ -25,8 +26,8 @@ export const useCreateBudget = () => {
       toast.success("Budget added successfully");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
-    onError: (error: any) => {
-      toast.error(error.message || "Error creating budget");
+    onError: (error) => {
+      toast.error(getErrorMessage(error))
     },
   });
 };
@@ -41,8 +42,8 @@ export const useUpdateBudget = () => {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
       toast.success("Budget updated successfully");
     },
-    onError: (error: any) => {
-      toast.error(error.message || "Error updating budget");
+    onError: (error) => {
+      toast.error(getErrorMessage(error))
     },
   });
 };
@@ -55,8 +56,8 @@ export const useDeleteBudget = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
-    onError: (error: any) => {
-      toast.error(error.message || "Error deleting budget");
+    onError: (error) => {
+      toast.error(getErrorMessage(error))
     },
   });
 };

@@ -9,6 +9,7 @@ import {
   useQuery, 
   useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useAccounts = () => {
   return useQuery({
@@ -32,7 +33,7 @@ export const useCreateAccount = () => {
       toast.success("Account added successfully")
     },
     onError: (error) => {
-      toast.error(error.message || "Error adding new account")
+      toast.error(getErrorMessage(error))
     }
   });
 };
@@ -49,7 +50,7 @@ export const useUpdateAccount = () => {
     },
 
     onError: (error) => {
-      toast.error(error.message || "Error updating the account")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -68,7 +69,7 @@ export const useDeleteAccount = () => {
       
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to delete account")
+      toast.error(getErrorMessage(error))
     }
   });
 };
