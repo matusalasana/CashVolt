@@ -6,7 +6,8 @@ import {
   registerUser,
   updateUser,
   logoutUser
-  } from "../api/auth"
+  } from "../api/auth";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useAuth = () => {
   return useQuery({
@@ -28,7 +29,7 @@ export const useLogin = () => {
     toast.success("Login successful")
     },
     onError: (error) => {
-      toast.error(error.message || "Login failed")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -44,7 +45,7 @@ export const useUpdateUser = () => {
     toast.success("Updated successfully")
     },
     onError: (error) => {
-      toast.error(error.message || "Update failed")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -61,7 +62,7 @@ export const useRegister = () => {
       toast.success("Signup successful")
     },
     onError: (error) => {
-      toast.error(error.message || "Something went wrong, please try again")
+      toast.error(getErrorMessage(error))
     }
   })
 }
@@ -77,8 +78,8 @@ export const useLogout = () => {
       toast.success("Logged out successfully")
     },
 
-    onError: (error: any) => {
-      toast.error(error.message || "Logout failed")
+    onError: (error) => {
+      toast.error(getErrorMessage(error))
     }
   })
 }

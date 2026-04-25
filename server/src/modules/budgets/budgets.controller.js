@@ -5,6 +5,7 @@ import {
   deleteBudgetService
 } from "./budgets.service.js";
 
+
 // GET ALL
 export const getBudgets = async (req, res) => {
   try {
@@ -20,11 +21,17 @@ export const getBudgets = async (req, res) => {
       parsedYear
     );
 
-    res.json(data);
+    return res.status(200).json(data);
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Get budgets error:", err.message);
+
+    return res.status(500).json({
+      message: err.message
+    });
   }
 };
+
 
 // CREATE
 export const createBudget = async (req, res) => {
@@ -34,11 +41,17 @@ export const createBudget = async (req, res) => {
       req.user.userId
     );
 
-    res.json(data);
+    return res.status(201).json(data);
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Create budget error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };
+
 
 // UPDATE
 export const updateBudget = async (req, res) => {
@@ -49,11 +62,17 @@ export const updateBudget = async (req, res) => {
       req.user.userId
     );
 
-    res.json(data);
+    return res.status(200).json(data);
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Update budget error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };
+
 
 // DELETE
 export const deleteBudget = async (req, res) => {
@@ -63,8 +82,15 @@ export const deleteBudget = async (req, res) => {
       req.user.userId
     );
 
-    res.json({ message: "Budget deleted" });
+    return res.status(200).json({
+      message: "Budget deleted"
+    });
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Delete budget error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };

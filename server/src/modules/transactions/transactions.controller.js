@@ -5,12 +5,13 @@ import {
   deleteTransactionService
 } from "./transactions.service.js";
 
+
 // GET ALL
 export const getTransactions = async (req, res) => {
   try {
     const user_id = req.user.userId;
     const { type, sortBy, order, limit, offset } = req.query;
-    
+
     const data = await getTransactionsService(
       user_id,
       type,
@@ -19,11 +20,18 @@ export const getTransactions = async (req, res) => {
       limit,
       offset
     );
-    res.json(data);
+
+    return res.status(200).json(data);
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Get transactions error:", err.message);
+
+    return res.status(500).json({
+      message: err.message
+    });
   }
 };
+
 
 // CREATE
 export const createTransaction = async (req, res) => {
@@ -33,15 +41,21 @@ export const createTransaction = async (req, res) => {
       req.user.userId
     );
 
-    res.json(data);
+    return res.status(201).json(data);
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Create transaction error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };
 
-// UPDATE 
+
+// UPDATE
 export const updateTransaction = async (req, res) => {
-  try{
+  try {
     const id = Number(req.params.id);
 
     const updated = await updateTransactionService(
@@ -49,10 +63,21 @@ export const updateTransaction = async (req, res) => {
       req.body,
       req.user.userId
     );
-  
-    res.json(updated);
-  }catch(err){
-    res.json({ message: err.message });
+
+    if (!updated) {
+      return res.status(404).json({
+        message: "Transaction not found"
+      });
+    }
+
+    return res.status(200).json(updated);
+
+  } catch (err) {
+    console.log("Update transaction error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };
 
@@ -61,13 +86,27 @@ export const updateTransaction = async (req, res) => {
 export const deleteTransaction = async (req, res) => {
   try {
     const id = Number(req.params.id);
-    await deleteTransactionService(
+
+    const result = await deleteTransactionService(
       id,
       req.user.userId
     );
 
-    res.json({ message: "Transaction deleted" });
+    if (!result) {
+      return res.status(404).json({
+        message: "Transaction not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Transaction deleted"
+    });
+
   } catch (err) {
-    res.json({ message: err.message });
+    console.log("Delete transaction error:", err.message);
+
+    return res.status(400).json({
+      message: err.message
+    });
   }
 };

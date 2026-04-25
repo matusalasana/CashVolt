@@ -1,14 +1,20 @@
 import { sql } from "../../config/db.js";
 
-export const registerUserRepo = async (data, user_id) => {
+export const registerUserRepo = async (
+  first_name,
+  last_name,
+  email,
+  password
+) => {
   const result = await sql`
     INSERT INTO users (first_name, last_name, email, password)
-    VALUES (${data.first_name}, ${data.last_name}, ${data.email}, ${data.password})
-    WHERE id=${user_id}
+    VALUES (${first_name}, ${last_name}, ${email}, ${password})
     RETURNING id, first_name, last_name, email, role
   `;
+
   return result[0];
 };
+
 
 export const updateUserRepo = async (data, user_id) => {
   const { first_name, last_name, email, profile_picture } = data;

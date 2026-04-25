@@ -1,7 +1,6 @@
 import { JWT_SECRET } from "../../config/env.js";
 import { hashPassword, comparePassword } from "../../utils/hash.js";
 import { signToken } from "../../utils/jwt.js";
-
 import {
   findUserByEmailRepo,
   registerUserRepo,
@@ -9,26 +8,27 @@ import {
   findUserByIdRepo
 } from "./auth.repository.js";
 
-// REGISTER
+
 export const registerUserService = async (data) => {
   const { first_name, last_name, email, password } = data;
-  
-  if(!first_name || !last_name || !email || !password){
-    throw new Error("Missing required fields")
+
+  if (!first_name || !last_name || !email || !password) {
+    throw new Error("Missing required fields");
   }
+
   const existing = await findUserByEmailRepo(email);
   if (existing) {
     throw new Error("User with this email already exists");
   }
 
   const hashedPassword = await hashPassword(password);
-  
-  const user = await registerUserRepo({
+
+  const user = await registerUserRepo(
     first_name,
     last_name,
     email,
-    password: hashedPassword
-  });
+    hashedPassword,
+  );
 
   return user;
 };
@@ -45,9 +45,9 @@ export const loginUserService = async (data) => {
     throw new Error("Password must be at least 6 characters");
   }
   const user = await findUserByEmailRepo(email.toLowerCase().trim());
-  if (!user) throw new Error("Invalid credentials");
+  if (!user) throw new Error("User with this email doesn't exist");
   const isMatch = await comparePassword(password, user.password);
-  if (!isMatch) throw new Error("Invalid credentials");
+  if (!isMatch) throw new Error("Incorrect password");
   
   const token = signToken({ userId: user.id, role: user.role });
   return { user, token };
