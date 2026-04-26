@@ -12,8 +12,11 @@ interface MonthlyBarChartProps {
 
 const MonthlyBarChart = ({ overview, monthName, year }: MonthlyBarChartProps) => {
   
-  if (!overview || !monthName || !year) {
-    return <div className="skeleton h-[350px]" />;
+  const income = Number(overview?.total_income ?? 0);
+  const expense = Number(overview?.total_expense ?? 0);
+  
+  if (!overview || !monthName || !year || (income === 0 && expense === 0)) {
+    return null;
   }
 
   return (

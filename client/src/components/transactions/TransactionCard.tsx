@@ -9,6 +9,8 @@ import {
   Wallet 
 } from 'lucide-react';
 
+import { useAuth } from "../../hooks/useAuth"
+
 interface TransactionCardProps {
   amount: number;
   description: string;
@@ -31,6 +33,9 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   onDelete,
 }) => {
   const isIncome = type === 'income';
+  
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
 
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-200">
@@ -59,7 +64,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           {/* Right Section: Amount & Actions */}
           <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2">
             <div className={`text-xl font-black ${isIncome ? 'text-success' : 'text-error'}`}>
-              {isIncome ? '+' : '-'}${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              {isIncome ? '+' : '-'}{Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm font-normal">{currency}</span>
             </div>
             
             <div className="flex items-center gap-2">

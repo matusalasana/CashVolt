@@ -67,7 +67,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Remaining</p>
               <p className="text-2xl font-bold text-success">
-                {totalRemaining.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
+                {totalRemaining < 0 ? 0 : totalRemaining.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-success/10 p-3 rounded-full">

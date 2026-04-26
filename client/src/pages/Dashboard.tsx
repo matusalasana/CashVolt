@@ -1,5 +1,5 @@
 import WelcomeUserCard from "../components/dashboard/WelcomeUserCard";
-import CategoryPieChart from "../components/categories/CategoryPieChart";
+import CategoryPieChart from "../components/dashboard/CategoryPieChart";
 import { useOverviewAnalytics, useYearlyAnalytics } from "../hooks/useAnalytics";
 import { useAuth } from "../hooks/useAuth";
 import DashboardLoader from "../components/dashboard/DashboardLoader";

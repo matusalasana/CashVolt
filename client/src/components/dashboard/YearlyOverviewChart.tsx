@@ -11,6 +11,16 @@ interface YearlyOverviewChartProps {
 }
 
 const YearlyOverviewChart = ({ chart, labels, year }: YearlyOverviewChartProps) => {
+  const incomeData = (chart?.income || []).map(v => Number(v || 0));
+  const expenseData = (chart?.expenses || []).map(v => Number(v || 0));
+
+  const hasData =
+    incomeData.some(v => v > 0) ||
+    expenseData.some(v => v > 0);
+
+  if (!chart || !labels || !year) return null;
+  if (!hasData) return null;
+
   return (
     <div className="card bg-base-100 shadow-xl p-6 h-[350px]">
       <h2 className="text-xl font-bold mb-4">
@@ -24,14 +34,14 @@ const YearlyOverviewChart = ({ chart, labels, year }: YearlyOverviewChartProps) 
             datasets: [
               {
                 label: "Income",
-                data: chart.income,
+                data: incomeData,
                 borderColor: chartColors.income,
                 backgroundColor: chartColors.income + "20",
                 tension: 0.4,
               },
               {
                 label: "Expense",
-                data: chart.expenses,
+                data: expenseData,
                 borderColor: chartColors.expense,
                 backgroundColor: chartColors.expense + "20",
                 tension: 0.4,

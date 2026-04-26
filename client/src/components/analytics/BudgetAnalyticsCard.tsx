@@ -29,7 +29,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
   const percentSpent =
     budget > 0 ? Math.min(Math.round((spent / budget) * 100), 100) : 0;
 
-  const isOverBudget = spent > budget;
+  const isOverBudget = Number(spent) > Number(budget);
   const isNearLimit = percentSpent >= 85 && !isOverBudget;
   
   const { data: user } = useAuth(); 
@@ -87,9 +87,15 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
           </div>
 
           {/* Status Badge */}
-          <div className={`badge ${status.color} badge-outline gap-1`}>
+          <div className={`badge ${status.color} badge-outline gap-1 relative`}>
             {status.icon}
             {status.label}
+            
+            {remaining < 0 &&
+            <span className="text-sm absolute top-7 right-0 font-normal">
+              {remaining} {currency}
+            </span>
+            }
           </div>
         </div>
 

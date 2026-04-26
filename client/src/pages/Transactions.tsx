@@ -79,6 +79,8 @@ const Transaction = () => {
         pageNumber={pageNumber}
         isLastPage={transactions?.length < transactionsLimit}
         isFirstPage={pageNumber === 1}
+        transactionLength={transactions?.length}
+        transactions={transactions}
       />
     </div>
   );
