@@ -93,7 +93,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             
             {remaining < 0 &&
             <span className="text-sm absolute top-7 right-0 font-normal">
-              {remaining} {currency}
+              {Number(remaining).toLocaleString()} {currency}
             </span>
             }
           </div>
@@ -125,7 +125,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Spent
           </div>
           <p className="text-lg font-bold">
-            {spent} <span className="text-sm font-normal">{currency}</span>
+            {Number(spent).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
         </div>
 
@@ -136,7 +136,7 @@ const BudgetAnalyticsCard: React.FC<BudgetAnalyticsCardProps> = ({
             Budget
           </div>
           <p className="text-lg font-bold">
-            {budget} <span className="text-sm font-normal">{currency}</span>
+            {Number(budget).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
         </div>
 

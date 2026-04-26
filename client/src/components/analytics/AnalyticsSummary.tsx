@@ -33,7 +33,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Budget</p>
               <p className="text-2xl font-bold text-primary">
-                {totalBudget.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
+                {Number(totalBudget).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-primary/10 p-3 rounded-full">
@@ -50,7 +50,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Spent</p>
               <p className="text-2xl font-bold text-error">
-                {totalSpent.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
+                {Number(totalSpent).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-error/10 p-3 rounded-full">
@@ -67,7 +67,7 @@ const AnalyticsSummary = ({ summary }: AnalyticsSummaryProps) => {
             <div>
               <p className="text-sm text-base-content/70">Total Remaining</p>
               <p className="text-2xl font-bold text-success">
-                {totalRemaining < 0 ? 0 : totalRemaining.toLocaleString()} <span className="text-sm font-normal">{currency}</span>
+                {Number(totalRemaining) < 0 ? 0 : Number(totalRemaining).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
               </p>
             </div>
             <div className="bg-success/10 p-3 rounded-full">

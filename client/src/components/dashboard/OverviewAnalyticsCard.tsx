@@ -33,7 +33,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2">
-            ${total_balance.toLocaleString()} {currency}
+            {Number(total_balance).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -51,7 +51,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-success">
-            {total_income.toLocaleString()} {currency}
+            {Number(total_income).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -69,7 +69,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-error">
-            ${total_expense.toLocaleString()} {currency}
+            {Number(total_expense).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
@@ -87,7 +87,7 @@ const OverviewAnalyticsCard = ({
           </div>
 
           <p className="text-xl md:text-3xl font-bold mt-1 md:mt-2 text-info">
-            ${total_budget.toLocaleString()} {currency}
+            {Number(total_budget).toLocaleString()} <span className="text-sm font-normal">{currency}</span>
           </p>
 
           <p className="text-xs md:text-sm opacity-60">
