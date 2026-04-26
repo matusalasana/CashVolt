@@ -33,6 +33,7 @@ export const createTransactionRepo = async (data, user_id) => {
     account_id,
     category_id,
     transaction_date,
+    savings_id
   } = data;
 
   const result = await sql`
@@ -43,7 +44,8 @@ export const createTransactionRepo = async (data, user_id) => {
       account_id,
       category_id,
       transaction_date,
-      user_id
+      user_id,
+      savings_id
     )
     VALUES (
       ${amount},
@@ -52,7 +54,8 @@ export const createTransactionRepo = async (data, user_id) => {
       ${account_id},
       ${category_id},
       ${transaction_date},
-      ${user_id}
+      ${user_id},
+      ${savings_id}
     )
     RETURNING *;
   `;
@@ -68,6 +71,7 @@ export const updateTransactionRepo = async (id, data, user_id) => {
     account_id,
     category_id,
     transaction_date,
+    savings_id,
   } = data;
 
   const result = await sql`
@@ -78,7 +82,8 @@ export const updateTransactionRepo = async (id, data, user_id) => {
       description = ${description},
       account_id = ${account_id},
       category_id = ${category_id},
-      transaction_date = ${transaction_date}
+      transaction_date = ${transaction_date},
+      savings_id=${savings_id}
     WHERE id = ${id} AND user_id = ${user_id}
     RETURNING *;
   `;

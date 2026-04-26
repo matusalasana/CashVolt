@@ -27,26 +27,57 @@ export const accountSchema = z.object({
 export const categorySchema = z.object({
   id: z.number().int().optional(),
   name: z.string().min(1, "Category name is required"),
-  type: z.enum(["income", "expense"]),
+  type: z.enum(["income", "expense", "savings"]),
 });
 
-export const transactionSchema = z.object({
+export const savingsSchema = z.object({
   id: z.number().int().optional(),
 
-  type: z.enum(["income", "expense"]),
+  user_id: z.number().int().optional(),
 
-  amount: z.number().positive(),
-  description: z.string().min(1),
+  title: z.string().min(1, "Title is required").trim(),
 
-  account_id: z.number().int().min(1),
-  category_id: z.number().int().min(1),
+  target_amount: z.number().positive("Target amount must be greater than 0"),
 
-  transaction_date: z.string(),
+  due_date: z.string().optional(),
+  
+  current_amount: z.number().optional(),
+  
+  days_left: z.number().optional(),
 
-  account_name: z.string().optional(),
-  category_name: z.string().optional(),
-  created_at: z.string().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional()
 });
+
+
+export const transactionSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("income"),
+    amount: z.number().positive(),
+    description: z.string().min(1),
+    account_id: z.number().int().min(1),
+    category_id: z.number().int().min(1),
+    transaction_date: z.string(),
+  }),
+
+  z.object({
+    type: z.literal("expense"),
+    amount: z.number().positive(),
+    description: z.string().min(1),
+    account_id: z.number().int().min(1),
+    category_id: z.number().int().min(1),
+    transaction_date: z.string(),
+  }),
+
+  z.object({
+    type: z.literal("savings"),
+    amount: z.number().positive(),
+    description: z.string().min(1),
+    account_id: z.number().int().min(1),
+    savings_id: z.number().int().min(1),
+    transaction_date: z.string(),
+  }),
+]);
 
 export const budgetSchema = z.object({
   id: z.number().int().optional(),
@@ -70,7 +101,7 @@ export const loginSchema = z.object({
 });
 
 export type TransactionFormValues = {
-  type: "income" | "expense";
+  type: "income" | "expense" | "savings";
   amount: number;
   description: string;
   account_id: number;
@@ -82,6 +113,7 @@ export type UserInput = z.infer<typeof userSchema>;
 export type UserUpdateInput = z.infer<typeof updateUserSchema>;
 export type AccountInput = z.infer<typeof accountSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
+export type SavingsInput = z.infer<typeof savingsSchema>;
 export type TransactionInput = z.infer<typeof transactionSchema>;
 export type BudgetInput = z.infer<typeof budgetSchema>;
 

@@ -19,7 +19,7 @@ export const getTransactionsService = async (
 ) => {
   const limitNum = Number(limit) || 10;
   const offsetNum = Number(offset) || 0;
-  const allowedTypes = ["income", "expense"];
+  const allowedTypes = ["income", "expense", "savings"];
   const allowedSortFields = ["created_at", "amount", "transaction_date"];
   const allowedOrders = ["ASC", "DESC"];
   const normalizedSort = (sortBy || "").trim().toLowerCase();
@@ -64,7 +64,7 @@ export const createTransactionService = async (data, user_id) => {
     category_id } = data;
   
   const parsedAmount = Number(amount);
-  const allowedTypes = ["income", "expense"];
+  const allowedTypes = ["income", "expense", "savings"];
   
   const account = await getAccountById(account_id, user_id);
   const category = await getCategoryById(category_id, user_id);
@@ -84,7 +84,7 @@ export const createTransactionService = async (data, user_id) => {
   if (account_id == null || isNaN(account_id)) {
     throw new Error("Valid account_id is required");
   }
-  if (category_id == null || isNaN(category_id)) {
+  if ((category_id == null || isNaN(category_id)) && !type==="savings") {
     throw new Error("Valid category_id is required");
   }
   
@@ -92,7 +92,7 @@ export const createTransactionService = async (data, user_id) => {
     throw new Error("Invalid account");
   }
   
-  if (!category) {
+  if (!category && !type==="savings") {
     throw new Error("Invalid category");
   }
   
@@ -111,7 +111,7 @@ export const updateTransactionService = async (id, data, user_id) => {
     transaction_date } = data;
   
   const parsedAmount = Number(amount);
-  const allowedTypes = ["income", "expense"];
+  const allowedTypes = ["income", "expense", "savings"];
   
   const transaction = await getTransactionById(id, user_id);
   const account = await getAccountById(account_id, user_id);
@@ -133,7 +133,7 @@ export const updateTransactionService = async (id, data, user_id) => {
   if (account_id == null || isNaN(account_id)) {
     throw new Error("Valid account_id is required");
   }
-  if (category_id == null || isNaN(category_id)) {
+  if ((category_id == null || isNaN(category_id)) && !type==="savings") {
     throw new Error("Valid category_id is required");
   }
   
@@ -145,7 +145,7 @@ export const updateTransactionService = async (id, data, user_id) => {
     throw new Error("Invalid account");
   }
   
-  if (!category) {
+  if (!category && !type==="savings") {
     throw new Error("Invalid category");
   }
 

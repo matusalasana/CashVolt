@@ -6,6 +6,8 @@ import {
   Trash2, 
   Calendar, 
   Tag, 
+  PiggyBank,
+  HandCoins,
   Wallet 
 } from 'lucide-react';
 
@@ -15,7 +17,7 @@ interface TransactionCardProps {
   amount: number;
   description: string;
   date: string;
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'savings';
   category: string;
   account: string;
   onEdit: () => void;
@@ -32,7 +34,6 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const isIncome = type === 'income';
   
   const { data: user } = useAuth(); 
   const currency = user.currency;
@@ -44,8 +45,16 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           
           {/* Left Section: Icon & Info */}
           <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${isIncome ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`}>
-              {isIncome ? <ArrowUpRight size={24} /> : <ArrowDownLeft size={24} />}
+            <div className={`p-3 rounded-2xl ${type === "income" 
+              ? 'bg-success/10 text-success' 
+              : type === "savings" 
+              ? 'bg-primary/10 text-primary' 
+              : 'bg-error/10 text-error'}`}>
+              {type === "income"  
+                ? <ArrowUpRight size={24} /> 
+                : type === "savings"  
+                ? <HandCoins size={24} />
+                :<ArrowDownLeft size={24} />}
             </div>
             
             <div>
@@ -55,7 +64,10 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
                   <Calendar size={12} /> {date}
                 </span>
                 <span className="flex items-center gap-1 uppercase tracking-wider font-semibold">
-                  <Tag size={12} /> {category}
+                  { category 
+                    ? <Tag size={12} />
+                    : <PiggyBank size={24} />
+                  } {category ? category : type}
                 </span>
               </div>
             </div>
@@ -63,8 +75,13 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
 
           {/* Right Section: Amount & Actions */}
           <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2">
-            <div className={`text-xl font-black ${isIncome ? 'text-success' : 'text-error'}`}>
-              {isIncome ? '+' : '-'}{Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm font-normal">{currency}</span>
+            <div className={`text-xl font-black ${type === "income" 
+              ? 'text-success' 
+              : type === "savings" 
+              ? 'text-primary'
+              : 'text-error'}`}
+            >
+              {type === "income"  ? '+' : type === "savings"  ? "" : '-'}{Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm font-normal">{currency}</span>
             </div>
             
             <div className="flex items-center gap-2">

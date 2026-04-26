@@ -16,7 +16,7 @@ import Transactions from "./pages/Transactions";
 import Budgets from "./pages/Budgets";
 import Accounts from "./pages/Accounts";
 import Categories from "./pages/Categories";
-import Goals from "./pages/Goals";
+import Savings from "./pages/Savings";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import About from "./pages/About";
@@ -57,7 +57,7 @@ function App() {
             <Route path="/budgets" element={<Budgets />} />
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/categories" element={<Categories />} />
-            <Route path="/goals" element={<Goals />} />
+            <Route path="/savings" element={<Savings />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
