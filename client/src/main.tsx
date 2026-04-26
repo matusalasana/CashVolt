@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { initChartConfig } from './utils/chart';
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Initialize Chart settings
 initChartConfig();
@@ -23,7 +24,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider >
         </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,

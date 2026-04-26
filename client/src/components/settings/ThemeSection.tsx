@@ -1,8 +1,7 @@
-import { Sun, Moon } from "lucide-react";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme } from "../../context/ThemeContext";
 
 const ThemeSection = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme(); // now GLOBAL
 
   return (
     <div className="mx-auto w-full p-4">
@@ -14,29 +13,25 @@ const ThemeSection = () => {
 
       <div className="flex rounded-2xl bg-base-200 p-1">
 
-        {/* Light */}
         <button
           onClick={() => setTheme("light")}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold transition-all ${
+          className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold ${
             theme === "light"
-              ? "bg-base-100 text-base-content shadow-sm"
-              : "text-base-content/60 hover:text-base-content"
+              ? "bg-base-100 shadow-sm"
+              : "opacity-60"
           }`}
         >
-          <Sun size={18} strokeWidth={2} />
           Light
         </button>
 
-        {/* Dark */}
         <button
           onClick={() => setTheme("dark")}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold transition-all ${
+          className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold ${
             theme === "dark"
-              ? "bg-base-100 text-base-content shadow-sm"
-              : "text-base-content/60 hover:text-base-content"
+              ? "bg-base-100 shadow-sm"
+              : "opacity-60"
           }`}
         >
-          <Moon size={18} strokeWidth={2} />
           Dark
         </button>
 
