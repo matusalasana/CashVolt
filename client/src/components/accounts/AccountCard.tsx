@@ -1,58 +1,137 @@
-import { Pencil, Trash2 } from "lucide-react"
+import { Pencil, Trash2, CreditCard } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
 
 interface Props {
-  name: string
-  id: number
-  onEdit?: () => void
-  onDelete?: () => void
+  name: string;
+  recent_transaction_type: string;
+  id: number;
+  balance?: number;
+  lastTransaction?: number;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-const AccountCard = ({ name, id, onEdit, onDelete }: Props) => {
-  const firstLetter = name.charAt(0).toUpperCase();
+const AccountCard = ({
+  name,
+  recent_transaction_type,
+  id,
+  balance = 0,
+  lastTransaction,
+  onEdit,
+  onDelete,
+}: Props) => {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  const isPositive = balance >= 0;
+  
+  const { data: user } = useAuth();
+  const currency = user?.currency ?? "ETB";
 
   return (
-    <div className="card card-side bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-all duration-200 group">
-      {/* Avatar Section */}
-      <figure className="p-4 pr-0">
-        <div className="avatar placeholder">
-          <div className="bg-primary/10 flex justify-center items-center font-bold text-center text-primary rounded-xl w-12">
-            {firstLetter}
+    <div className="group relative overflow-hidden rounded-2xl 
+      bg-base-100/70 backdrop-blur-xl
+      border border-base-200
+      shadow-sm hover:shadow-xl
+      transition-all duration-300 hover:scale-[1.02]">
+
+      {/* hover glow */}
+      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="relative p-5">
+
+        {/* HEADER */}
+        <div className="flex items-start justify-between mb-4">
+
+          <div className="flex items-center gap-3">
+
+            {/* avatar */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-xl opacity-0 group-hover:opacity-100 transition" />
+
+              <div className="w-12 h-12 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold shadow-sm">
+                {initials}
+              </div>
+            </div>
+
+            {/* info */}
+            <div>
+              <h3 className="font-bold text-base-content">
+                {name}
+              </h3>
+
+              <span className="text-[10px] font-mono text-base-content/50">
+                REF: {id}
+              </span>
+            </div>
+          </div>
+
+          {/* actions */}
+          <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition">
+            <button
+              onClick={onEdit}
+              className="p-1.5 rounded-lg hover:bg-base-200 text-base-content/60 hover:text-primary transition"
+            >
+              <Pencil size={14} />
+            </button>
+
+            <button
+              onClick={onDelete}
+              className="p-1.5 rounded-lg hover:bg-base-200 text-base-content/60 hover:text-error transition"
+            >
+              <Trash2 size={14} />
+            </button>
           </div>
         </div>
-      </figure>
 
-      <div className="card-body p-4 flex-row items-center justify-between">
-        {/* Middle content */}
-        <div className="flex flex-col">
-          <h2 className="card-title text-base mb-0 leading-tight">{name}</h2>
-          <div className="flex items-center gap-2 mt-1">
-             <span className="text-[10px] uppercase tracking-widest font-bold opacity-40">Ref: {id}</span>
+        {/* BALANCE */}
+        <div className="mb-4 p-3 rounded-xl bg-base-200/40">
+
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] uppercase tracking-wider text-base-content/50">
+              Available Balance
+            </span>
+          </div>
+
+          <div className="text-xl font-bold text-base-content">
+            {balance}
+            <span className="text-xs text-base-content/50 ml-1">
+              {currency}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 mt-2">
+            <div
+              className={`h-1.5 w-1.5 rounded-full ${
+                isPositive ? "bg-success" : "bg-error"
+              }`}
+            />
+            <span className="text-[10px] text-base-content/50">
+              {isPositive ? "Positive balance" : "Overdrawn"}
+            </span>
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={onEdit}
-            className="btn btn-ghost btn-sm btn-square text-info hover:bg-info/10 transition-colors"
-            title="Edit Account"
-          >
-            <Pencil size={18} />
-          </button>
+        {/* FOOTER */}
+        <div className="flex items-center gap-2 pt-2 border-t border-base-200">
 
-          <div className="divider divider-horizontal mx-0 h-8 opacity-20"></div>
+          <CreditCard size={12} className="text-base-content/40" />
 
-          <button
-            onClick={onDelete}
-            className="btn btn-ghost btn-sm btn-square text-error hover:bg-error/10 transition-colors"
-            title="Delete Account"
-          >
-            <Trash2 size={18} />
-          </button>
+          <span className="text-[10px] text-base-content/50 truncate">
+            Last transaction: {lastTransaction ? Number(lastTransaction).toLocaleString() : "No transaction"}
+            {
+              `${recent_transaction_type && ` (${recent_transaction_type})`}`
+            }
+          </span>
         </div>
+
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AccountCard
+export default AccountCard;

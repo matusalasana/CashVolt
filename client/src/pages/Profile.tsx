@@ -1,14 +1,15 @@
-import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ProfileHeader from "../components/profile/ProfileHeader";
-import ProfilePictureUploader from "../components/profile/ProfilePictureUploader";
 import UserProfileForm from "../components/profile/UserProfileForm";
 import ProfileNavigations from "../components/profile/ProfileNavigations"
 import ProfilePreferences from "../components/profile/ProfilePreferences"
 import { useAuth } from "../hooks/useAuth"
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const { data: user, isLoading } = useAuth()
+  
+  const [ isEditOpen, setIsEditOpen ] = useState(false)
   // Animation Variants
   const containerVars = {
     initial: { opacity: 0, y: 20 },
@@ -35,15 +36,18 @@ const Profile: React.FC = () => {
                 role={user?.role}
                 joinedDate={user?.created_at}
                 avatar_url={user?.profile_picture}
+                onClickEdit={() => setIsEditOpen(true)}
               />
-              <ProfilePictureUploader />
               <div className="divider"></div>
               <ProfileNavigations />
             
 
-<div className="divider"></div>
+          <div className="divider"></div>
           
-          <UserProfileForm />
+          <UserProfileForm 
+            isEditOpen={isEditOpen}
+            onClickClose={() => setIsEditOpen(false)}
+          />
           <div className="divider"></div>
           {/* Preferences Section */}
           <ProfilePreferences />

@@ -10,6 +10,7 @@ const MonthlyOverviewSection = ({ overviews, monthName, year }) => {
             total_income={overviews.total_income}
             total_expense={overviews.total_expense}
             total_budget={overviews.total_budget}
+            total_savings={overviews.total_savings}
           />
 
           <MonthlyBarChart

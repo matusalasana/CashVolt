@@ -1,4 +1,5 @@
-import { Camera } from "lucide-react";
+import { UserRoundPen } from "lucide-react";
+import ProfilePictureUploader from "./ProfilePictureUploader"
 
 
 interface ProfileHeaderProps {
@@ -7,6 +8,7 @@ interface ProfileHeaderProps {
   role?: string;
   joinedDate?: string;
   avatar_url?: string;
+  onClickEdit?: () => void;
 }
 
   const formatJoinDate = (dateString: string) => {
@@ -25,7 +27,8 @@ const ProfileHeader = ({
   last_name = "", 
   role = "user", 
   joinedDate,
-  avatar_url 
+  avatar_url,
+  onClickEdit
 }: ProfileHeaderProps) => {
   const formattedDate = joinedDate ? formatJoinDate(joinedDate) : "Recently";
 
@@ -41,16 +44,20 @@ const ProfileHeader = ({
           </div>
         </div>
 
-        <button
-          className="btn btn-circle btn-primary btn-sm absolute bottom-0 right-[calc(50%-3.5rem)] shadow-lg"
-          aria-label="Change profile picture"
+        <div
+          className=""
         >
-          <Camera size={16} />
-        </button>
+          <ProfilePictureUploader />
+        </div>
       </div>
 
       {/* User Info */}
-      <div className="mt-4">
+      <div className="mt-2 flex flex-col gap-2 justify-center items-center">
+      
+        <div className="badge badge-primary badge-outline capitalize">
+          {role}
+        </div>
+        
         <h2 className="text-2xl font-bold">
           {first_name} {last_name}
         </h2>
@@ -58,9 +65,14 @@ const ProfileHeader = ({
         <p className="text-sm text-base-content/60">
           Member since {formattedDate}
         </p>
-
-        <div className="badge badge-secondary mt-2">{role}</div>
       </div>
+      
+      <button 
+        onClick={onClickEdit}
+        className="btn mx-auto my-3 btn-outline btn-error btn-sm flex items-center gap-2">
+        <UserRoundPen size={16} /> Edit Profile
+      </button>
+      
     </div>
   );
 };

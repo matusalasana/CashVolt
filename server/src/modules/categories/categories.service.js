@@ -11,7 +11,7 @@ export const getCategoriesService = async (user_id, type) => {
     throw new Error("user_id is required");
   }
 
-  if (type && !["income", "expense"].includes(type)) {
+  if (type && !["income", "expense", "savings"].includes(type)) {
     throw new Error("Invalid category type");
   }
 
@@ -26,7 +26,7 @@ export const createCategoryService = async (data, user_id) => {
   
   if (!name || !name.trim()) throw new Error("Category name is required");
   if (!type) throw new Error("Category type is required");
-  if (!["income", "expense"].includes(type)) throw new Error("Invalid category type");
+  if (!["income", "expense", "savings"].includes(type)) throw new Error("Invalid category type");
   if (!user_id) throw new Error("User ID required");
   
   const result = await createCategoryRepo(name.trim(), type, user_id);

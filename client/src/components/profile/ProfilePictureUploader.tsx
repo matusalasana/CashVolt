@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Camera } from "lucide-react";
 import axios from "axios";
 import { useUpdateUser } from "../../hooks/useAuth";
 
@@ -62,9 +63,9 @@ const ProfilePictureUploader = () => {
       <button
         onClick={() => inputRef.current?.click()}
         disabled={loading}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        className="btn btn-circle btn-primary btn-sm absolute bottom-0 right-[calc(50%-3.5rem)] shadow-lg"
       >
-        {loading ? "Uploading..." : "Upload Profile Image"}
+        <Camera size={16} />
       </button>
     </div>
   );

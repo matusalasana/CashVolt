@@ -1,19 +1,13 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { X, PlusCircle, Save, Loader2 } from "lucide-react";
 
 import { type TransactionInput, transactionSchema } from "../../types";
-
-import {
-  useCreateTransaction,
-  useUpdateTransaction,
-} from "../../hooks/useTransactions";
-
+import { useCreateTransaction, useUpdateTransaction } from "../../hooks/useTransactions";
 import { useAccounts } from "../../hooks/useAccounts";
 import { useCategories } from "../../hooks/useCategories";
-import { useSavings } from "../../hooks/useSavings"; // 🔥 NEW
-
-import { X, PlusCircle, Save, Loader2 } from "lucide-react";
+import { useSavings } from "../../hooks/useSavings";
 
 interface Props {
   transaction?: TransactionInput & { id: number };
@@ -24,9 +18,9 @@ interface Props {
 
 const TransactionForm = ({
   transaction,
-  isTransactionLoading,
   mode = "add",
   onSuccess,
+  isTransactionLoading,
 }: Props) => {
   const {
     register,
@@ -44,31 +38,26 @@ const TransactionForm = ({
 
   const selectedType = watch("type");
 
-  const { data: accounts, isLoading: isAccountLoading } = useAccounts();
-  const { data: categories, isLoading: isCategoryLoading } =
-    useCategories(selectedType);
+  // data
+  const { data: accounts, isLoading: accountsLoading } = useAccounts();
+  const { data: categories, isLoading: categoriesLoading } = useCategories(selectedType);
+  const { data: savings, isLoading: savingsLoading } = useSavings();
 
-  const { data: savings, isLoading: isSavingsLoading } = useSavings(); // 🔥 NEW
+  // mutations
+  const { mutate: createTransaction, isPending: creating } = useCreateTransaction();
+  const { mutate: updateTransaction, isPending: updating } = useUpdateTransaction();
 
-  const { mutate: createTransaction, isPending: isCreating } =
-    useCreateTransaction();
+  const isLoading = isTransactionLoading || accountsLoading || categoriesLoading || savingsLoading;
+  const isPending = creating || updating;
 
-  const { mutate: updateTransaction, isPending: isUpdating } =
-    useUpdateTransaction();
-
-  const isPending = isCreating || isUpdating;
-
-  const isFormLoading =
-    isTransactionLoading || isAccountLoading || isCategoryLoading || isSavingsLoading;
-
-  // EDIT MODE
+  // reset in edit mode
   useEffect(() => {
     if (mode === "edit" && transaction) {
       reset(transaction);
     }
-  }, [transaction, mode, reset]);
+  }, [mode, transaction, isTransactionLoading, accountsLoading, categoriesLoading, reset]);
 
-  const onSubmit = (data: TransactionInput) => {
+  const submitHandler = (data: TransactionInput) => {
     if (mode === "edit" && transaction) {
       updateTransaction(
         { id: transaction.id, data },
@@ -86,16 +75,19 @@ const TransactionForm = ({
 
   return (
     <div className="relative card w-full max-w-lg bg-base-100 shadow-xl border border-base-200">
-      {/* CLOSE */}
+      
+      {/* Close */}
       <button
         type="button"
-        onClick={() => onSuccess?.()}
+        onClick={onSuccess}
         className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4"
       >
         <X size={18} />
       </button>
 
       <div className="card-body">
+
+        {/* Title */}
         <h2 className="card-title flex items-center gap-2 text-2xl mb-4">
           {mode === "edit" ? (
             <>
@@ -108,24 +100,24 @@ const TransactionForm = ({
           )}
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
 
           {/* AMOUNT */}
-          <input
-            type="number"
-            placeholder="Amount"
-            className={`input input-bordered w-full ${
-              errors.amount ? "input-error" : ""
-            }`}
-            {...register("amount", { valueAsNumber: true })}
-          />
-          {errors.amount && (
-            <p className="text-error text-xs">{errors.amount.message}</p>
-          )}
+          <div>
+            <input
+              type="number"
+              placeholder="Amount"
+              className={`input input-bordered w-full ${errors.amount ? "input-error" : ""}`}
+              {...register("amount", { valueAsNumber: true })}
+            />
+            {errors.amount && (
+              <p className="text-error text-xs">{errors.amount.message}</p>
+            )}
+          </div>
 
           {/* TYPE */}
           <select
-            disabled={isFormLoading}
+            disabled={isLoading}
             className="select select-bordered w-full"
             {...register("type")}
           >
@@ -136,12 +128,12 @@ const TransactionForm = ({
 
           {/* ACCOUNT */}
           <select
-            disabled={isFormLoading}
+            disabled={isLoading}
             className="select select-bordered w-full"
             {...register("account_id", { valueAsNumber: true })}
           >
             <option value="">
-              {isFormLoading ? "Loading..." : "Select Account"}
+              {isLoading ? "Loading..." : "Select Account"}
             </option>
             {accounts?.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -150,15 +142,15 @@ const TransactionForm = ({
             ))}
           </select>
 
-          {/* CATEGORY (ONLY income/expense) */}
+          {/* CATEGORY */}
           {selectedType !== "savings" && (
             <select
-              disabled={isFormLoading}
+              disabled={isLoading}
               className="select select-bordered w-full"
               {...register("category_id", { valueAsNumber: true })}
             >
               <option value="">
-                {isFormLoading ? "Loading..." : "Select Category"}
+                {isLoading ? "Loading..." : "Select Category"}
               </option>
               {categories?.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -168,15 +160,15 @@ const TransactionForm = ({
             </select>
           )}
 
-          {/* SAVINGS (ONLY savings type) */}
+          {/* SAVINGS */}
           {selectedType === "savings" && (
             <select
-              disabled={isFormLoading}
+              disabled={isLoading}
               className="select select-bordered w-full"
               {...register("savings_id", { valueAsNumber: true })}
             >
               <option value="">
-                {isFormLoading ? "Loading..." : "Select Savings Goal"}
+                {isLoading ? "Loading..." : "Select Savings Goal"}
               </option>
               {savings?.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -214,6 +206,7 @@ const TransactionForm = ({
               "Create Transaction"
             )}
           </button>
+
         </form>
       </div>
     </div>

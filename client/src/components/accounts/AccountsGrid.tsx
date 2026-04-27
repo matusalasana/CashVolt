@@ -17,9 +17,12 @@ const AccountsGrid = ({ accounts, onEdit, onDelete, isLoading }) => {
         <AccountCard
           key={acnt.id}
           name={acnt.name}
+          balance={acnt.available_balance}
           id={acnt.id}
           onEdit={() => onEdit(acnt)}
           onDelete={() => onDelete(acnt)}
+          lastTransaction={acnt.recent_transaction_amount}
+          recent_transaction_type={acnt.recent_transaction_type}
         />
       ))}
     </div>

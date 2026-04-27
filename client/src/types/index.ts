@@ -5,7 +5,14 @@ export const userSchema = z.object({
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  currency: z.string().optional(),
   role: z.string().optional().default("user"),
+});
+
+export const profileSchema = z.object({
+  first_name: z.string().min(2, "At least 2 characters are required"),
+  last_name: z.string().min(2, "Must be at least 2 characters long"),
+  email: z.string().email("Invalid email address"),
 });
 
 export const updateUserSchema = z.object({
@@ -19,9 +26,14 @@ export const updateUserSchema = z.object({
   created_at: z.string().optional(),
 });
 
+
+
 export const accountSchema = z.object({
   id: z.number().int().optional(),
   name: z.string().min(1, "Account name is required"),
+  available_balance: z.number().optional(),
+  recent_transaction_amount: z.number().optional(),
+  recent_transaction_type: z.string().optional(),
 });
 
 export const categorySchema = z.object({
@@ -110,6 +122,8 @@ export type TransactionFormValues = {
 };
 
 export type UserInput = z.infer<typeof userSchema>;
+export type ProfileFormInput = z.infer<typeof profileSchema>;
+
 export type UserUpdateInput = z.infer<typeof updateUserSchema>;
 export type AccountInput = z.infer<typeof accountSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
