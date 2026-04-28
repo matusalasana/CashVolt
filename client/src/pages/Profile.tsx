@@ -21,7 +21,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-base-200 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <motion.div 
         variants={containerVars}
         initial="initial"
@@ -41,8 +41,6 @@ const Profile = () => {
               <div className="divider"></div>
               <ProfileNavigations />
             
-
-          <div className="divider"></div>
           
           <UserProfileForm 
             isEditOpen={isEditOpen}

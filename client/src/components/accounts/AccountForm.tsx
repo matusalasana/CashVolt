@@ -73,7 +73,7 @@ const AccountForm = ({ account, mode, onSuccess }: Props) => {
         className="w-full max-w-md mx-auto bg-base-100 shadow-xl rounded-xl p-6 border border-base-200 flex flex-col items-center gap-3"
       >
         {/* Title */}
-        <h2 className="text-lg font-semibold text-gray-800">
+        <h2 className="text-lg font-semibold text-base-content">
           {mode === "edit" ? "Edit Account" : "Create Account"}
         </h2>
 

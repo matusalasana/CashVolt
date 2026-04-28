@@ -10,6 +10,18 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
+type TransactionCardProps = {
+  amount: any;
+  description: any;
+  date: any;
+  type: any;
+  category: any;
+  account: any;
+  onEdit?: () => void;     
+  onDelete?: () => void;
+};
+
+
 // UI configuration per transaction type
 const TRANSACTION_STYLES = {
   income: {
@@ -47,7 +59,7 @@ const TransactionCard = ({
   account,
   onEdit,
   onDelete,
-}) => {
+}: TransactionCardProps) => {
   const { data: user } = useAuth();
   const currency = user?.currency ?? "USD";
 

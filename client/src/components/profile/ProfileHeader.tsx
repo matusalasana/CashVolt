@@ -1,4 +1,4 @@
-import { UserRoundPen } from "lucide-react";
+import { UserRoundPen, User } from "lucide-react";
 import ProfilePictureUploader from "./ProfilePictureUploader"
 
 
@@ -32,15 +32,17 @@ const ProfileHeader = ({
 }: ProfileHeaderProps) => {
   const formattedDate = joinedDate ? formatJoinDate(joinedDate) : "Recently";
 
-  const avatar = avatar_url || `https://placehold.net/avatar.png`;
-
   return (
     <div className="text-center pt-10">
       {/* Avatar Section */}
       <div className="relative -mt-12 flex justify-center">
         <div className="avatar">
-          <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-2xl">
-            <img src={avatar} alt="User Avatar" />
+          <div className="w-32 flex flex-col justify-center items-center rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-2xl">
+            {
+              avatar_url 
+                ? <img src={avatar_url} alt="User Avatar" />
+                : <User size={80} className="text-base-content" />
+            }
           </div>
         </div>
 

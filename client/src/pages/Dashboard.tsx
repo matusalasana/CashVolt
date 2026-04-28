@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import DashboardLoader from "../components/dashboard/DashboardLoader";
 import MonthlyOverviewSection from "../components/dashboard/MonthlyOverviewSection";
 import YearlyOverviewChart from "../components/dashboard/YearlyOverviewChart";
+import RecentTransactions from "../components/dashboard/RecentTransactions";
 import { Helmet } from 'react-helmet-async';
 
 
@@ -72,6 +73,8 @@ const Dashboard = () => {
         monthName={monthsOfTheYear[currentMonth - 1]}
         year={currentYear}
       />
+      
+      <RecentTransactions />
 
       <YearlyOverviewChart
         chart={chart}

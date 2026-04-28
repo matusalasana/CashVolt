@@ -26,8 +26,6 @@ const AccountCard = ({
     .join("")
     .slice(0, 2)
     .toUpperCase();
-
-  const isPositive = balance >= 0;
   
   const { data: user } = useAuth();
   const currency = user?.currency ?? "ETB";
@@ -107,11 +105,20 @@ const AccountCard = ({
           <div className="flex items-center gap-2 mt-2">
             <div
               className={`h-1.5 w-1.5 rounded-full ${
-                isPositive ? "bg-success" : "bg-error"
+                balance > 0 
+                  ? "bg-success" 
+                  : balance < 0 
+                  ? "bg-error"
+                  : "bg-accent"
               }`}
             />
             <span className="text-[10px] text-base-content/50">
-              {isPositive ? "Positive balance" : "Overdrawn"}
+              {balance > 0 
+                ? "Positive balance" 
+                : balance < 0  
+                ? "Overdrawn"
+                : "Empty balance"
+              }
             </span>
           </div>
         </div>
@@ -122,9 +129,8 @@ const AccountCard = ({
           <CreditCard size={12} className="text-base-content/40" />
 
           <span className="text-[10px] text-base-content/50 truncate">
-            Last transaction: {lastTransaction ? Number(lastTransaction).toLocaleString() : "No transaction"}
-            {
-              `${recent_transaction_type && ` (${recent_transaction_type})`}`
+            Last transaction: {lastTransaction ? Number(lastTransaction).toLocaleString() : "No transaction"}{" "}
+            {(recent_transaction_type && lastTransaction) && recent_transaction_type
             }
           </span>
         </div>
