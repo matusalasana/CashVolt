@@ -42,7 +42,8 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="fixed top-4 left-4 z-10 pb-3">
+      {/* Mobile menu button - only visible on mobile */}
+      <div className="lg:hidden fixed top-4 left-4 z-10">
         <label
           htmlFor="app-drawer"
           className="btn btn-ghost btn-sm"
@@ -53,7 +54,7 @@ export default function Sidebar() {
       </div>
 
       {/* Drawer overlay for mobile */}
-      <div className={`fixed inset-0 z-40 ${open ? 'visible' : 'invisible'}`}>
+      <div className={`fixed top-0 bottom-0 z-40 ${open ? 'visible' : 'invisible'}`}>
         {open && (
           <div 
             className="absolute inset-0 bg-black bg-opacity-50"
