@@ -54,7 +54,7 @@ export const getYearlyAnalytics = async (req, res) => {
     const yearNum = Number(year);
 
     const data = await getYearlyAnalyticsService(user_id, yearNum);
-
+  
     return res.status(200).json(data);
 
   } catch (err) {

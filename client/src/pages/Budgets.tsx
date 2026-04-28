@@ -6,8 +6,9 @@ import { useBudgetModals } from "../components/budgets/useBudgetModals";
 import BudgetHeader from "../components/budgets/BudgetHeader";
 import BudgetFilters from "../components/budgets/BudgetFilters";
 import BudgetGrid from "../components/budgets/BudgetGrid";
-import BudgetLoader from "../components/budgets/BudgetLoader";
+import RectangularLoadingSkeleton from "../components/RectangularLoadingSkeleton";
 import BudgetModals from "../components/budgets/BudgetModals";
+import BudgetSorts from "../components/budgets/BudgetSorts";
 
 // Helper to get month names
 const MONTHS = [
@@ -29,13 +30,16 @@ const Budget = () => {
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear()
   );
+  
+  const [selectedOrder, setSelectedOrder] = useState("desc");
+  const [sortBy, setSortBy] = useState("created_at");
 
   // --- Fetch Data ---
   const {
     data: budgets,
     isLoading,
     error,
-  } = useBudgets(selectedMonth, selectedYear);
+  } = useBudgets(selectedMonth, selectedYear, sortBy, selectedOrder);
 
   const modals = useBudgetModals();
 
@@ -47,30 +51,6 @@ const Budget = () => {
           <span>
             {error?.message || "Failed to load budgets. Please try again."}
           </span>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Safe Transform ---
-  let transformedBudgets = [];
-
-  try {
-    transformedBudgets = Array.isArray(budgets)
-      ? budgets.map((b) => ({
-          id: b?.id ?? 0,
-          amount: Number(b?.amount ?? 0),
-          category_name: b?.category_name ?? "Unknown",
-          month: Number(b?.month ?? 1),
-          year: Number(b?.year ?? new Date().getFullYear()),
-          category_id: b?.category_id ?? 0,
-        }))
-      : [];
-  } catch (err) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="alert alert-error shadow-lg">
-          <span>Invalid data received from server.</span>
         </div>
       </div>
     );
@@ -91,13 +71,25 @@ const Budget = () => {
         months={MONTHS}
         years={getYears()}
       />
+      
+      <BudgetSorts
+        order={selectedOrder}
+        isLoading={isLoading}
+        onClickDescending={() => {
+          setSelectedOrder(selectedOrder==="asc" ? "desc" : "asc")}
+        }
+        onSortChange={(val) => setSortBy(val)}
+      />
 
       {/* Loading */}
       {isLoading ? (
-        <BudgetLoader />
+        <RectangularLoadingSkeleton 
+          amount={8}
+          height={60}
+        />
       ) : (
         <BudgetGrid
-          data={transformedBudgets}
+          data={budgets}
           onEdit={(budget) => {
             modals.setEditingBudget(budget);
             modals.setIsEditOpen(true);

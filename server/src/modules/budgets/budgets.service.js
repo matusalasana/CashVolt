@@ -8,8 +8,28 @@ import {
 } from "./budgets.repository.js";
 
 // GET ALL
-export const getBudgetsService = async (user_id, month, year) => {
-  return await getBudgetsRepo(user_id, month, year);
+export const getBudgetsService = async (
+  user_id, 
+  month, 
+  year, 
+  sortBy, 
+  order
+) => {
+  const allowedSorts = ['created_at', 'amount', 'spent'];
+  const allowedOrders = ['asc', 'desc'];
+  
+  const safeSort = allowedSorts.includes(sortBy?.toLowerCase())
+    ? sortBy.toLowerCase()
+    : 'created_at';
+  const safeOrder = allowedOrders.includes(order?.toLowerCase())
+    ? order.toUpperCase()
+    : 'DESC'
+  const parsedMonth = month ? Number(month) : undefined;
+  const parsedYear = year ? Number(year) : undefined;
+  
+  const result = await getBudgetsRepo(user_id, parsedMonth, parsedYear, safeSort, safeOrder);
+  
+  return result;
 };
 
 // CREATE

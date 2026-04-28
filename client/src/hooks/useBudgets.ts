@@ -9,10 +9,15 @@ import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
 
-export const useBudgets = (month?: number, year?: number) => {
+export const useBudgets = (
+  month?: number, 
+  year?: number,
+  sortBy?: string, 
+  order?: string
+) => {
   return useQuery({
-    queryKey: ["budgets", month, year],
-    queryFn: () => getBudgets(month, year),
+    queryKey: ["budgets", month, year, sortBy, order],
+    queryFn: () => getBudgets(month, year, sortBy, order),
     enabled: month != null && year != null,
   });
 };
@@ -54,6 +59,7 @@ export const useDeleteBudget = () => {
   return useMutation({
     mutationFn: deleteBudget,
     onSuccess: () => {
+      toast.success("Budget deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
     onError: (error) => {

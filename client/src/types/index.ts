@@ -98,6 +98,8 @@ export const budgetSchema = z.object({
   month: z.number().int().min(1).max(12),
   year: z.number().int().optional(),
   category_name: z.string().optional(),
+  spent: z.number().optional(),
+  remaining: z.number().optional(),
 });
 
 export const registerSchema = z.object({

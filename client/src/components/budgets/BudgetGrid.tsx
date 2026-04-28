@@ -1,13 +1,7 @@
 import BudgetCard from "./BudgetCard";
 import BudgetsEmptyState from "./BudgetsEmptyState";
+import {type BudgetInput} from "../../types";
 
-type BudgetInput = {
-  id: number;
-  amount: number;
-  category_name: string;
-  month: number;
-  year: number;
-};
 
 type BudgetGridProps = {
   data: BudgetInput[];
@@ -36,6 +30,8 @@ const BudgetGrid = ({ data, onEdit, onDelete }: BudgetGridProps) => {
           year={b.year}
           onEdit={() => onEdit?.(b)}
           onDelete={() => onDelete?.(b)}
+          remaining={b.remaining}
+          spent={b.spent}
         />
       ))}
     </div>

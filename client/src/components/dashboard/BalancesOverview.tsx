@@ -6,22 +6,25 @@ import {
   Bitcoin,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
+import RectangularLoadingSkeleton from "../RectangularLoadingSkeleton";
 
-interface OverviewAnalyticsProps {
+interface BalancesOverviewProps {
   total_balance: number;
   total_income: number;
   total_expense: number;
   total_budget: number;
   total_savings: number;
+  isLoading: boolean;
 }
 
-const OverviewAnalyticsCard = ({
+const BalancesOverview = ({
   total_balance,
   total_income,
   total_expense,
   total_savings,
   total_budget,
-}: OverviewAnalyticsProps) => {
+  isLoading,
+}: BalancesOverviewProps) => {
   const { data: user } = useAuth();
   const currency = user?.currency || "ETB";
 
@@ -68,6 +71,10 @@ const OverviewAnalyticsCard = ({
     },
     
   ];
+  
+  if (isLoading){
+    return <RectangularLoadingSkeleton amount={5} height={35} />;
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 p-4">
@@ -128,4 +135,4 @@ const OverviewAnalyticsCard = ({
   );
 };
 
-export default OverviewAnalyticsCard;
+export default BalancesOverview;

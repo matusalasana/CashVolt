@@ -129,7 +129,7 @@ export default function Sidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="text-xs text-base-content/40 border-t pt-3 mt-auto">
+        <div className="text-xs text-base-content/40 border-t py-3 mt-auto">
           © {new Date().getFullYear()} CashVolt
         </div>
       </aside>

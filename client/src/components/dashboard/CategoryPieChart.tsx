@@ -1,23 +1,30 @@
 import { Doughnut } from "react-chartjs-2";
 import { pieOptions, chartBgColors } from "../../utils/chart";
-import { useBudgetAnalytics } from "../../hooks/useAnalytics";
-import { useBudgets } from "../../hooks/useBudgets";
+import RectangularLoadingSkeleton from "../RectangularLoadingSkeleton";
 
-const CategoryPieChart = () => {
-  const { data: categoriesData, isLoading: analyticsLoading } = useBudgetAnalytics(4, 2026);
-  const { isLoading: budgetLoading } = useBudgets(4, 2026);
+interface Props {
+  budgets: any[];
+  isLoading: boolean;
   
-  const labelsOfCategories = categoriesData?.slice(0,5).filter(cat => cat.spent > 0).map(c => c.category_name);
-  const categoriesSpent = categoriesData?.slice(0,5).filter(cat => cat.spent > 0).map(c => c.spent);
+}
+
+const CategoryPieChart = ({budgets, isLoading}: Props) => {
+  
+  const labelsOfCategories = budgets?.slice(0,5)
+    .filter(b => b.spent > 0)
+    .map(c => c.category_name);
+  const categoriesSpent = budgets?.slice(0,5)
+    .filter(b => b.spent > 0)
+    .map(c => c.spent);
 
   const hasData = categoriesSpent?.length > 0
   
-  if(!hasData){
-    return null;
+  if (isLoading) {
+    return <RectangularLoadingSkeleton amount={1} height={40} />;
   }
   
-  if (analyticsLoading || budgetLoading) {
-    return <p>Loading...</p>;
+  if(!hasData){
+    return null;
   }
   
   return (

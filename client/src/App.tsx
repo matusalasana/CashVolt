@@ -67,6 +67,7 @@ function App() {
         {/* NOT FOUND */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      
       <Footer />
     </>
   );

@@ -1,18 +1,62 @@
 import { sql } from "../../config/db.js";
 
 // GET ALL budgets
-export const getBudgetsRepo = async (user_id, month, year) => {
+export const getBudgetsRepo = async (
+  user_id,
+  month,
+  year,
+  sortBy,
+  order
+) => {
+
+  const sortColumnMap = {
+    created_at: "b.created_at",
+    amount: "b.amount",
+    spent: "COALESCE(SUM(t.amount), 0)::float"
+  };
+
+  const sortColumn = sortColumnMap[sortBy] || "b.created_at";
+  const sortDirection = order === "ASC" ? "ASC" : "DESC";
+
   return await sql`
-    SELECT b.*, 
-      c.name AS category_name
+    SELECT 
+      b.id,
+      b.category_id,
+      b.amount::float,
+      b.month,
+      b.year,
+      b.created_at,
+      b.updated_at,
+      
+      c.name AS category_name,
+      COALESCE(SUM(t.amount), 0)::float AS spent,
+      (b.amount - COALESCE(SUM(t.amount), 0))::float AS remaining
+      
     FROM budgets b
-    JOIN categories c ON b.category_id = c.id
-    WHERE b.user_id = ${user_id}
-    ${month ? sql`AND b.month = ${month}` : sql``}
-    ${year ? sql`AND b.year = ${year}` : sql``}
-    ORDER BY b.created_at DESC;
+    
+    INNER JOIN categories c 
+      ON b.category_id = c.id
+      
+    LEFT JOIN transactions t 
+      ON t.category_id = b.category_id
+      AND t.user_id = b.user_id
+      AND EXTRACT(MONTH FROM t.transaction_date) = b.month
+      AND EXTRACT(YEAR FROM t.transaction_date) = b.year
+    
+    WHERE 
+      b.user_id = ${user_id}
+      ${month !== undefined ? sql`AND b.month = ${month}` : sql``}
+      ${year !== undefined ? sql`AND b.year = ${year}` : sql``}
+
+    GROUP BY 
+      b.id, 
+      c.id, 
+      c.name
+
+    ORDER BY ${sql.unsafe(sortColumn)} ${sql.unsafe(sortDirection)};
   `;
 };
+
 
 // CREATE budget
 export const createBudgetRepo = async (data, user_id) => {

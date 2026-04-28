@@ -4,22 +4,36 @@ import { useAuth } from "../hooks/useAuth";
 const ProtectedRoutes = () => {
   const { data: user, isLoading, isError } = useAuth();
 
+  // Handle error first (more predictable)
+  if (isError) {
+    throw new Error("Authentication failed. Please try again.");
+  }
+
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-3 justify-center items-center min-h-screen">
-        <div className="loading bg-blue-700 loading-spinner loading-lg"></div>
-        <p className="skeleton text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-base-200 skeleton-text font-bold">CashVolt</p>
+      <div className="min-h-screen flex items-center justify-center bg-base-100 relative overflow-hidden">
+        {/* soft background glow */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10 blur-3xl" />
+
+        <div className="z-10 flex flex-col items-center gap-6 text-center">
+          {/* Spinner */}
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+
+          {/* Brand */}
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-pulse">
+              CashVolt
+            </h1>
+          </div>
+
+        </div>
       </div>
     );
   }
 
-  // IMPORTANT: treat error as unauthenticated
+  // Not authenticated
   if (!user) {
     return <Navigate to="/login" replace />;
-  }
-  
-  if (isError) {
-    throw new Error("Error occurred")
   }
 
   return <Outlet />;

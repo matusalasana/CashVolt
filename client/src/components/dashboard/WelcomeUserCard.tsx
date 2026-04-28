@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Calendar, Sparkles } from "lucide-react";
+import RectangularLoadingSkeleton from "../RectangularLoadingSkeleton";
 
 type Props = {
   name: string;
   monthName: string;
   year: number;
+  isLoading: boolean;
 };
 
-const WelcomeUserCard = ({ name, monthName, year }: Props) => {
+const WelcomeUserCard = ({ name, monthName, year, isLoading }: Props) => {
   const currentHour = new Date().getHours();
   const date = new Date();
   const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
@@ -34,6 +36,10 @@ const WelcomeUserCard = ({ name, monthName, year }: Props) => {
       return () => clearTimeout(timeout);
     }
   }, [index, fullText]);
+  
+  if(isLoading){
+    return <RectangularLoadingSkeleton amount={1} height={40} />;
+  }
 
   return (
     <div className="group relative overflow-hidden rounded-2xl backdrop-blur-xl bg-base-100/40 border border-base-300 shadow-xl">

@@ -9,18 +9,17 @@ import {
 // GET ALL
 export const getBudgets = async (req, res) => {
   try {
-    const { month, year } = req.query;
+    const { month, year, sortBy, order } = req.query;
     const user_id = req.user.userId;
-
-    const parsedMonth = month ? Number(month) : undefined;
-    const parsedYear = year ? Number(year) : undefined;
 
     const data = await getBudgetsService(
       user_id,
-      parsedMonth,
-      parsedYear
+      month,
+      year,
+      sortBy,
+      order
     );
-
+    
     return res.status(200).json(data);
 
   } catch (err) {

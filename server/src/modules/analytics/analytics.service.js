@@ -86,17 +86,11 @@ export const getOverviewAnalyticsService = async (user_id, month, year) => {
 export const getYearlyAnalyticsService = async (user_id, year) => {
   const result = await sql`
     SELECT 
-      EXTRACT(MONTH FROM transaction_date) AS month,
+      EXTRACT(MONTH FROM transaction_date)::float AS month,
 
-      SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) AS total_income,
+      SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END)::float AS total_income,
 
-      SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS total_expense,
-
-      (
-        SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END)
-        -
-        SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END)
-      ) AS total_balance
+      SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END)::float AS total_expense
 
     FROM transactions
     WHERE 
