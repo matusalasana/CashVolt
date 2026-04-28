@@ -3,11 +3,10 @@ import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
-    <div className="flex relative flex-col gap-5">
-      <div className="fixed bg-base-200 shadow-lg z-10 top-0 w-full left-0">
-        <Sidebar />
-      </div>
-      <main className="pt-25">
+    <div className="flex min-h-screen">
+      <Sidebar />
+
+      <main className="flex-1 py-4">
         <Outlet />
       </main>
     </div>

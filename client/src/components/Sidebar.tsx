@@ -15,139 +15,123 @@ import {
   Mail,
 } from "lucide-react";
 
-const Sidebar = () => {
+const links = [
+  { to: "/", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/transactions", label: "Transactions", icon: CreditCard },
+  { to: "/accounts", label: "Accounts", icon: Wallet },
+  { to: "/categories", label: "Categories", icon: Tags },
+  { to: "/savings", label: "Savings", icon: HandCoins },
+  { to: "/budgets", label: "Budgets", icon: PieChart },
+  { to: "/analytics", label: "Analytics", icon: ChartColumnBig },
+  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/profile", label: "Profile", icon: UserRound },
+  { to: "/about", label: "About", icon: Info },
+  { to: "/contact", label: "Contact", icon: Mail },
+];
+
+export default function Sidebar() {
   const [open, setOpen] = useState(false);
 
-  const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition
+    ${
       isActive
         ? "bg-primary text-primary-content"
-        : "hover:bg-base-200 text-base-content"
+        : "hover:bg-base-200 text-base-content/80"
     }`;
-
-  const handleLinkClick = () => setOpen(false);
 
   return (
     <>
-      {/* Mobile Top Bar */}
-      <div className="lg:hidden p-4">
-        <button onClick={() => setOpen(true)} className="btn btn-ghost">
+      <div className="fixed top-4 left-4 z-10 pb-3">
+        <label
+          htmlFor="app-drawer"
+          className="btn btn-ghost btn-sm"
+          onClick={() => setOpen(true)}
+        >
           <Menu />
-        </button>
+        </label>
       </div>
 
-      {/* Overlay */}
-      {open && (
-        <div
-          onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-        />
-      )}
+      {/* Drawer overlay for mobile */}
+      <div className={`fixed inset-0 z-40 ${open ? 'visible' : 'invisible'}`}>
+        {open && (
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setOpen(false)}
+          />
+        )}
+        
+        <aside 
+          className={`absolute top-0 left-0 w-72 h-full bg-base-100 border-r border-base-200 p-4 flex flex-col transition-transform duration-300 z-50
+          ${open ? 'translate-x-0' : '-translate-x-full'}`}
+        >
+          {/* Close button for mobile */}
+          <button 
+            className="lg:hidden absolute top-4 right-4 btn btn-ghost btn-sm"
+            onClick={() => setOpen(false)}
+          >
+            ✕
+          </button>
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:static top-0 left-0 z-50
-          h-screen w-64 bg-base-100 border-r border-base-200
-          p-4 flex flex-col
-          transform transition-transform duration-300
-          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
-        {/* HEADER */}
-        <div className="mb-6 px-2">
-          <h1 className="text-xl font-bold text-primary">CashVolt</h1>
-          <p className="text-xs text-base-content/60">
-            Financial system dashboard
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-lg font-bold text-primary">CashVolt</h1>
+            <p className="text-xs text-base-content/50">
+              Budget Tracker System
+            </p>
+          </div>
+
+          {/* Links */}
+          <nav className="flex flex-col gap-1 flex-1">
+            {links.map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <Icon size={18} />
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Footer */}
+          <div className="text-xs text-base-content/40 border-t pt-3 mt-auto">
+            © {new Date().getFullYear()} CashVolt
+          </div>
+        </aside>
+      </div>
+
+      {/* Desktop sidebar - always visible */}
+      <aside className="hidden lg:flex w-72 h-screen sticky top-0 bg-base-100 border-r border-base-200 p-4 flex-col">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-lg font-bold text-primary">CashVolt</h1>
+          <p className="text-xs text-base-content/50">
+            Budget Tracker System
           </p>
         </div>
 
-        {/* NAV */}
-        <nav className="flex flex-col gap-2 flex-1 text-sm">
-
-          {/* CORE SYSTEM */}
-          <p className="text-xs text-base-content/50 px-2 mt-2">
-            CORE
-          </p>
-
-          <NavLink to="/" className={linkClass} onClick={handleLinkClick}>
-            <LayoutDashboard size={18} /> Dashboard
-          </NavLink>
-
-          <NavLink to="/transactions" className={linkClass} onClick={handleLinkClick}>
-            <CreditCard size={18} /> Transactions
-          </NavLink>
-
-          {/* MONEY STRUCTURE */}
-          <p className="text-xs text-base-content/50 px-2 mt-4">
-            STRUCTURE
-          </p>
-
-          <NavLink to="/accounts" className={linkClass} onClick={handleLinkClick}>
-            <Wallet size={18} /> Accounts
-          </NavLink>
-
-          <NavLink to="/categories" className={linkClass} onClick={handleLinkClick}>
-            <Tags size={18} /> Categories
-          </NavLink>
-
-          {/* GOALS */}
-          <p className="text-xs text-base-content/50 px-2 mt-4">
-            GOALS
-          </p>
-
-          <NavLink to="/savings" className={linkClass} onClick={handleLinkClick}>
-            <HandCoins size={18} /> Savings
-          </NavLink>
-
-          <NavLink to="/budgets" className={linkClass} onClick={handleLinkClick}>
-            <PieChart size={18} /> Budgets
-          </NavLink>
-
-          {/* INSIGHTS */}
-          <p className="text-xs text-base-content/50 px-2 mt-4">
-            INSIGHTS
-          </p>
-
-          <NavLink to="/analytics" className={linkClass} onClick={handleLinkClick}>
-            <ChartColumnBig size={18} /> Analytics
-          </NavLink>
-
-          {/* SYSTEM */}
-          <p className="text-xs text-base-content/50 px-2 mt-4">
-            SYSTEM
-          </p>
-
-          <NavLink to="/settings" className={linkClass} onClick={handleLinkClick}>
-            <Settings size={18} /> Settings
-          </NavLink>
-
-          <NavLink to="/profile" className={linkClass} onClick={handleLinkClick}>
-            <UserRound size={18} /> Profile
-          </NavLink>
-
-          {/* INFO */}
-          <p className="text-xs text-base-content/50 px-2 mt-4">
-            INFO
-          </p>
-
-          <NavLink to="/about" className={linkClass} onClick={handleLinkClick}>
-            <Info size={18} /> About
-          </NavLink>
-
-          <NavLink to="/contact" className={linkClass} onClick={handleLinkClick}>
-            <Mail size={18} /> Contact
-          </NavLink>
-
+        {/* Links */}
+        <nav className="flex flex-col gap-1 flex-1">
+          {links.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={linkClass}
+            >
+              <Icon size={18} />
+              {label}
+            </NavLink>
+          ))}
         </nav>
 
-        {/* FOOTER */}
-        <div className="text-xs text-base-content/50 px-2 mt-4">
+        {/* Footer */}
+        <div className="text-xs text-base-content/40 border-t pt-3 mt-auto">
           © {new Date().getFullYear()} CashVolt
         </div>
       </aside>
     </>
   );
-};
-
-export default Sidebar;
+}
