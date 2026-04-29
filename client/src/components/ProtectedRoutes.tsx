@@ -6,7 +6,7 @@ const ProtectedRoutes = () => {
 
   // Handle error first (more predictable)
   if (isError) {
-    throw new Error("Authentication failed. Please try again.");
+    return <Navigate to="/login" replace />;
   }
 
   if (isLoading) {
