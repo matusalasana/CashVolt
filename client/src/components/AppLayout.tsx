@@ -1,19 +1,18 @@
-import Sidebar from "./Sidebar";
+import Sidebar from "./sidebar/Sidebar";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex flex-1">
+        <Sidebar />
+        
+        <main className="flex-1 min-w-0 overflow-x-auto py-4 px-3 sm:px-4 md:px-6">
+          <Outlet />
+        </main>
+      </div>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto py-4 px-3 sm:px-4 md:px-6">
-        <Outlet />
-      </main>
-
-      {/* Footer */}
       <Footer />
     </div>
   );
