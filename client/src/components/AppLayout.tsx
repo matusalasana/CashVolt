@@ -1,10 +1,10 @@
 import Sidebar from "./sidebar/Sidebar";
-import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
+    
       <div className="flex flex-1">
         <Sidebar />
         
@@ -13,7 +13,6 @@ const AppLayout = () => {
         </main>
       </div>
 
-      <Footer />
     </div>
   );
 };

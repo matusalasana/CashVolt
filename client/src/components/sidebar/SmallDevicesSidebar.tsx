@@ -75,7 +75,7 @@ const MobileSidebar = ({ isMenuOpen, onClose }: Props) => {
         </nav>
 
         {/* USER */}
-        <div className="mt-4 flex gap-3 justify-center items-center">
+        <div className="mt-4 px-3 py-4 items-center flex gap-3 mb-30">
           {user?.profile_picture ? (
             <img
               src={user.profile_picture}
