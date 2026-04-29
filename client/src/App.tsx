@@ -6,9 +6,6 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AppLayout from "./components/AppLayout";
 
-// Components 
-import Footer from "./components/Footer";
-
 // Pages
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -67,8 +64,6 @@ function App() {
         {/* NOT FOUND */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      
-      <Footer />
     </>
   );
 }

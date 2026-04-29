@@ -1,4 +1,3 @@
-
 import {
   ArrowUpRight,
   ArrowDownLeft,
@@ -10,17 +9,18 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
+type TransactionType = "expense" | "income" | "savings";
+
 type TransactionCardProps = {
-  amount: any;
-  description: any;
-  date: any;
-  type: any;
-  category: any;
-  account: any;
-  onEdit?: () => void;     
+  amount: number;
+  description: string;
+  date: string | Date;
+  type: TransactionType;
+  category?: string;
+  account: string;
+  onEdit?: () => void;
   onDelete?: () => void;
 };
-
 
 // UI configuration per transaction type
 const TRANSACTION_STYLES = {
@@ -63,14 +63,19 @@ const TransactionCard = ({
   const { data: user } = useAuth();
   const currency = user?.currency ?? "USD";
 
-  const style = TRANSACTION_STYLES[type];
+  const style =
+    TRANSACTION_STYLES[type as keyof typeof TRANSACTION_STYLES] ||
+    TRANSACTION_STYLES.expense;
+
   const Icon = style.Icon;
 
-  const formattedDate = new Date(date).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "";
 
   return (
     <div
@@ -79,7 +84,7 @@ const TransactionCard = ({
         backdrop-blur-xl
         bg-base-100/60 dark:bg-base-200/30
         border border-base-200 dark:border-base-300
-        shadow-sm hover:shadow-lg
+        shadow-sm hover:shadow-lg hover:scale-[1.01]
         transition-all duration-300
         ${style.borderHover}
       `}
@@ -94,57 +99,63 @@ const TransactionCard = ({
       />
 
       <div className="relative px-4 py-3.5 md:px-5 md:py-4">
-        <div className="flex items-center gap-3 md:gap-4">
 
-          {/* Icon */}
-          <div
-            className={`
-              w-9 h-9 md:w-10 md:h-10
-              rounded-xl bg-gradient-to-br ${style.iconGradient}
-              flex items-center justify-center text-white
-              shadow-sm
-            `}
-          >
-            <Icon size={16} strokeWidth={1.75} />
-          </div>
+        {/* MAIN LAYOUT */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
 
-          {/* Description + Meta */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-baseline gap-2 flex-wrap">
-              <h3 className="font-medium text-sm md:text-base text-base-content truncate">
-                {description}
-              </h3>
-              <span className="text-[11px] md:text-xs text-base-content/50 font-mono">
-                {formattedDate}
-              </span>
+          {/* LEFT SIDE */}
+          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+
+            {/* Icon */}
+            <div
+              className={`
+                w-9 h-9 md:w-10 md:h-10
+                rounded-xl bg-gradient-to-br ${style.iconGradient}
+                flex items-center justify-center text-white
+                shadow-sm
+              `}
+            >
+              <Icon size={16} strokeWidth={1.75} />
             </div>
 
-            <div className="flex items-center gap-2 mt-0.5 text-[11px] md:text-xs text-base-content/60">
-              <span className="flex items-center gap-1">
-                <Wallet size={10} />
-                {account}
-              </span>
+            {/* Description + Meta */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <h3 className="font-medium text-sm md:text-base text-base-content truncate">
+                  {description}
+                </h3>
+                <span className="text-[11px] md:text-xs text-base-content/50 font-mono">
+                  {formattedDate}
+                </span>
+              </div>
 
-              <span className="w-1 h-1 rounded-full bg-base-content/20" />
+              <div className="flex items-center gap-2 mt-0.5 text-[11px] md:text-xs text-base-content/60 flex-wrap">
+                <span className="flex items-center gap-1">
+                  <Wallet size={10} />
+                  {account}
+                </span>
 
-              <span className="flex items-center gap-1">
-                {category ? (
-                  <>
-                    <Tag size={10} />
-                    <span className="capitalize">{category}</span>
-                  </>
-                ) : (
-                  <span className="capitalize">{type}</span>
-                )}
-              </span>
+                <span className="w-1 h-1 rounded-full bg-base-content/20" />
+
+                <span className="flex items-center gap-1">
+                  {category ? (
+                    <>
+                      <Tag size={10} />
+                      <span className="capitalize">{category}</span>
+                    </>
+                  ) : (
+                    <span className="capitalize">{type}</span>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Amount + Actions */}
-          <div className="flex items-center gap-3 md:gap-4">
+          {/* RIGHT SIDE (Amount + Actions) */}
+          <div className="flex items-center justify-between sm:justify-end gap-3 mt-2 sm:mt-0">
 
             {/* Amount */}
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <p className={`text-base md:text-lg font-semibold ${style.amountColor}`}>
                 {style.sign}
                 {Math.abs(amount).toLocaleString()}
@@ -155,7 +166,7 @@ const TransactionCard = ({
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition">
               <button
                 onClick={onEdit}
                 className="p-1.5 rounded-lg hover:bg-base-200 text-base-content/50 hover:text-primary transition"
@@ -172,7 +183,6 @@ const TransactionCard = ({
             </div>
 
           </div>
-
         </div>
       </div>
     </div>

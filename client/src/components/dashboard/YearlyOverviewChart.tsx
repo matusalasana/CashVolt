@@ -57,8 +57,13 @@ const YearlyOverviewChart = ({
     chart.expense.some((v) => v > 0);
 
   // Show loading skeleton while data is being fetched
-  if (isLoading) {
-    return <RectangularLoadingSkeleton amount={1} height={40} />;
+  if (isLoading){
+    return (
+      <RectangularLoadingSkeleton 
+        amount={5} 
+        height="h-80"
+      />
+    );
   }
 
   // Don't render anything if no data exists

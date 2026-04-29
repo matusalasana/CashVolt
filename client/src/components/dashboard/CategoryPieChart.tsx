@@ -19,8 +19,13 @@ const CategoryPieChart = ({budgets, isLoading}: Props) => {
 
   const hasData = categoriesSpent?.length > 0
   
-  if (isLoading) {
-    return <RectangularLoadingSkeleton amount={1} height={40} />;
+  if (isLoading){
+    return (
+      <RectangularLoadingSkeleton 
+        amount={5} 
+        height="h-80"
+      />
+    );
   }
   
   if(!hasData){

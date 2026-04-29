@@ -1,17 +1,24 @@
-
 interface Props {
-  amount: number;
-  height: number;
+  amount?: number;
+  height?: string;
+  style?: string;
 }
 
-const RectangularLoadingSkeleton = ({ amount=1, height=20 }: Props) => {
+const RectangularLoadingSkeleton = ({
+  amount = 1,
+  style = "flex flex-wrap gap-5 w-full",
+  height = "h-20",
+}: Props) => {
   return (
-      <div className="flex flex-wrap gap-5 w-full">
-        {[...Array(amount)].map((_, i) => (
-          <div key={i} className={`skeleton h-${height} w-full`}></div>
-        ))}
-      </div>
-  )
-}
+    <div className={style}>
+      {Array.from({ length: amount }).map((_, i) => (
+        <div
+          key={i}
+          className={`skeleton w-full ${height}`}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default RectangularLoadingSkeleton;

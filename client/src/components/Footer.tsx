@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Send, Mail, Code, Github } from "lucide-react";
+import { Send, Mail, Code, Github, Zap } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -11,8 +11,8 @@ const Footer = () => {
 
           {/* BRAND */}
           <div className="space-y-3">
-            <h2 className="text-2xl font-bold text-primary">
-              CashVolt ⚡
+            <h2 className="text-2xl flex gap-2 font-bold text-primary">
+              CashVolt <Zap size={24} className="text-amber-500" />
             </h2>
 
             <p className="text-sm text-gray-500 leading-relaxed">

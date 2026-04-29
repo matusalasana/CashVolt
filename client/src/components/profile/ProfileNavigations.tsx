@@ -2,17 +2,14 @@ import {
   User,
   Wallet,
   Bell,
-  ShieldCheck,
-  LogOut,
+  ShieldCheck
 } from "lucide-react";
 
 import { useNavigate, useLocation } from "react-router-dom";
-import { useLogout } from "../../hooks/useAuth";
 
 const ProfileNavigations = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { mutate: logout } = useLogout();
 
   const navItems = [
     {
@@ -35,11 +32,6 @@ const ProfileNavigations = () => {
       ],
     },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   return (
     <div className="card bg-base-100 shadow-xl p-2">
@@ -75,20 +67,6 @@ const ProfileNavigations = () => {
             })}
           </div>
         ))}
-
-        {/* DIVIDER */}
-        <div className="divider my-1"></div>
-
-        {/* LOGOUT */}
-        <li>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2 text-error hover:bg-error/10 rounded-lg"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
-        </li>
 
       </ul>
     </div>

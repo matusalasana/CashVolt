@@ -16,7 +16,12 @@ const MonthlyBarChart = ({ overview, isLoading }: MonthlyBarChartProps) => {
   const expense = Number(overview?.total_expense ?? 0);
   
   if(isLoading){
-    return <RectangularLoadingSkeleton amount={1} height={40} />;
+    return (
+      <RectangularLoadingSkeleton 
+        amount={1} 
+        height="h-80"
+      />
+    )
   }
   
   if (!overview || (income === 0 && expense === 0)) {

@@ -37,9 +37,15 @@ const WelcomeUserCard = ({ name, monthName, year, isLoading }: Props) => {
     }
   }, [index, fullText]);
   
-  if(isLoading){
-    return <RectangularLoadingSkeleton amount={1} height={40} />;
+  if (isLoading){
+    return (
+      <RectangularLoadingSkeleton 
+        amount={5} 
+        height="h-40"
+      />
+    );
   }
+  
 
   return (
     <div className="group relative overflow-hidden rounded-2xl backdrop-blur-xl bg-base-100/40 border border-base-300 shadow-xl">

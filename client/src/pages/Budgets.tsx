@@ -85,7 +85,7 @@ const Budget = () => {
       {isLoading ? (
         <RectangularLoadingSkeleton 
           amount={8}
-          height={60}
+          height={"h-60"}
         />
       ) : (
         <BudgetGrid

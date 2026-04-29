@@ -24,7 +24,7 @@ const Dashboard = () => {
   const { data: overview, isLoading: monthlyDataLoading } =
     useOverviewAnalytics(currentMonth, currentYear);
   const { data: budgets, isLoading: budgetsLoading } =
-    useBudgets(currentMonth, currentYear);
+    useBudgets(currentMonth, currentYear, "spent", "desc");
   const { data: yearlyData, isLoading: yearlyDataLoading } =
     useYearlyAnalytics(currentYear);
   const { data: user, isLoading: userLoading } = useAuth();

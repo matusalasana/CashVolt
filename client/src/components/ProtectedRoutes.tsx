@@ -24,6 +24,9 @@ const ProtectedRoutes = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-pulse">
               CashVolt
             </h1>
+              <p className="text-[11px] text-base-content opacity-50 tracking-widest">
+            Clarity in every transaction
+          </p>
           </div>
 
         </div>
