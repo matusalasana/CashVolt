@@ -46,7 +46,6 @@ const RecentTransactions = () => {
         >
           <TransactionCard
             amount={tx.amount}
-            description={tx.description}
             date={tx.transaction_date}
             type={tx.type}
             category={tx.category_name}

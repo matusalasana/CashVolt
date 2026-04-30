@@ -46,14 +46,14 @@ const MobileSidebar = ({ isMenuOpen, onClose }: Props) => {
         }`}
       >
         {/* NAV */}
-        <nav className="menu menu-sm flex-1">
+        <nav className="menu w-full menu-sm flex-1">
           {links.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-xl transition-all relative
+                `flex items-center w-full gap-3 px-3 py-2 rounded-xl transition-all relative
                 ${
                   isActive
                     ? "bg-primary text-primary-content shadow-sm"
@@ -87,7 +87,7 @@ const MobileSidebar = ({ isMenuOpen, onClose }: Props) => {
               <User size={18} />
             </div>
           )}
-          <p className="text-base-content font-semibold">Sana Matusala </p>
+          <p className="text-base-content font-semibold">{user.first_name} {user.last_name} </p>
         </div>
       </aside>
     </div>

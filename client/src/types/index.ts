@@ -38,7 +38,7 @@ export const accountSchema = z.object({
 
 export const categorySchema = z.object({
   id: z.number().int().optional(),
-  name: z.string().min(1, "Category name is required"),
+  name: z.string().min(1, "Category name is required").max(13, "Category name must be less than or equal to 13 characters"),
   type: z.enum(["income", "expense", "savings"]),
 });
 
@@ -47,9 +47,9 @@ export const savingsSchema = z.object({
 
   user_id: z.number().int().optional(),
 
-  title: z.string().min(1, "Title is required").trim(),
+  title: z.string().min(1, "Title is required").max(15, "Title must be less than 15 characters").trim(),
 
-  target_amount: z.number().positive("Target amount must be greater than 0"),
+  target_amount: z.number().positive("Target amount must be greater than 0").max(1000000, "Amount is too much"),
 
   due_date: z.string().optional(),
   
@@ -65,7 +65,7 @@ export const savingsSchema = z.object({
 export const transactionSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("income"),
-    amount: z.number().positive(),
+    amount: z.number().positive().max(1000000, "Transaction amount is too much"),
     description: z.string().min(1),
     account_id: z.number().int().min(1),
     category_id: z.number().int().min(1),
@@ -74,7 +74,7 @@ export const transactionSchema = z.discriminatedUnion("type", [
 
   z.object({
     type: z.literal("expense"),
-    amount: z.number().positive(),
+    amount: z.number().positive().max(1000000, "Transaction amount is too much"),
     description: z.string().min(1),
     account_id: z.number().int().min(1),
     category_id: z.number().int().min(1),
@@ -83,18 +83,19 @@ export const transactionSchema = z.discriminatedUnion("type", [
 
   z.object({
     type: z.literal("savings"),
-    amount: z.number().positive(),
+    amount: z.number().positive().max(1000000, "Transaction amount is too much"),
     description: z.string().min(1),
     account_id: z.number().int().min(1),
     savings_id: z.number().int().min(1),
     transaction_date: z.string(),
+    savings_title: z.string().optional(),
   }),
 ]);
 
 export const budgetSchema = z.object({
   id: z.number().int().optional(),
   category_id: z.number().int().min(1),
-  amount: z.number().positive(),
+  amount: z.number().positive().max(1000000, "Amount is too much"),
   month: z.number().int().min(1).max(12),
   year: z.number().int().optional(),
   category_name: z.string().optional(),

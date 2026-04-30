@@ -39,13 +39,13 @@ const LargeDevicesSidebar = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="menu menu-sm flex-1">
+      <nav className="menu menu-sm w-full flex-1">
         {links.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-xl transition-all relative
+              `flex items-center w-full gap-3 px-3 py-2 rounded-xl transition-all relative
               ${
                 isActive
                   ? "bg-primary text-primary-content shadow-sm"
@@ -67,7 +67,7 @@ const LargeDevicesSidebar = () => {
       </nav>
 
       {/* User Section */}
-      <div className="mt-4 flex gap-3 justify-center items-center pt-4 border-t border-base-200 pb-12">
+      <div className="mt-4 flex mb-20 gap-3 justify-center items-center pt-4 border-t border-base-200 pb-12">
         {user?.profile_picture ? (
           <img
             src={user.profile_picture}

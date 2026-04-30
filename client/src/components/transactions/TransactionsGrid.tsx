@@ -23,13 +23,13 @@ const TransactionsGrid = ({
         <TransactionCard
           key={tx.id}
           amount={tx.amount}
-          description={tx.description}
           date={tx.transaction_date}
           type={tx.type}
           category={tx.category_name}
           account={tx.account_name}
           onEdit={() => onEdit(tx)}
           onDelete={() => onDelete(tx)}
+          title={tx.savings_title}
         />
       ))}
     </div>
