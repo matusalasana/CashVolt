@@ -77,9 +77,9 @@ const TransactionCard = ({
       
       
       {/* Middle - amount */}
-      <div className="text-right">
-        <p className={`text-sm font-semibold ${style.amountColor}`}>
-          {style.sign}{Number(amount).toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
+      <div>
+        <p className={`text-sm font-bold ${style.amountColor}`}>
+          {style.sign}{Number(amount).toLocaleString()} <span className="text-xs text-base-content font-normal">{user.currency}</span>
         </p>
       </div>
 

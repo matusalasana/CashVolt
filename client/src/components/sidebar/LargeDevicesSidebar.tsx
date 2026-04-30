@@ -58,7 +58,7 @@ const LargeDevicesSidebar = () => {
       </nav>
 
       {/* User Section */}
-      <div className="mt-4 flex gap-3 pt-4 border-t border-base-200 pb-12">
+      <div className="mt-4 flex items-center gap-3 pt-4 border-t border-base-200 pb-12">
         {user?.profile_picture ? (
           <img
             src={user.profile_picture}
