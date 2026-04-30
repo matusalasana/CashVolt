@@ -1,13 +1,14 @@
-import {
-  ArrowUpRight,
-  ArrowDownLeft,
-  Pencil,
-  Trash2,
-  HandCoins,
-} from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
 
-type TransactionCardProps = {
+import { 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  PiggyBank, 
+  Pencil, 
+  Trash2, 
+  Calendar 
+} from 'lucide-react';
+
+interface TransactionProps {
   amount: number;
   date: string | Date;
   type: "income" | "expense" | "savings";
@@ -15,101 +16,102 @@ type TransactionCardProps = {
   title?: string;
   onEdit?: () => void;
   onDelete?: () => void;
-};
-
-const transaction_styles = {
-  income: {
-    Icon: ArrowUpRight,
-    gradient: "from-emerald-500 to-emerald-600",
-    sign: "+",
-    amountColor: "text-emerald-600 dark:text-emerald-400",
-  },
-  expense: {
-    Icon: ArrowDownLeft,
-    gradient: "from-rose-500 to-rose-600",
-    sign: "-",
-    amountColor: "text-rose-600 dark:text-rose-400",
-  },
-  savings: {
-    Icon: HandCoins,
-    gradient: "from-amber-500 to-amber-600",
-    sign: "",
-    amountColor: "text-amber-600 dark:text-amber-400",
-  },
-};
+}
 
 const TransactionCard = ({
   amount,
-  title,
   date,
   type,
   category,
+  title,
   onEdit,
   onDelete,
-}: TransactionCardProps) => {
-  const { data: user } = useAuth();
+}: TransactionProps) => {
 
-  const style = transaction_styles[type];
-  const Icon = style.Icon;
+  // Configuration based on transaction type
+  const typeConfig = {
+    income: {
+      icon: <ArrowDownLeft size={20} />,
+      colorClass: "text-success bg-success/10",
+      hoverClass: "group-hover:bg-success group-hover:text-success-content",
+      prefix: "+"
+    },
+    expense: {
+      icon: <ArrowUpRight size={20} />,
+      colorClass: "text-error bg-error/10",
+      hoverClass: "group-hover:bg-error group-hover:text-error-content",
+      prefix: "-"
+    },
+    savings: {
+      icon: <PiggyBank size={20} />,
+      colorClass: "text-primary bg-primary/10",
+      hoverClass: "group-hover:bg-primary group-hover:text-primary-content",
+      prefix: ""
+    }
+  };
+
+  const { icon, colorClass, hoverClass, prefix } = typeConfig[type];
 
   return (
-    <div className="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row">
-    
-      <div className="flex p-2 w-full items-center justify-between rounded-lg shadow-md">
-  
-        {/* LEFT */}
-        <div className="flex items-center gap-2">
-          <div
-            className={`p-2 rounded-lg bg-gradient-to-br ${style.gradient} text-white`}
-          >
-            <Icon size={18} />
+    <div className="card w-full max-w-md bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 border border-base-200 group">
+      <div className="card-body p-4">
+        <div className="flex items-center justify-between">
+          
+          {/* Section: Icon & Identity */}
+          <div className="flex items-center gap-4">
+            <div className={`p-3 rounded-xl transition-all duration-300 ${colorClass} ${hoverClass}`}>
+              {icon}
+            </div>
+            
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold uppercase tracking-wider opacity-50">
+                {category || 'General'}
+              </span>
+              <h3 className="font-bold text-base-content text-lg leading-tight">
+                {title || 'Untitled Transaction'}
+              </h3>
+            </div>
           </div>
-      
-          <div className="flex flex-col">
-            <p className="w-25 truncate text-sm font-medium lg:w-40">
-              {type === "savings"
-                ? title || "Untitled savings"
-                : category}
-            </p>
-            <p className="text-xs text-base-content/50">
-              {new Date(date).toLocaleDateString()}
-            </p>
+
+          {/* Section: Amount */}
+          <div className="text-right">
+            <span className={`text-lg font-black ${type === 'income' ? 'text-success' : 'text-base-content'}`}>
+              {prefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            </span>
           </div>
         </div>
-      
-        {/* MIDDLE - AMOUNT */}
-  
-        <p className={`text-sm items-center flex font-bold ${style.amountColor}`}>
-          {style.sign}
-          {Number(amount).toLocaleString()}{" "}
-          <span className="text-xs font-normal text-base-content">
-            {user.currency}
-          </span>
-        </p>
-      
-        {/* RIGHT */}
-        <div className="flex items-center gap-1">
-          {onEdit && (
-            <button
-              onClick={onEdit}
-              className="p-1.5 rounded-md transition hover:bg-base-200"
-            >
-              <Pencil size={14} />
-            </button>
-          )}
-      
-          {onDelete && (
-            <button
-              onClick={onDelete}
-              className="p-1.5 rounded-md transition hover:bg-base-200"
-            >
-              <Trash2 size={14} />
-            </button>
-          )}
+
+        <div className="divider my-1 opacity-20"></div>
+
+        {/* Section: Footer Actions & Date */}
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2 text-xs opacity-60">
+            <Calendar size={14} />
+            <span>{new Date(date).toLocaleDateString()}</span>
+          </div>
+
+          <div className="flex gap-1">
+            {onEdit && (
+              <button 
+                onClick={onEdit}
+                className="btn btn-ghost btn-xs btn-square text-info hover:bg-info/10"
+                aria-label="Edit transaction"
+              >
+                <Pencil size={14} />
+              </button>
+            )}
+            {onDelete && (
+              <button 
+                onClick={onDelete}
+                className="btn btn-ghost btn-xs btn-square text-error hover:bg-error/10"
+                aria-label="Delete transaction"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
+          </div>
         </div>
-        
       </div>
-      
     </div>
   );
 };
