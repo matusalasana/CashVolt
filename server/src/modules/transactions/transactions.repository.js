@@ -12,10 +12,12 @@ export const getTransactionsRepo = async (
   return await sql`
     SELECT t.*, 
            a.name AS account_name,
-           c.name AS category_name
+           c.name AS category_name,
+           s.title AS savings_title
     FROM transactions t
     LEFT JOIN accounts a ON t.account_id = a.id
     LEFT JOIN categories c ON t.category_id = c.id
+    LEFT JOIN savings s ON s.id = t.savings_id
     WHERE t.user_id = ${user_id}
     ${type ? sql`AND t.type = ${type}` : sql``}
     ORDER BY ${sql.unsafe(safeSort)} ${sql.unsafe(safeOrder)}
