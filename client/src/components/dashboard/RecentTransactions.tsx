@@ -49,7 +49,6 @@ const RecentTransactions = () => {
             date={tx.transaction_date}
             type={tx.type}
             category={tx.category_name}
-            account={tx.account_name}
           />
         </div>
       ))

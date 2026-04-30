@@ -4,7 +4,6 @@ import {
   Pencil,
   Trash2,
   HandCoins,
-  Wallet,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -14,7 +13,6 @@ type TransactionCardProps = {
   type: "income" | "expense" | "savings";
   category?: string;
   title?: string;
-  account: string;
   onEdit?: () => void;
   onDelete?: () => void;
 };
@@ -46,7 +44,6 @@ const TransactionCard = ({
   date,
   type,
   category,
-  account,
   onEdit,
   onDelete,
 }: TransactionCardProps) => {
@@ -66,14 +63,11 @@ const TransactionCard = ({
         </div>
       
         <div>
-          <p className="text-sm font-medium truncate">
+          <p className="text-sm font-medium w-20 lg:w-40 truncate">
             {type==="savings"
               ? title 
               : category
             }
-          </p>
-          <p className="flex text-xs text-base-content/70 items-center gap-1">
-            <Wallet size={12} /> {account}
           </p>
           <p className="text-xs text-base-content/50">
             {new Date(date).toLocaleDateString()}
@@ -85,10 +79,10 @@ const TransactionCard = ({
       
       {/* Middle */}
       <div className="text-right">
-          <p className={`text-sm font-semibold ${style.amountColor}`}>
-            {style.sign}{Number(amount).toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
-          </p>
-        </div>
+        <p className={`text-sm font-semibold ${style.amountColor}`}>
+          {style.sign}{Number(amount).toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
+        </p>
+      </div>
 
       {/* RIGHT */}
       <div className="flex flex-col justify-between items-center">

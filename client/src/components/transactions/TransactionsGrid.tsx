@@ -26,7 +26,6 @@ const TransactionsGrid = ({
           date={tx.transaction_date}
           type={tx.type}
           category={tx.category_name}
-          account={tx.account_name}
           onEdit={() => onEdit(tx)}
           onDelete={() => onDelete(tx)}
           title={tx.savings_title}
