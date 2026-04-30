@@ -29,6 +29,7 @@ const TransactionsGrid = ({
           onEdit={() => onEdit(tx)}
           onDelete={() => onDelete(tx)}
           title={tx.savings_title}
+          account={tx.account_name}
         />
       ))}
     </div>

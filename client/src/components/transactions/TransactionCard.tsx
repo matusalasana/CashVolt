@@ -1,4 +1,3 @@
-
 import { 
   ArrowUpRight, 
   ArrowDownLeft, 
@@ -7,9 +6,11 @@ import {
   Trash2, 
   Calendar 
 } from 'lucide-react';
+import { useAuth } from "../../hooks/useAuth"
 
 interface TransactionProps {
   amount: number;
+  account: string;
   date: string | Date;
   type: "income" | "expense" | "savings";
   category?: string;
@@ -20,6 +21,7 @@ interface TransactionProps {
 
 const TransactionCard = ({
   amount,
+  account,
   date,
   type,
   category,
@@ -29,89 +31,102 @@ const TransactionCard = ({
 }: TransactionProps) => {
 
   // Configuration based on transaction type
-  const typeConfig = {
+  const TYPE_CONFIG = {
     income: {
-      icon: <ArrowDownLeft size={20} />,
-      colorClass: "text-success bg-success/10",
-      hoverClass: "group-hover:bg-success group-hover:text-success-content",
-      prefix: "+"
+      icon: ArrowDownLeft ,
+      color: "bg-emerald-600/80 text-emerald-600",
+      hover: "group-hover:bg-emerald-600/30",
+      prefix: "+",
+      amountColor: "text-emerald-600",
     },
     expense: {
-      icon: <ArrowUpRight size={20} />,
-      colorClass: "text-error bg-error/10",
-      hoverClass: "group-hover:bg-error group-hover:text-error-content",
-      prefix: "-"
+      icon: ArrowUpRight ,
+      color: "bg-rose-600/80 text-rose-600",
+      hover: "group-hover:bg-rose-600/30",
+      prefix: "-",
+      amountColor: "text-rose-600",
     },
     savings: {
-      icon: <PiggyBank size={20} />,
-      colorClass: "text-primary bg-primary/10",
-      hoverClass: "group-hover:bg-primary group-hover:text-primary-content",
-      prefix: ""
-    }
-  };
+      icon: PiggyBank ,
+      color: "bg-blue-600/80 text-blue-600",
+      hover: "group-hover:bg-blue-600/30",
+      prefix: "",
+      amountColor: "text-blue-600",
+    },
+  } 
 
-  const { icon, colorClass, hoverClass, prefix } = typeConfig[type];
+  const { icon, color, hover, prefix, amountColor } = TYPE_CONFIG[type]
+  const Icon = icon;
+  
+  const { data: user } = useAuth(); 
+  const currency = user.currency;
 
   return (
-    <div className="card w-full max-w-md bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 border border-base-200 group">
-      <div className="card-body p-4">
-        <div className="flex items-center justify-between">
-          
-          {/* Section: Icon & Identity */}
-          <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-xl transition-all duration-300 ${colorClass} ${hoverClass}`}>
-              {icon}
+    <div className="flex flex-col lg:flex-row">
+    
+      {/* Card */}
+      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl border border-base-200/50 hover:border-base-300">
+        <div className="card-body p-4">
+        
+          {/* Top */}
+          <div className="flex justify-between items-start">
+            {/* Left */}
+            <div className="flex gap-3 items-center">
+              <div className={`${color} rounded-xl p-2.5 transition-all duration-200 ${hover}`}>
+                <Icon 
+                  size={20} 
+                  className="text-white/90" />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-base-content font-semibold text-sm">
+                  {type==="savings" ? title : category }
+                </p>
+                <p className="text-base-content/40 text-xs">
+                  {account}
+                </p>
+              </div>
             </div>
             
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold uppercase tracking-wider opacity-50">
-                {category || 'General'}
-              </span>
-              <h3 className="font-bold text-base-content text-lg leading-tight">
-                {title || 'Untitled Transaction'}
-              </h3>
+            {/* Right */}
+            <div>
+              <p className={`${amountColor} font-bold text-lg`}>
+                {prefix}{Number(amount).toLocaleString()} {currency}
+              </p>
             </div>
           </div>
-
-          {/* Section: Amount */}
-          <div className="text-right">
-            <span className={`text-lg font-black ${type === 'income' ? 'text-success' : 'text-base-content'}`}>
-              {prefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-            </span>
-          </div>
-        </div>
-
-        <div className="divider my-1 opacity-20"></div>
-
-        {/* Section: Footer Actions & Date */}
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 text-xs opacity-60">
-            <Calendar size={14} />
-            <span>{new Date(date).toLocaleDateString()}</span>
-          </div>
-
-          <div className="flex gap-1">
-            {onEdit && (
-              <button 
+          
+          <div className="divider my-0"></div>
+          
+          {/* Bottom */}
+          <div className="flex justify-between items-center">
+            {/* Left */}
+            <div className="flex items-center gap-1">
+              <Calendar size={12} className="text-base-content/40" />
+              <p className="text-base-content/40 text-xs">
+                {new Date(date).toLocaleDateString()}
+              </p>
+            </div>
+            
+            {/* Right */}
+            <div className="flex">
+              <button
                 onClick={onEdit}
-                className="btn btn-ghost btn-xs btn-square text-info hover:bg-info/10"
-                aria-label="Edit transaction"
+                className="btn btn-ghost text-base-content/60 hover:text-base-content hover:bg-base-200/50"
               >
                 <Pencil size={14} />
               </button>
-            )}
-            {onDelete && (
-              <button 
+              <button
                 onClick={onDelete}
-                className="btn btn-ghost btn-xs btn-square text-error hover:bg-error/10"
-                aria-label="Delete transaction"
+                className="btn btn-ghost text-error/80 hover:text-error hover:bg-error/10"
               >
                 <Trash2 size={14} />
               </button>
-            )}
+            </div>
           </div>
+          
         </div>
       </div>
+      
     </div>
   );
 };
