@@ -54,6 +54,7 @@ const TransactionCard = ({
 
   return (
     <div className="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row">
+    
       <div className="flex p-2 w-full items-center justify-between rounded-lg shadow-md">
   
         {/* LEFT */}
@@ -77,15 +78,14 @@ const TransactionCard = ({
         </div>
       
         {/* MIDDLE - AMOUNT */}
-        <div className="flex items-center">
-          <p className={`text-sm font-bold ${style.amountColor}`}>
-            {style.sign}
-            {Number(amount).toLocaleString()}{" "}
-            <span className="text-xs font-normal text-base-content">
-              {user.currency}
-            </span>
-          </p>
-        </div>
+  
+        <p className={`text-sm items-center flex font-bold ${style.amountColor}`}>
+          {style.sign}
+          {Number(amount).toLocaleString()}{" "}
+          <span className="text-xs font-normal text-base-content">
+            {user.currency}
+          </span>
+        </p>
       
         {/* RIGHT */}
         <div className="flex items-center gap-1">
@@ -107,7 +107,9 @@ const TransactionCard = ({
             </button>
           )}
         </div>
+        
       </div>
+      
     </div>
   );
 };
