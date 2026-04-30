@@ -57,15 +57,14 @@ const TransactionCard = ({
 
       {/* LEFT */}
       <div className="flex justify-center gap-2 items-center">
-      
         <div className={`p-2 rounded-lg bg-gradient-to-br ${style.gradient} text-white`}>
           <Icon size={18} />
         </div>
       
         <div>
-          <p className="text-sm font-medium w-20 lg:w-40 truncate">
+          <p className="text-sm font-medium w-25 lg:w-40 truncate">
             {type==="savings"
-              ? title 
+              ? title || "Untitled savings"
               : category
             }
           </p>
@@ -77,36 +76,34 @@ const TransactionCard = ({
       </div>
       
       
-      {/* Middle */}
+      {/* Middle - amount */}
       <div className="text-right">
         <p className={`text-sm font-semibold ${style.amountColor}`}>
           {style.sign}{Number(amount).toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
         </p>
       </div>
 
-      {/* RIGHT */}
-      <div className="flex flex-col justify-between items-center">
 
-        {/* ACTIONS */}
-        <div className="flex flex-row gap-1">
-          {onEdit && (
-            <button
-              onClick={onEdit}
-              className="p-1.5 rounded-md hover:bg-base-200 transition"
-            >
-              <Pencil size={14} />
-            </button>
-          )}
-          {onDelete && (
-            <button
-              onClick={onDelete}
-              className="p-1.5 rounded-md hover:bg-base-200 transition"
-            >
-              <Trash2 size={14} />
-            </button>
-          )}
-        </div>
+        {/* Right */}
+      <div className="flex flex-row gap-1">
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="p-1.5 rounded-md hover:bg-base-200 transition"
+          >
+            <Pencil size={14} />
+          </button>
+        )}
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="p-1.5 rounded-md hover:bg-base-200 transition"
+          >
+            <Trash2 size={14} />
+          </button>
+        )}
       </div>
+      
     </div>
   );
 };
