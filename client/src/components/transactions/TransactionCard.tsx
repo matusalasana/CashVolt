@@ -53,57 +53,61 @@ const TransactionCard = ({
   const Icon = style.Icon;
 
   return (
-    <div className=" flex items-center justify-between">
-
-      {/* LEFT */}
-      <div className="flex justify-center gap-2 items-center">
-        <div className={`p-2 rounded-lg bg-gradient-to-br ${style.gradient} text-white`}>
-          <Icon size={18} />
-        </div>
-      
-        <div>
-          <p className="text-sm font-medium w-25 lg:w-40 truncate">
-            {type==="savings"
-              ? title || "Untitled savings"
-              : category
-            }
-          </p>
-          <p className="text-xs text-base-content/50">
-            {new Date(date).toLocaleDateString()}
-          </p>
-        </div>
+    <div className="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row">
+      <div className="flex p-2 items-center justify-between rounded-lg shadow-md">
         
-      </div>
-      
-      
-      {/* Middle - amount */}
-      <div>
-        <p className={`text-sm font-bold ${style.amountColor}`}>
-          {style.sign}{Number(amount).toLocaleString()} <span className="text-xs text-base-content font-normal">{user.currency}</span>
-        </p>
-      </div>
-
-
-        {/* Right */}
-      <div className="flex flex-row gap-1">
-        {onEdit && (
-          <button
-            onClick={onEdit}
-            className="p-1.5 rounded-md hover:bg-base-200 transition"
+        {/* LEFT */}
+        <div className="flex items-center gap-2">
+          <div
+            className={`p-2 rounded-lg bg-gradient-to-br ${style.gradient} text-white`}
           >
-            <Pencil size={14} />
-          </button>
-        )}
-        {onDelete && (
-          <button
-            onClick={onDelete}
-            className="p-1.5 rounded-md hover:bg-base-200 transition"
-          >
-            <Trash2 size={14} />
-          </button>
-        )}
+            <Icon size={18} />
+          </div>
+
+          <div className="flex flex-col">
+            <p className="w-25 truncate text-sm font-medium lg:w-40">
+              {type === "savings"
+                ? title || "Untitled savings"
+                : category}
+            </p>
+            <p className="text-xs text-base-content/50">
+              {new Date(date).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+
+        {/* MIDDLE - AMOUNT */}
+        <div className="flex items-center">
+          <p className={`text-sm font-bold ${style.amountColor}`}>
+            {style.sign}
+            {Number(amount).toLocaleString()}{" "}
+            <span className="text-xs font-normal text-base-content">
+              {user.currency}
+            </span>
+          </p>
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-1">
+          {onEdit && (
+            <button
+              onClick={onEdit}
+              className="p-1.5 rounded-md transition hover:bg-base-200"
+            >
+              <Pencil size={14} />
+            </button>
+          )}
+
+          {onDelete && (
+            <button
+              onClick={onDelete}
+              className="p-1.5 rounded-md transition hover:bg-base-200"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
+        </div>
       </div>
-      
     </div>
   );
 };
