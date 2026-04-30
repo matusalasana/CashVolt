@@ -80,7 +80,7 @@ const LargeDevicesSidebar = () => {
           </div>
         )}
         <p className="text-base-content font-semibold">
-          {user?.name || "Sana Matusala"}
+          {user.first_name} {user.last_name}
         </p>
       </div>
     </aside>
