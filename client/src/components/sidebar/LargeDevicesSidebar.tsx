@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, CreditCard, Wallet, Tags, PieChart,
-  Settings, Info, HandCoins, Zap, ChartColumnBig,
+  Settings, Info, HandCoins, ChartColumnBig,
   UserRound, Mail, User
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
+import SidebarHeader from "./SidebarHeader";
 
 const links = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -26,17 +27,7 @@ const LargeDevicesSidebar = () => {
   return (
     <aside className="hidden lg:flex lg:flex-col h-screen sticky top-0 w-72 bg-base-100 p-4 shadow-xl">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6 px-2">
-        <div className="btn btn-primary btn-square btn-sm shadow-md">
-          <Zap size={18} className="text-amber-500" />
-        </div>
-        <div className="leading-tight">
-          <h1 className="text-lg font-bold tracking-tight">CashVolt</h1>
-          <p className="text-[11px] text-base-content opacity-50 tracking-widest">
-            Clarity in every transaction
-          </p>
-        </div>
-      </div>
+      <SidebarHeader />
 
       {/* Navigation */}
       <nav className="menu menu-sm w-full flex-1">

@@ -5,6 +5,7 @@ import {
   UserRound, Mail, User
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
+import SidebarHeader from "./SidebarHeader";
 
 interface Props {
   isMenuOpen: boolean;
@@ -45,6 +46,7 @@ const MobileSidebar = ({ isMenuOpen, onClose }: Props) => {
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        <SidebarHeader />
         {/* NAV */}
         <nav className="menu w-full menu-sm flex-1">
           {links.map(({ to, label, icon: Icon }) => (
@@ -75,7 +77,7 @@ const MobileSidebar = ({ isMenuOpen, onClose }: Props) => {
         </nav>
 
         {/* USER */}
-        <div className="mt-4 px-3 py-4 items-center flex gap-3 mb-30">
+        <div className="mt-4 px-3 py-4 items-center flex gap-3 mb-10">
           {user?.profile_picture ? (
             <img
               src={user.profile_picture}

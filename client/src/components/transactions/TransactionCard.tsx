@@ -56,40 +56,37 @@ const TransactionCard = ({
   const Icon = style.Icon;
 
   return (
-    <div className=" flex items-center justify-between gap-3 p-2 rounded-xl border border-base-200 bg-base-100
-      hover:shadow-md transition-all">
+    <div className=" flex items-center justify-between">
 
       {/* LEFT */}
-      <div className="flex items-center gap-3 min-w-0">
-        {/* ICON */}
+      <div className="flex justify-center gap-2 items-center">
+      
         <div className={`p-2 rounded-lg bg-gradient-to-br ${style.gradient} text-white`}>
           <Icon size={18} />
         </div>
-
-        {/* TEXT */}
-        <div className="flex flex-col">
-          <div>
-            <p className="text-sm font-medium truncate">
-              {type==="savings"
-                ? title 
-                : category
-              }
-            </p>
-            <div className="flex flex-wrap items-center gap-2 text-base-content/60">
-                <span className="flex text-[10px] items-center gap-1">
-                  <Wallet size={10} /> {account}
-                </span>
-            </div>
-          </div>
+      
+        <div>
+          <p className="text-sm font-medium truncate">
+            {type==="savings"
+              ? title 
+              : category
+            }
+          </p>
+          <p className="flex text-xs text-base-content/70 items-center gap-1">
+            <Wallet size={12} /> {account}
+          </p>
           <p className="text-xs text-base-content/50">
             {new Date(date).toLocaleDateString()}
           </p>
         </div>
+        
       </div>
       
+      
+      {/* Middle */}
       <div className="text-right">
           <p className={`text-sm font-semibold ${style.amountColor}`}>
-            {style.sign}{amount.toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
+            {style.sign}{Number(amount).toLocaleString()} <span className="text-[10px] text-base-content font-normal">{user.currency}</span>
           </p>
         </div>
 
