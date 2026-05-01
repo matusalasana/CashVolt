@@ -44,11 +44,17 @@ const TransactionsModals = ({
       {/* EDIT */}
       {isEditOpen && editingTransaction && (
         <div className="modal modal-open animate-in fade-in duration-300">
-          <TransactionForm
-            mode="edit"
-            transaction={editingTransaction}
-            onSuccess={() => setIsEditOpen(false)}
-            isTransactionLoading={isTransactionLoading}
+          <div className="modal-box p-0 max-w-lg bg-transparent border-none shadow-none relative">
+            <TransactionForm
+              mode="edit"
+              transaction={editingTransaction}
+              onSuccess={() => setIsEditOpen(false)}
+              isTransactionLoading={isTransactionLoading}
+            />
+          </div>
+          <div
+            className="modal-backdrop bg-base-900/40 backdrop-blur-sm"
+            onClick={() => setIsEditOpen(false)}
           />
         </div>
       )}

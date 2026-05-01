@@ -61,9 +61,7 @@ const BalancesOverview = ({
       percentage: percentageOfIncome,
       percentageColor: percentageOfIncome > 0 
         ? "text-emerald-600" 
-        : percentageOfIncome === 0 
-        ? "text-base-content"
-        : "text-emerald-600",
+        : "text-rose-600",
       icon: TrendingUp,
       color: "from-emerald-500 to-green-400",
       textColor: "text-emerald-600 dark:text-emerald-400",
@@ -87,7 +85,9 @@ const BalancesOverview = ({
       percentage: percentageOfSavings,
       percentageColor: percentageOfSavings > 0 
         ? "text-emerald-600" 
-        : "text-blue-600",
+        : percentageOfSavings === 0 
+        ? "text-amber-600"
+        : "text-rose-600",
       icon: PiggyBank,
       color: "from-amber-200 to-orange-400",
       textColor: "text-amber-700 dark:text-amber-500",
@@ -98,8 +98,8 @@ const BalancesOverview = ({
       value: total_budget,
       percentage: percentageOfBudget,
       percentageColor: percentageOfBudget > 0 
-        ? "text-emerald-600" 
-        : "text-blue-600",
+        ? "text-rose-600" 
+        : "text-emerald-600",
       icon: Bitcoin,
       color: "from-blue-200 to-blue-400",
       textColor: "text-blue-700 dark:text-blue-500",

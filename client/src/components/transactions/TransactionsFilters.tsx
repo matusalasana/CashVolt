@@ -1,4 +1,4 @@
-import { ListFilter, TrendingUp, TrendingDown, PiggyBank, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface Props {
   selectedType: string;
@@ -7,10 +7,10 @@ interface Props {
 
 const TransactionsFilters = ({ selectedType, setSelectedType }: Props) => {
   const filters = [
-    { value: "", label: "All", icon: ListFilter },
-    { value: "income", label: "Income", icon: TrendingUp },
-    { value: "expense", label: "Expense", icon: TrendingDown },
-    { value: "savings", label: "Savings", icon: PiggyBank },
+    { value: "", label: "All"},
+    { value: "income", label: "Income" },
+    { value: "expense", label: "Expense" },
+    { value: "savings", label: "Savings" },
   ];
 
   const getActiveStyle = (value: string) => {
@@ -33,7 +33,6 @@ const TransactionsFilters = ({ selectedType, setSelectedType }: Props) => {
       <div className="absolute inset-0 bg-base-100/60 backdrop-blur-xl rounded-2xl border border-base-200 -z-10" />
 
       {filters.map((filter) => {
-        const Icon = filter.icon;
         const isSelected = selectedType === filter.value;
 
         return (
@@ -52,7 +51,6 @@ const TransactionsFilters = ({ selectedType, setSelectedType }: Props) => {
               ${isSelected ? "scale-[1.03]" : "hover:scale-[1.02] active:scale-95"}
             `}
           >
-            <Icon size={16} strokeWidth={2.2} />
             {filter.label}
           </button>
         );
@@ -62,10 +60,10 @@ const TransactionsFilters = ({ selectedType, setSelectedType }: Props) => {
       {selectedType && (
         <button
           onClick={() => setSelectedType("")}
-          className="p-2 rounded-xl bg-base-200 hover:bg-base-300 text-base-content/60 hover:text-base-content transition-all duration-300 hover:rotate-90 active:scale-95"
+          className="p-2 flex gap-1 justify-center items-center rounded-xl bg-base-200 hover:bg-base-300 text-base-content/60 font-bold hover:text-base-content transition-all duration-300 hover:rotate-90 active:scale-95"
           aria-label="Clear filters"
         >
-          <X size={14} />
+          <span className="text-xs">Clear filter</span> <X size={14} />
         </button>
       )}
     </div>

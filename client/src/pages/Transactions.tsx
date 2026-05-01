@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useTransactions, useDeleteTransaction } from "../hooks/useTransactions";
-import { useTransactionModals } from "../components/transactions/useTransactionModals";
 import TransactionPagination from "../components/transactions/TransactionPagination";
 import TransactionsHeader from "../components/transactions/TransactionsHeader";
 import TransactionsFilters from "../components/transactions/TransactionsFilters";
@@ -14,6 +13,13 @@ const Transaction = () => {
   const [selectedType, setSelectedType] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   
+  // Modal controllers
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [deletingTransaction, setDeletingTransaction] = useState(null);
+  
   const [sortBy, setSortBy] = useState("");
   const [order, setOrder] = useState("desc");
 
@@ -25,14 +31,25 @@ const Transaction = () => {
 
   const { mutate: deleteTransaction, isPending } =
     useDeleteTransaction();
+    
+  const modals = {
+    isAddOpen,
+    setIsAddOpen,
 
-  const modals = useTransactionModals();
+    isEditOpen,
+    setIsEditOpen,
+    editingTransaction,
+
+    isDeleteOpen,
+    setIsDeleteOpen,
+    deletingTransaction,
+    setDeletingTransaction}
 
   return (
     <div className="p-4 max-w-6xl mx-auto min-h-screen bg-base-100">
 
       <TransactionsHeader
-        onAdd={() => modals.setIsAddOpen(true)}
+        onAdd={() => setIsAddOpen(true)}
       />
 
       <TransactionsFilters
@@ -53,12 +70,12 @@ const Transaction = () => {
         transactions={transactions}
         isLoading={isLoading}
         onEdit={(tx) => {
-          modals.setEditingTransaction(tx);
-          modals.setIsEditOpen(true);
+          setEditingTransaction(tx);
+          setIsEditOpen(true);
         }}
         onDelete={(tx) => {
-          modals.setDeletingTransaction(tx);
-          modals.setIsDeleteOpen(true);
+          setDeletingTransaction(tx);
+          setIsDeleteOpen(true);
         }}
       />
 

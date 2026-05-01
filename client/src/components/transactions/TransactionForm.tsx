@@ -1,13 +1,17 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X, PlusCircle, Save, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-import { type TransactionInput, transactionSchema } from "../../types";
+import { type TransactionInput, transactionSchema } from "../../types/transaction";
+
 import { useCreateTransaction, useUpdateTransaction } from "../../hooks/useTransactions";
 import { useAccounts } from "../../hooks/useAccounts";
 import { useCategories } from "../../hooks/useCategories";
 import { useSavings } from "../../hooks/useSavings";
+
+import TransactionFormTitle from "./TransactionFormTitle";
+import TransactionFormCloseButton from "./TransactionFormCloseButton";
 
 interface Props {
   transaction?: TransactionInput & { id: number };
@@ -30,32 +34,46 @@ const TransactionForm = ({
     formState: { errors },
   } = useForm<TransactionInput>({
     resolver: zodResolver(transactionSchema),
-    defaultValues: {
-      type: "expense",
-      transaction_date: new Date().toISOString().split("T")[0],
-    },
   });
 
   const selectedType = watch("type");
 
   // data
-  const { data: accounts, isLoading: accountsLoading } = useAccounts();
-  const { data: categories, isLoading: categoriesLoading } = useCategories(selectedType);
-  const { data: savings, isLoading: savingsLoading } = useSavings();
+  const { 
+    data: accounts, 
+    isLoading: accountsLoading } = useAccounts();
+  const { 
+    data: categories, isLoading: 
+    categoriesLoading } = useCategories(selectedType);
+  const { 
+    data: savings, 
+    isLoading: savingsLoading } = useSavings();
 
   // mutations
-  const { mutate: createTransaction, isPending: creating } = useCreateTransaction();
-  const { mutate: updateTransaction, isPending: updating } = useUpdateTransaction();
+  const { 
+    mutate: createTransaction, 
+    isPending: creating } = useCreateTransaction();
+  const { 
+    mutate: updateTransaction, 
+    isPending: updating } = useUpdateTransaction();
 
   const isLoading = isTransactionLoading || accountsLoading || categoriesLoading || savingsLoading;
   const isPending = creating || updating;
 
-  // reset in edit mode
-  useEffect(() => {
-    if (mode === "edit" && transaction) {
-      reset(transaction);
-    }
-  }, [mode, transaction, isTransactionLoading, accountsLoading, categoriesLoading, reset]);
+
+useEffect(() => {
+  if (isLoading) return;
+  
+  if (mode === "edit" && transaction) {
+    reset(transaction);
+  } else {
+    const today = new Date();
+    const localDate = today.toLocaleDateString("en-CA"); // Returns YYYY-MM-DD
+    reset({
+      transaction_date: localDate
+    });
+  }
+}, [mode, transaction, reset, isLoading]);
 
   const submitHandler = (data: TransactionInput) => {
     if (mode === "edit" && transaction) {
@@ -77,28 +95,14 @@ const TransactionForm = ({
     <div className="relative card w-full max-w-lg bg-base-100 shadow-xl border border-base-200">
       
       {/* Close */}
-      <button
-        type="button"
-        onClick={onSuccess}
-        className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4"
-      >
-        <X size={18} />
-      </button>
+      <TransactionFormCloseButton
+        onSuccess={onSuccess}
+      />
 
       <div className="card-body">
 
         {/* Title */}
-        <h2 className="card-title flex items-center gap-2 text-2xl mb-4">
-          {mode === "edit" ? (
-            <>
-              <Save className="text-primary" /> Edit Transaction
-            </>
-          ) : (
-            <>
-              <PlusCircle className="text-success" /> Add Transaction
-            </>
-          )}
-        </h2>
+        <TransactionFormTitle mode={mode}/>
 
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
 
@@ -110,14 +114,11 @@ const TransactionForm = ({
               className={`input input-bordered w-full ${errors.amount ? "input-error" : ""}`}
               {...register("amount", { valueAsNumber: true })}
             />
-            {errors.amount && (
-              <p className="text-error text-xs">{errors.amount.message}</p>
-            )}
           </div>
 
           {/* TYPE */}
           <select
-            disabled={isLoading}
+            disabled={isTransactionLoading}
             className="select select-bordered w-full"
             {...register("type")}
           >
@@ -128,8 +129,8 @@ const TransactionForm = ({
 
           {/* ACCOUNT */}
           <select
-            disabled={isLoading}
-            className="select select-bordered w-full"
+            disabled={accountsLoading}
+            className={`select select-bordered w-full ${errors.account_id ? "input-error" : ""}`}
             {...register("account_id", { valueAsNumber: true })}
           >
             <option value="">
@@ -145,12 +146,12 @@ const TransactionForm = ({
           {/* CATEGORY */}
           {selectedType !== "savings" && (
             <select
-              disabled={isLoading}
-              className="select select-bordered w-full"
+              disabled={categoriesLoading}
+              className={`select select-bordered w-full ${"category_id" in errors && errors.category_id && "input-error"}`}
               {...register("category_id", { valueAsNumber: true })}
             >
               <option value="">
-                {isLoading ? "Loading..." : "Select Category"}
+                {categoriesLoading ? "Loading..." : "Select Category"}
               </option>
               {categories?.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -163,12 +164,12 @@ const TransactionForm = ({
           {/* SAVINGS */}
           {selectedType === "savings" && (
             <select
-              disabled={isLoading}
+              disabled={savingsLoading}
               className="select select-bordered w-full"
               {...register("savings_id", { valueAsNumber: true })}
             >
               <option value="">
-                {isLoading ? "Loading..." : "Select Savings Goal"}
+                {savingsLoading ? "Loading..." : "Select Savings Goal"}
               </option>
               {savings?.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -181,13 +182,13 @@ const TransactionForm = ({
           {/* DATE */}
           <input
             type="date"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${errors.transaction_date ? "input-error" : ""}`}
             {...register("transaction_date")}
           />
 
           {/* DESCRIPTION */}
           <textarea
-            className="textarea textarea-bordered w-full"
+            className={`input input-bordered w-full ${errors.description ? "input-error" : ""}`}
             placeholder="Description"
             {...register("description")}
           />
