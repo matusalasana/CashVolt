@@ -52,31 +52,68 @@ export const getOverviewAnalyticsService = async (user_id, month, year) => {
     throw new Error("missing required fields");
   }
 
+  const prevMonth = month === 1 ? 12 : month - 1;
+  const prevYear = month === 1 ? year - 1 : year;
+
   const result = await sql`
-    SELECT 
-      COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END), 0) AS total_income,
+    SELECT
+      -- CURRENT MONTH
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'income' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${month}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${year}
+      THEN t.amount END), 0)::float AS total_income,
+    
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'expense' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${month}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${year}
+      THEN t.amount END), 0)::float AS total_expense,
+    
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'savings' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${month}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${year}
+      THEN t.amount END), 0)::float AS total_savings,
 
-      COALESCE(SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END), 0) AS total_expense,
-      
-      COALESCE(SUM(CASE WHEN t.type = 'savings' THEN t.amount ELSE 0 END), 0) AS total_savings,
+      -- LAST MONTH
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'income' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${prevMonth}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${prevYear}
+      THEN t.amount END), 0)::float AS last_month_income,
+    
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'expense' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${prevMonth}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${prevYear}
+      THEN t.amount END), 0)::float AS last_month_expense,
+    
+      COALESCE(SUM(CASE 
+        WHEN t.type = 'savings' 
+        AND EXTRACT(MONTH FROM t.transaction_date) = ${prevMonth}
+        AND EXTRACT(YEAR FROM t.transaction_date) = ${prevYear}
+      THEN t.amount END), 0)::float AS last_month_savings,
 
-      COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END), 0)
-      -
-      COALESCE(SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END), 0)
-      AS total_balance,
+      -- BUDGET (scalar subqueries)
+      (
+        SELECT COALESCE(SUM(amount), 0)
+        FROM budgets 
+        WHERE user_id = ${user_id}
+        AND month = ${month}
+        AND year = ${year}
+      )::float AS total_budget,
 
       (
-        SELECT COALESCE(SUM(b.amount), 0)
-        FROM budgets b
-        WHERE b.user_id = ${user_id}
-          AND b.month = ${month}
-          AND b.year = ${year}
-      ) AS total_budget
+        SELECT COALESCE(SUM(amount), 0)
+        FROM budgets 
+        WHERE user_id = ${user_id}
+        AND month = ${prevMonth}
+        AND year = ${prevYear}
+      )::float AS last_month_budget
 
     FROM transactions t
-    WHERE t.user_id = ${user_id}
-      AND EXTRACT(MONTH FROM t.transaction_date) = ${month}
-      AND EXTRACT(YEAR FROM t.transaction_date) = ${year};
+    WHERE t.user_id = ${user_id};
   `;
 
   return result[0];

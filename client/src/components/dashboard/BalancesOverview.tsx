@@ -14,6 +14,13 @@ interface BalancesOverviewProps {
   total_expense: number;
   total_budget: number;
   total_savings: number;
+  
+  percentageOfBalance: number;
+  percentageOfIncome: number;
+  percentageOfExpense: number;
+  percentageOfSavings: number;
+  percentageOfBudget: number;
+  
   isLoading: boolean;
 }
 
@@ -23,7 +30,12 @@ const BalancesOverview = ({
   total_expense,
   total_savings,
   total_budget,
-  isLoading,
+  percentageOfBalance,
+  percentageOfIncome,
+  percentageOfExpense,
+  percentageOfSavings,
+  percentageOfBudget,
+  isLoading
 }: BalancesOverviewProps) => {
   const { data: user } = useAuth();
   const currency = user?.currency || "ETB";
@@ -32,6 +44,12 @@ const BalancesOverview = ({
     {
       label: "Available Balance",
       value: total_balance,
+      percentage: percentageOfBalance,
+      percentageColor: percentageOfBalance > 0 
+        ? "text-emerald-600" 
+        : percentageOfBalance === 0 
+        ? "text-blue-600"
+        : "text-rose-600",
       icon: Wallet,
       color: "from-blue-500 to-cyan-400",
       textColor: "text-blue-600 dark:text-blue-400",
@@ -40,6 +58,12 @@ const BalancesOverview = ({
     {
       label: "Income",
       value: total_income,
+      percentage: percentageOfIncome,
+      percentageColor: percentageOfIncome > 0 
+        ? "text-emerald-600" 
+        : percentageOfIncome === 0 
+        ? "text-base-content"
+        : "text-emerald-600",
       icon: TrendingUp,
       color: "from-emerald-500 to-green-400",
       textColor: "text-emerald-600 dark:text-emerald-400",
@@ -48,6 +72,10 @@ const BalancesOverview = ({
     {
       label: "Expense",
       value: total_expense,
+      percentage: percentageOfExpense,
+      percentageColor: percentageOfExpense > 0 
+        ? "text-rose-600" 
+        : "text-emerald-600",
       icon: TrendingDown,
       color: "from-rose-300 to-rose-500",
       textColor: "text-rose-700 dark:text-rose-500",
@@ -56,6 +84,10 @@ const BalancesOverview = ({
     {
       label: "Savings",
       value: total_savings,
+      percentage: percentageOfSavings,
+      percentageColor: percentageOfSavings > 0 
+        ? "text-emerald-600" 
+        : "text-blue-600",
       icon: PiggyBank,
       color: "from-amber-200 to-orange-400",
       textColor: "text-amber-700 dark:text-amber-500",
@@ -64,6 +96,10 @@ const BalancesOverview = ({
     {
       label: "Budget",
       value: total_budget,
+      percentage: percentageOfBudget,
+      percentageColor: percentageOfBudget > 0 
+        ? "text-emerald-600" 
+        : "text-blue-600",
       icon: Bitcoin,
       color: "from-blue-200 to-blue-400",
       textColor: "text-blue-700 dark:text-blue-500",
@@ -89,6 +125,13 @@ const BalancesOverview = ({
       key={index}
       className="group relative overflow-hidden rounded-2xl backdrop-blur-xl bg-base-100/40 border border-base-300 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:bg-base-100/60"
     >
+    
+      <div className={`absolute bottom-2 right-2 text-xs flex flex-col justify-center items-center font-bold`}>
+        <p className={`${metric.percentageColor}`}>{metric.percentage}%</p>
+        <p className="text-base-content/60">From last month</p>
+      </div>
+    
+    
       {/* Glass gradient overlay */}
       <div
         className={`absolute inset-0 bg-gradient-to-br ${metric.color} opacity-5 group-hover:opacity-10 transition-opacity`}
@@ -118,7 +161,7 @@ const BalancesOverview = ({
         {/* Value */}
         <div className="mb-2">
           <p className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-base-content">
-            {Number(metric.value).toLocaleString()}
+            {metric.value.toLocaleString()}
             <span className="text-sm md:text-base font-normal text-base-content/60 ml-1">
               {currency}
             </span>

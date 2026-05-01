@@ -1,6 +1,7 @@
 import WelcomeUserCard from "../components/dashboard/WelcomeUserCard";
 import CategoryPieChart from "../components/dashboard/CategoryPieChart";
 import { useOverviewAnalytics, useYearlyAnalytics } from "../hooks/useAnalytics";
+import { getPercentageChangeInBalances } from "../utils/getPercentageChangeInBalances";
 import { useAuth } from "../hooks/useAuth";
 import { useBudgets } from "../hooks/useBudgets";
 import BalancesOverview from "../components/dashboard/BalancesOverview";
@@ -21,13 +22,16 @@ const currentYear = new Date().getFullYear();
 
 const Dashboard = () => {
   
-  const { data: overview, isLoading: monthlyDataLoading } =
+  const { data: overview, isLoading: balanceOverviewLoading} =
     useOverviewAnalytics(currentMonth, currentYear);
   const { data: budgets, isLoading: budgetsLoading } =
     useBudgets(currentMonth, currentYear, "spent", "desc");
   const { data: yearlyData, isLoading: yearlyDataLoading } =
     useYearlyAnalytics(currentYear);
   const { data: user, isLoading: userLoading } = useAuth();
+  
+  const percentages = getPercentageChangeInBalances({overview});
+  
 
   return (
   <>
@@ -43,17 +47,22 @@ const Dashboard = () => {
       />
 
       <BalancesOverview
-        total_balance={overview?.total_balance || 0}
+        total_balance={overview?.total_income - overview?.total_expense || 0}
         total_expense={overview?.total_expense || 0}
         total_income={overview?.total_income || 0}
         total_savings={overview?.total_savings || 0}
         total_budget={overview?.total_budget || 0}
-        isLoading={monthlyDataLoading}
+        percentageOfBalance={percentages?.percentageChangeInBalance ?? 0}
+        percentageOfIncome={percentages?.percentageChangeInIncome ?? 0}
+        percentageOfExpense={percentages?.percentageChangeInExpense ?? 0}
+        percentageOfSavings={percentages?.percentageChangeInSavings ?? 0}
+        percentageOfBudget={percentages?.percentageChangeInBudget ?? 0}
+        isLoading={balanceOverviewLoading}
       />
       
       <MonthlyBarChart
        overview={overview}
-       isLoading={monthlyDataLoading}
+       isLoading={balanceOverviewLoading}
       />
 
       <YearlyOverviewChart
