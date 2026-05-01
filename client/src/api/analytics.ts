@@ -20,3 +20,8 @@ export const getYearlyAnalytics = async (year?: number) => {
   });
   return res.data;
 };
+
+export const getWeeklyAnalytics = async () => {
+  const res = await API.get("/analytics/weekly");
+  return res.data;
+};

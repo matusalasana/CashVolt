@@ -1,11 +1,12 @@
 import WelcomeUserCard from "../components/dashboard/WelcomeUserCard";
 import CategoryPieChart from "../components/dashboard/CategoryPieChart";
-import { useOverviewAnalytics, useYearlyAnalytics } from "../hooks/useAnalytics";
+import { useOverviewAnalytics, useWeeklyAnalytics, useYearlyAnalytics } from "../hooks/useAnalytics";
 import { getPercentageChangeInBalances } from "../utils/getPercentageChangeInBalances";
 import { useAuth } from "../hooks/useAuth";
 import { useBudgets } from "../hooks/useBudgets";
 import BalancesOverview from "../components/dashboard/BalancesOverview";
-import YearlyOverviewChart from "../components/dashboard/YearlyOverviewChart";
+import WeeklyLineChart from "../components/dashboard/WeeklyLineChart"
+import YearlyLineChart from "../components/dashboard/YearlyLineChart"
 import MonthlyBarChart from "../components/dashboard/MonthlyBarChart"
 import RecentTransactions from "../components/dashboard/RecentTransactions";
 import CategorySpentCard from "../components/dashboard/CategorySpentCard";
@@ -24,6 +25,8 @@ const Dashboard = () => {
   
   const { data: overview, isLoading: balanceOverviewLoading} =
     useOverviewAnalytics(currentMonth, currentYear);
+  const { data: weeklyData, isLoading: weeklyOverviewLoading} =
+    useWeeklyAnalytics();
   const { data: budgets, isLoading: budgetsLoading } =
     useBudgets(currentMonth, currentYear, "spent", "desc");
   const { data: yearlyData, isLoading: yearlyDataLoading } =
@@ -60,12 +63,17 @@ const Dashboard = () => {
         isLoading={balanceOverviewLoading}
       />
       
+      <WeeklyLineChart
+        data={weeklyData}
+        isLoading={weeklyOverviewLoading}
+      />
+      
       <MonthlyBarChart
        overview={overview}
        isLoading={balanceOverviewLoading}
       />
 
-      <YearlyOverviewChart
+      <YearlyLineChart
         data={yearlyData}
         months={monthsOfTheYear}
         year={currentYear}

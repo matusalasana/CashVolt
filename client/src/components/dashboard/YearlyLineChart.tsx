@@ -2,19 +2,19 @@ import { Line } from "react-chartjs-2";
 import { chartColors } from "../../utils/chart";
 import RectangularLoadingSkeleton from "../RectangularLoadingSkeleton";
 
-interface YearlyOverviewChartProps {
+interface YearlyLineChartProps {
   data: any[];
   months: string[];
   year: number;
   isLoading: boolean;
 }
 
-const YearlyOverviewChart = ({
+const YearlyLineChart = ({
   data,
   months,
   year,
   isLoading,
-}: YearlyOverviewChartProps) => {
+}: YearlyLineChartProps) => {
   
   const currentMonth = new Date().getMonth() + 1;
 
@@ -60,7 +60,7 @@ const YearlyOverviewChart = ({
   if (isLoading){
     return (
       <RectangularLoadingSkeleton 
-        amount={5} 
+        amount={1} 
         height="h-80"
       />
     );
@@ -113,4 +113,4 @@ const YearlyOverviewChart = ({
   );
 };
 
-export default YearlyOverviewChart;
+export default YearlyLineChart;

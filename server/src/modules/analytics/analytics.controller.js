@@ -1,7 +1,8 @@
 import { 
   getOverviewAnalyticsService,
   getBudgetAnalyticsService,
-  getYearlyAnalyticsService
+  getYearlyAnalyticsService,
+  getWeeklyAnalyticsService
 } from "./analytics.service.js";
 
 
@@ -59,6 +60,24 @@ export const getYearlyAnalytics = async (req, res) => {
 
   } catch (err) {
     console.log("Yearly analytics error:", err.message);
+
+    return res.status(500).json({
+      message: err.message
+    });
+  }
+};
+
+
+export const getWeeklyAnalytics = async (req, res) => {
+  try {
+    const user_id = req.user.userId;
+
+    const data = await getWeeklyAnalyticsService(user_id);
+  
+    return res.status(200).json(data);
+
+  } catch (err) {
+    console.log("Weekly analytics error:", err.message);
 
     return res.status(500).json({
       message: err.message

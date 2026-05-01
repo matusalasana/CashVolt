@@ -2,7 +2,8 @@
 import { 
   getBudgetAnalytics,
   getOverviewAnalytics,
-  getYearlyAnalytics
+  getYearlyAnalytics,
+  getWeeklyAnalytics
 } from "../api/analytics"
 import { useQuery } from "@tanstack/react-query"
 
@@ -29,5 +30,13 @@ export const useYearlyAnalytics = (year?: number) => {
     queryKey: ["yearly-analytics", year],
     queryFn: () => getYearlyAnalytics(year),
     enabled: year != null,
+  });
+};
+
+
+export const useWeeklyAnalytics = () => {
+  return useQuery({
+    queryKey: ["weekly-analytics"],
+    queryFn: getWeeklyAnalytics,
   });
 };

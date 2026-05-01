@@ -140,3 +140,20 @@ export const getYearlyAnalyticsService = async (user_id, year) => {
 
   return result;
 };
+
+
+export const getWeeklyAnalyticsService = async (user_id) => {
+  const result = await sql`
+    SELECT 
+      TO_CHAR(transaction_date, 'Day') AS day,
+      SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END)::float AS income,
+      SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END)::float AS expense
+    FROM transactions
+    WHERE user_id = ${user_id}
+      AND transaction_date >= NOW() - INTERVAL '7 days'
+    GROUP BY day
+    ORDER BY day ASC
+  `;
+
+  return result;
+};
