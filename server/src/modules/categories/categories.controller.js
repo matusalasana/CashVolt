@@ -34,7 +34,7 @@ export const createCategory = async (req, res) => {
       req.user.userId
     );
 
-    return res.status(201).json(data[0]);
+    return res.status(201).json(data);
 
   } catch (err) {
     console.log("Create category error:", err.message);

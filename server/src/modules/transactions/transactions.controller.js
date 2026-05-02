@@ -10,7 +10,7 @@ import {
 export const getTransactions = async (req, res) => {
   try {
     const user_id = req.user.userId;
-    const { type, sortBy, order, limit, offset } = req.query;
+    const { type, sortBy, order, limit, offset, searchText } = req.query;
 
     const data = await getTransactionsService(
       user_id,
@@ -18,7 +18,8 @@ export const getTransactions = async (req, res) => {
       sortBy,
       order,
       limit,
-      offset
+      offset,
+      searchText
     );
 
     return res.status(200).json(data);

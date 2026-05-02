@@ -16,6 +16,7 @@ export const getTransactionsService = async (
   order,
   limit = 10,
   offset = 0,
+  searchText
 ) => {
   const limitNum = Number(limit) || 10;
   const offsetNum = Number(offset) || 0;
@@ -49,6 +50,7 @@ export const getTransactionsService = async (
     safeOrder,
     limit,
     offset,
+    searchText
   );
 
   return result;

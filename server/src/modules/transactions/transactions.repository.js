@@ -8,18 +8,38 @@ export const getTransactionsRepo = async (
   safeOrder, 
   limit = 10,
   offset = 0,
+  searchText
 ) => {
   return await sql`
-    SELECT t.*, 
-           a.name AS account_name,
-           c.name AS category_name,
-           s.title AS savings_title
+    SELECT 
+      t.id,
+      t.amount::float,
+      t.type,
+      t.description,
+      t.account_id::float,
+      t.category_id::float,
+      t.transaction_date,
+      t.savings_id::float,
+      t.created_at, 
+      t.updated_at,
+      a.name AS account_name,
+      c.name AS category_name,
+      s.title AS savings_title
+      
     FROM transactions t
     LEFT JOIN accounts a ON t.account_id = a.id
     LEFT JOIN categories c ON t.category_id = c.id
     LEFT JOIN savings s ON s.id = t.savings_id
-    WHERE t.user_id = ${user_id}
-    ${type ? sql`AND t.type = ${type}` : sql``}
+    
+    WHERE t.user_id = ${user_id} 
+      
+      AND (
+        ${searchText ? sql`
+          t.description_tsv @@ plainto_tsquery('english', ${searchText})
+        ` : sql``}
+      )
+      ${type ? sql`AND t.type = ${type}` : sql``}
+      
     ORDER BY ${sql.unsafe(safeSort)} ${sql.unsafe(safeOrder)}
     LIMIT ${limit}
     OFFSET ${offset};
