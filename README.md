@@ -1,129 +1,122 @@
 
-# 💰 CashVolt – Personal Finance Tracker App
+<!-- Banner -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=1D4ED8&height=140&section=header"/>
+
+# 💰 CashVolt — Personal Finance Management Platform
+
+<p align="center">
+  <img src="https://img.shields.io/github/stars/matusalasana/CashVolt?style=flat&color=1D4ED8"/>
+  <img src="https://img.shields.io/github/forks/matusalasana/CashVolt?style=flat&color=1D4ED8"/>
+  <img src="https://img.shields.io/github/license/matusalasana/CashVolt?style=flat&color=1D4ED8"/>
+</p>
 
 > A modern full-stack personal finance management platform built with the **PERN Stack**.
 
-CashVolt is a full-stack personal finance management application that helps users track income, expenses, budgets, and financial insights in a clean and intuitive dashboard.
+CashVolt helps users manage income, expenses, budgets, and financial insights through a fast, scalable, and intuitive dashboard experience.
 
-Built with modern web technologies, CashVolt provides real-time tracking, analytics, and structured financial organization for users who want better control over their money.
+Designed with modern frontend architecture and secure backend systems, the platform focuses on performance, usability, and production-grade scalability.
 
----
 
-## 🚀 Live Demo
+## 🌐 Live Demo
 
-- 🌐 Frontend: https://your-frontend-url.com  
-- ⚙️ Backend API: https://your-backend-url.com  
+<p align="center">
+  <a href="https://cash-volt.vercel.app">
+    <img width="90%" src="./screenshots/dashboard-preview.jpg" alt="CashVolt Dashboard Preview"/>
+  </a>
+</p>
 
----
+<p align="center">
+  <a href="https://cash-volt.vercel.app">
+    <img src="https://img.shields.io/badge/Live%20Demo-1D4ED8?style=for-the-badge&logo=vercel&logoColor=white"/>
+  </a>
+</p>
 
-## 📸 Preview
+## ✨ Highlights
 
-> Add screenshots here (dashboard, budgets, transactions, analytics)
+- Secure JWT Authentication
+- Budget & expense management
+- Real-time financial analytics
+- Interactive dashboard system
+- Optimized API caching
+- Responsive modern UI
+- Scalable PERN architecture
 
----
-
-# 🚀 Tech Stack
+# 🛠️ Tech Stack
 
 ## 🎨 Frontend
-- ⚛️ React 19
-- 🟦 TypeScript
-- ⚡ Vite
-- 🎨 Tailwind CSS v4
-- 🎨 DaisyUI
-- 🐻 Zustand
-- 🔄 TanStack Query
-- 📝 React Hook Form
-- ✅ Zod (validation)
-- ♻️ Axios
-- 🎬 Framer Motion
-- 📉 Chart.js
 
----
+<p>
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,zustand" />
+</p>
 
-## 🛠️ Backend
-- 🟢 Node.js
-- 🚂 Express.js
-- 🟦 TypeScript
-- 🐘 Neon PostgreSQL
-- ⚡ Redis
-- 🔐 JWT Authentication
-- ✅ Zod Validation
-- 📜 Winston Logger
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS v4
+- DaisyUI
+- Zustand
+- TanStack Query
+- React Hook Form
+- Zod Validation
+- Axios
+- Framer Motion
+- Chart.js
 
----
+## ⚙️ Backend
 
-# ✨ Features
+<p>
+  <img src="https://skillicons.dev/icons?i=nodejs,express,postgres,redis" />
+</p>
 
-## 🔐 Authentication & Authorization
+- Node.js
+- Express.js
+- Neon PostgreSQL
+- Redis
 - JWT Authentication
-- Refresh & Access Tokens
-- Role-Based Access Control (RBAC)
-- Secure Password Hashing
-- Protected Routes
-- HTTP-only Cookies
+- Zod Validation
+- Winston Logger
 
----
+# 🚀 Core Features
 
-## 💳 Accounts
-- Create and manage multiple accounts (Cash, Bank, etc.)
-- Track balances per account
+## 🔐 Authentication System
+- JWT authentication
+- Refresh token rotation
+- Protected routes
+- HTTP-only cookies
+- Role-based access control
 
-## 📊 Transactions
-- Add income and expense transactions
-- Categorize spending
-- Filter by date, account, and category
-- Transaction history tracking
+## 💳 Finance Management
+- Income & expense tracking
+- Multi-account management
+- Budget planning system
+- Category organization
+- Transaction history
 
-## 📦 Budgets
-- Monthly budget creation per category
-- Budget vs actual spending comparison
-- Remaining budget tracking
-
-## 🗂 Categories
-- Income and expense category separation
-- Custom category creation
-
-## 📈 Analytics Dashboard
-- Monthly and yearly summaries
-- Spending breakdown by category
+## 📊 Analytics Dashboard
+- Financial summaries
+- Expense breakdown charts
 - Income vs expense visualization
+- Monthly and yearly analytics
 
----
+## ⚡ System Features
+- Responsive modern UI
+- Dark / light theme support
+- Optimized API requests
+- Rate limiting & backend security
+- Error handling & validation
+- Modular scalable architecture
 
-## 💻 Frontend Features
-- Fully Responsive UI
-- Dark / Light Mode Ready
-- Smooth Animations
-- Real-Time State Management
-- Optimized API Fetching
-- Error Boundaries
-- Graphs for analytics 
-- Form Validation
-
----
-
-## ⚙️ Backend Features
-- RESTful API
-- Modular Architecture
-- Rate Limiting
-- Security Middleware
-- Logging & Monitoring
-
----
-
-# 🏗️ Tech Architecture
+# 🏗️ Architecture
 
 ```bash
-Frontend (React + Vite)
+Client (React + Vite)
         ↓
-API Requests (Axios + React Query)
+API Layer (Axios + React Query)
         ↓
-Backend (Express + TypeScript)
+Server (Express + TypeScript)
         ↓
 Database (Neon PostgreSQL)
 ```
-
----
 
 # 📁 Project Structure
 
@@ -155,8 +148,6 @@ CashVolt/
 └── README.md
 ```
 
----
-
 # ⚡ Installation
 
 ## 📥 Clone Repository
@@ -165,15 +156,11 @@ CashVolt/
 git clone git@github.com:matusalasana/CashVolt.git
 ```
 
----
-
 ## 📂 Navigate Into Project
 
 ```bash
 cd CashVolt
 ```
-
----
 
 # 🎨 Frontend Setup
 
@@ -183,15 +170,11 @@ cd CashVolt
 cd client
 ```
 
----
-
 ## 📦 Install Dependencies
 
 ```bash
 npm install
 ```
-
----
 
 ## 🚀 Start Frontend Development Server
 
@@ -205,8 +188,6 @@ Frontend runs on:
 http://localhost:5173
 ```
 
----
-
 # 🛠️ Backend Setup
 
 ## 📁 Navigate To Backend
@@ -215,15 +196,11 @@ http://localhost:5173
 cd server
 ```
 
----
-
 ## 📦 Install Dependencies
 
 ```bash
 npm install
 ```
-
----
 
 ## 🔑 Create Environment Variables
 
@@ -236,14 +213,12 @@ DATABASE_URL=your_neon_database_url
 
 JWT_SECRET=your_jwt_secret
 
-FRONTEND_URL=your_deployed_frontend_url
+FRONTEND_URL=your_frontend_url
 
-FRONTEND_LOCALHOST_URL=your_frontend_localhost_url
+FRONTEND_LOCALHOST_URL=http://localhost:5173
 
 NODE_ENV=development
 ```
-
----
 
 ## 🚀 Start Backend Development Server
 
@@ -257,60 +232,13 @@ Backend runs on:
 http://localhost:3000
 ```
 
----
-
-# 📜 Available Scripts
-
-## 🎨 Frontend
-
-| Script | Description |
-|---|---|
-| npm run dev | Start Vite development server |
-| npm run build | Build frontend for production |
-
----
-
-## 🛠️ Backend
-
-| Script | Description |
-|---|---|
-| npm run dev | Start backend development server |
-
----
-
-# 🧠 State Management
-
-CashVolt uses modern state management solutions for scalability and performance.
-
-## 🔄 TanStack Query
-Used for:
-- API Requests
-- Server State
-- Data Caching
-- Data Synchronization
-
----
-
-# 🔒 Security Features
-
-- JWT Authentication
-- Password Hashing
-- Helmet Middleware
-- Rate Limiting
-- CORS Protection
-- Input Validation
-
----
-
 # 🌍 Deployment
 
-Aura Commerce can be deployed on:
+CashVolt can be deployed on:
 
 ## 🎨 Frontend
 - Vercel
 - Netlify
-
----
 
 ## 🛠️ Backend
 - Railway
@@ -319,8 +247,6 @@ Aura Commerce can be deployed on:
 - Docker
 - AWS
 
----
-
 # 🚀 Performance Optimizations
 
 - React Query Caching
@@ -328,32 +254,32 @@ Aura Commerce can be deployed on:
 - Bundle Optimization
 - Code Splitting
 
----
-
 # 🔮 Future Improvements
 
-- 📧 Email Notifications
-- 🤖 AI Insights 
-- 🔔 Real-Time Notifications
-- 📱 Mobile Application
-
----
-
-# 📸 Screenshots (Coming soon)
-
-- 🏠 Homepage
-- 💱 Transactions Page
-- 🏧 Accounts Page
-- 📉 Analytics Page
-- 💰 Savings Page
-- 🔐 Authentication Pages
-
----
+- Email Notifications
+- AI Insights 
+- Real-Time Notifications
+- Mobile Application
+- Exportable financial reports
 
 # 👨‍💻 Author
 
-## Sana — Full Stack Developer
+### Sana — Full-Stack Developer
 
-Built with passion ❤️ using modern web technologies.
+<p align="left">
+  <a href="mailto:matusalasana@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-1D4ED8?style=for-the-badge&logo=gmail&logoColor=white"/>
+  </a>
 
----
+  <a href="#">
+    <img src="https://img.shields.io/badge/LinkedIn-1D4ED8?style=for-the-badge&logo=linkedin&logoColor=white"/>
+  </a>
+
+  <a href="#">
+    <img src="https://img.shields.io/badge/Portfolio-111827?style=for-the-badge&logo=firefox&logoColor=white"/>
+  </a>
+</p>
+
+### ⭐ Thanks for visiting
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=1D4ED8&height=140&section=footer"/>
