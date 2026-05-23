@@ -1,4 +1,7 @@
-# 💰 CashVolt – Budget Tracker App
+
+# 💰 CashVolt – Personal Finance Tracker App
+
+> A modern full-stack personal finance management platform built with the **PERN Stack**.
 
 CashVolt is a full-stack personal finance management application that helps users track income, expenses, budgets, and financial insights in a clean and intuitive dashboard.
 
@@ -19,147 +22,338 @@ Built with modern web technologies, CashVolt provides real-time tracking, analyt
 
 ---
 
-## 🧠 Features
+# 🚀 Tech Stack
 
-### 💳 Accounts
+## 🎨 Frontend
+- ⚛️ React 19
+- 🟦 TypeScript
+- ⚡ Vite
+- 🎨 Tailwind CSS v4
+- 🎨 DaisyUI
+- 🐻 Zustand
+- 🔄 TanStack Query
+- 📝 React Hook Form
+- ✅ Zod (validation)
+- ♻️ Axios
+- 🎬 Framer Motion
+- 📉 Chart.js
+
+---
+
+## 🛠️ Backend
+- 🟢 Node.js
+- 🚂 Express.js
+- 🟦 TypeScript
+- 🐘 Neon PostgreSQL
+- ⚡ Redis
+- 🔐 JWT Authentication
+- ✅ Zod Validation
+- 📜 Winston Logger
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication & Authorization
+- JWT Authentication
+- Refresh & Access Tokens
+- Role-Based Access Control (RBAC)
+- Secure Password Hashing
+- Protected Routes
+- HTTP-only Cookies
+
+---
+
+## 💳 Accounts
 - Create and manage multiple accounts (Cash, Bank, etc.)
 - Track balances per account
 
-### 📊 Transactions
+## 📊 Transactions
 - Add income and expense transactions
 - Categorize spending
 - Filter by date, account, and category
 - Transaction history tracking
 
-### 📦 Budgets
+## 📦 Budgets
 - Monthly budget creation per category
 - Budget vs actual spending comparison
 - Remaining budget tracking
 
-### 🗂 Categories
+## 🗂 Categories
 - Income and expense category separation
 - Custom category creation
 
-### 📈 Analytics Dashboard
+## 📈 Analytics Dashboard
 - Monthly and yearly summaries
 - Spending breakdown by category
 - Income vs expense visualization
 
-### 🔐 Authentication
-- Secure login and registration
-- Protected routes
+---
+
+## 💻 Frontend Features
+- Fully Responsive UI
+- Dark / Light Mode Ready
+- Smooth Animations
+- Real-Time State Management
+- Optimized API Fetching
+- Error Boundaries
+- Graphs for analytics 
+- Form Validation
 
 ---
 
-## 🛠 Tech Stack
+## ⚙️ Backend Features
+- RESTful API
+- Modular Architecture
+- Rate Limiting
+- Security Middleware
+- Logging & Monitoring
 
-### Frontend
-- React.js
-- TypeScript
-- Tailwind CSS
-- DaisyUI
-- React Hook Form
-- Zod (validation)
-- React Query (TanStack Query)
-- Axios
-- Chart.js
+---
 
-### Backend
-- Node.js
-- Express.js
-- TypeScript
-- PostgreSQL
+# 🏗️ Tech Architecture
+
+```bash
+Frontend (React + Vite)
+        ↓
+API Requests (Axios + React Query)
+        ↓
+Backend (Express + TypeScript)
+        ↓
+Database (Neon PostgreSQL)
+```
+
+---
+
+# 📁 Project Structure
+
+```bash
+CashVolt/
+│
+├── client/
+│   └── src/
+│       ├── api/
+│       ├── components/
+│       ├── context/
+│       ├── pages/
+│       ├── hooks/
+│       ├── types/
+│       ├── utils/
+│       ├── App.tsx
+│       ├── index.css
+│       └── main.tsx
+│    
+├── server/
+│   └── src/
+│       ├── config/
+│       ├── middleware/
+│       ├── modules/
+│       ├── utils/
+│       ├── App.js
+│       └── server.js
+│
+└── README.md
+```
+
+---
+
+# ⚡ Installation
+
+## 📥 Clone Repository
+
+```bash
+git clone git@github.com:matusalasana/CashVolt.git
+```
+
+---
+
+## 📂 Navigate Into Project
+
+```bash
+cd CashVolt
+```
+
+---
+
+# 🎨 Frontend Setup
+
+## 📁 Navigate To Frontend
+
+```bash
+cd client
+```
+
+---
+
+## 📦 Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 🚀 Start Frontend Development Server
+
+```bash
+npm run dev
+```
+
+Frontend runs on:
+
+```bash
+http://localhost:5173
+```
+
+---
+
+# 🛠️ Backend Setup
+
+## 📁 Navigate To Backend
+
+```bash
+cd server
+```
+
+---
+
+## 📦 Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 🔑 Create Environment Variables
+
+Create a `.env` file:
+
+```env
+PORT=3000
+
+DATABASE_URL=your_neon_database_url
+
+JWT_SECRET=your_jwt_secret
+
+FRONTEND_URL=your_deployed_frontend_url
+
+FRONTEND_LOCALHOST_URL=your_frontend_localhost_url
+
+NODE_ENV=development
+```
+
+---
+
+## 🚀 Start Backend Development Server
+
+```bash
+npm run dev
+```
+
+Backend runs on:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+# 📜 Available Scripts
+
+## 🎨 Frontend
+
+| Script | Description |
+|---|---|
+| npm run dev | Start Vite development server |
+| npm run build | Build frontend for production |
+
+---
+
+## 🛠️ Backend
+
+| Script | Description |
+|---|---|
+| npm run dev | Start backend development server |
+
+---
+
+# 🧠 State Management
+
+CashVolt uses modern state management solutions for scalability and performance.
+
+## 🔄 TanStack Query
+Used for:
+- API Requests
+- Server State
+- Data Caching
+- Data Synchronization
+
+---
+
+# 🔒 Security Features
+
 - JWT Authentication
+- Password Hashing
+- Helmet Middleware
+- Rate Limiting
+- CORS Protection
+- Input Validation
 
 ---
 
-## 📁 Project Structure
+# 🌍 Deployment
 
-The project follows a modular full-stack architecture with clear separation between frontend and backend.
+Aura Commerce can be deployed on:
 
+## 🎨 Frontend
+- Vercel
+- Netlify
 
-💰 CashVolt/ │ ├── 🌐 client/                          # Frontend (React + TypeScript) │   ├── 📁 public/                      # Static assets │   ├── 📁 src/ │   │   ├── 🔌 api/                    # Axios API layer │   │   ├── 🧩 components/             # Reusable UI components │   │   │   ├── 🏦 accounts/ │   │   │   ├── 💰 budgets/ │   │   │   ├── 🗂 categories/ │   │   │   ├── 💳 transactions/ │   │   │   └── 🔧 shared/ │   │   ├── 🪝 hooks/                  # React Query hooks │   │   ├── 📄 pages/                  # App pages (Dashboard, Settings) │   │   ├── 🧠 types/                  # TypeScript types + Zod schemas │   │   ├── 🛠 utils/                  # Helper functions │   │   ├── 🌍 context/               # Global state (if any) │   │   ├── App.tsx │   │   └── main.tsx │ ├── ⚙️ server/                          # Backend (Node.js + Express) │   ├── 📁 src/ │   │   ├── 🧩 modules/               # Feature-based architecture │   │   │   ├── 🔐 auth/ │   │   │   ├── 🏦 accounts/ │   │   │   ├── 💰 budgets/ │   │   │   ├── 🗂 categories/ │   │   │   └── 💳 transactions/ │   │   ├── 🌐 routes/                # API route definitions │   │   ├── 🛡 middleware/            # Auth, error handling │   │   ├── ⚙️ config/                # Database & environment config │   │   ├── 🛠 utils/                 # Helper functions │   │   ├── app.ts │   │   └── server.ts │ ├── 🔐 .env                           # Environment variables ├── 📦 package.json                   # Project dependencies └── 📘 README.md
+---
 
+## 🛠️ Backend
+- Railway
+- Render
+- VPS
+- Docker
+- AWS
 
-## Backend Structure 
-server/
-│
-├── src/
-│   │
-│   ├── config/
-│   │   ├── db.js
-│   │   └── env.js
-│   │
-│   ├── modules/
-│   │   │
-│   │   ├── auth/
-│   │   │   ├── auth.routes.js
-│   │   │   ├── auth.controller.js
-│   │   │   ├── auth.service.js
-│   │   │   ├── auth.repository.js
-│   │   │   └── auth.middleware.js
-│   │   │
-│   │   ├── users/
-│   │   │   ├── users.routes.js
-│   │   │   ├── users.controller.js
-│   │   │   ├── users.service.js
-│   │   │   └── users.repository.js
-│   │   │
-│   │   ├── accounts/
-│   │   │   ├── accounts.routes.js
-│   │   │   ├── accounts.controller.js
-│   │   │   ├── accounts.service.js
-│   │   │   └── accounts.repository.js
-│   │   │
-│   │   ├── categories/
-│   │   │   ├── categories.routes.js
-│   │   │   ├── categories.controller.js
-│   │   │   ├── categories.service.js
-│   │   │   └── categories.repository.js
-│   │   │
-│   │   ├── transactions/
-│   │   │   ├── transactions.routes.js
-│   │   │   ├── transactions.controller.js
-│   │   │   ├── transactions.service.js
-│   │   │   └── transactions.repository.js
-│   │   │
-│   │   ├── budgets/
-│   │   │   ├── budgets.routes.js
-│   │   │   ├── budgets.controller.js
-│   │   │   ├── budgets.service.js
-│   │   │   └── budgets.repository.js
-│   │   │
-│   │   └── analytics/
-│   │       ├── analytics.routes.js
-│   │       ├── analytics.controller.js
-│   │       └── analytics.service.js
-│   │
-│   ├── middlewares/
-│   │   ├── auth.middleware.js
-│   │   ├── error.middleware.js
-│   │   └── validate.middleware.js
-│   │
-│   ├── utils/
-│   │   ├── jwt.js
-│   │   ├── hash.js
-│   │   ├── response.js
-│   │   └── constants.js
-│   │
-│   ├── shared/
-│   │   ├── errors/
-│   │   │   ├── AppError.js
-│   │   │   └── asyncHandler.js
-│   │   │
-│   │   ├── helpers/
-│   │   │   ├── pagination.js
-│   │   │   └── date.js
-│   │   │
-│   │   └── enums/
-│   │       ├── roles.js
-│   │       └── transactionTypes.js
-│   │
-│   ├── app.js
-│   └── server.js
-│
-├── package.json
-└── .env
+---
+
+# 🚀 Performance Optimizations
+
+- React Query Caching
+- Optimized API Calls
+- Bundle Optimization
+- Code Splitting
+
+---
+
+# 🔮 Future Improvements
+
+- 📧 Email Notifications
+- 🤖 AI Insights 
+- 🔔 Real-Time Notifications
+- 📱 Mobile Application
+
+---
+
+# 📸 Screenshots (Coming soon)
+
+- 🏠 Homepage
+- 💱 Transactions Page
+- 🏧 Accounts Page
+- 📉 Analytics Page
+- 💰 Savings Page
+- 🔐 Authentication Pages
+
+---
+
+# 👨‍💻 Author
+
+## Sana — Full Stack Developer
+
+Built with passion ❤️ using modern web technologies.
+
+---
