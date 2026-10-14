@@ -22,8 +22,8 @@ export const registerUserRepo = async (
     await sql
       `INSERT INTO accounts (name, user_id)
        VALUES 
-        ('Bank', ${user.id}),
-        ('Cash', ${user.id})
+        ('BANK', ${user.id}),
+        ('CASH', ${user.id})
       `;
 
     // 3. Create default categories
